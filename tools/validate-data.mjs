@@ -1301,6 +1301,42 @@ function validateRouteShape(route) {
   }
 }
 
+function collectRouteCoverage() {
+  const coverage = {
+    floors: new Set(),
+    runtimeEvents: new Set(),
+    shops: new Set(),
+    npcs: new Set()
+  };
+
+  const collectExpect = (expect) => {
+    if (!isPlainObject(expect)) return;
+    if (expect.floor) coverage.floors.add(expect.floor);
+    for (const eventId of expect.seenEvents ?? []) coverage.runtimeEvents.add(eventId);
+    if (expect.activeShop) coverage.shops.add(expect.activeShop);
+    if (expect.activeNpc) coverage.npcs.add(expect.activeNpc);
+  };
+
+  for (const route of routeSmoke.routes ?? []) {
+    if (route.start === 'initial') {
+      if (initial.floor) coverage.floors.add(initial.floor);
+    } else if (isPlainObject(route.start) && route.start.floor) {
+      coverage.floors.add(route.start.floor);
+    }
+
+    collectExpect(route.expect);
+    for (const segment of route.segments ?? []) collectExpect(segment.expect);
+  }
+
+  return coverage;
+}
+
+function assertRouteCoverage(label, expectedIds, coveredIds) {
+  for (const id of expectedIds) {
+    if (!coveredIds.has(id)) fail(`route smoke coverage: ${label} ${id} is not covered by any route expectation`);
+  }
+}
+
 for (const route of routeSmoke.routes ?? []) {
   const errorCountBeforeRouteShape = errors.length;
   validateRouteShape(route);
@@ -1355,6 +1391,12 @@ for (const route of routeSmoke.routes ?? []) {
     fail(`route ${route.id}: ${error.message}`);
   }
 }
+
+const routeCoverage = collectRouteCoverage();
+assertRouteCoverage('floor', floorIds, routeCoverage.floors);
+assertRouteCoverage('runtime event', runtimeEventIds, routeCoverage.runtimeEvents);
+assertRouteCoverage('shop', shopIds, routeCoverage.shops);
+assertRouteCoverage('npc', npcIds, routeCoverage.npcs);
 
 if (warnings.length) {
   console.warn('Data validation warnings:');

@@ -1122,6 +1122,69 @@
       ]
     },
     {
+      "id": "visit_healer_npc",
+      "description": "访问五层蓝翼治疗者 NPC，确认高层 NPC 对话和素材符号接入。",
+      "start": {
+        "floor": "F05_FORGE",
+        "position": {
+          "x": 5,
+          "y": 5
+        },
+        "hp": 1000,
+        "maxHp": 1000,
+        "attack": 60,
+        "defense": 30,
+        "gold": 0,
+        "exp": 0,
+        "keys": {
+          "yellow": 0,
+          "blue": 0,
+          "red": 0
+        },
+        "equipment": {
+          "weapon": "铁剑",
+          "shield": "皮盾"
+        },
+        "unlocks": [
+          "monsterBook"
+        ],
+        "seenEvents": [
+          "thief_escape_runtime",
+          "armory_warning",
+          "forge_pressure"
+        ]
+      },
+      "steps": [
+        "right"
+      ],
+      "expect": {
+        "floor": "F05_FORGE",
+        "position": {
+          "x": 6,
+          "y": 5
+        },
+        "activeNpc": "healerFairy",
+        "messageIncludes": "蓝翼治疗者"
+      },
+      "segments": [
+        {
+          "id": "activate-healer-npc",
+          "title": "访问蓝翼治疗者 NPC 对话",
+          "afterStep": 1,
+          "rationale": "验证五层 NPC tile 会激活 `healerFairy`，显示对话并与商店面板状态互斥。",
+          "expect": {
+            "floor": "F05_FORGE",
+            "position": {
+              "x": 6,
+              "y": 5
+            },
+            "activeNpc": "healerFairy",
+            "messageIncludes": "蓝翼治疗者"
+          }
+        }
+      ]
+    },
+    {
       "id": "defeat_forge_boss_opens_gate",
       "description": "击败五层大乌贼后触发 battleWin 事件，打开熔炉下层闸门。",
       "start": {
