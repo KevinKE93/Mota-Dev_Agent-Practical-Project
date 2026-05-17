@@ -101,6 +101,8 @@ const tileDoors = {
 
 const storyRewardStats = new Set(['hp', 'maxHp', 'attack', 'defense', 'gold', 'exp']);
 const storyKeyColors = new Set(['yellow', 'blue', 'red']);
+const storyEventTriggers = new Set(['floorEnter', 'position', 'battleWin']);
+const storyActionKinds = new Set(['replaceTile', 'unlock', 'grantStat', 'grantKey', 'queueDialogue']);
 const audioSynths = new Set(['hit', 'reward', 'floor']);
 const imageCategories = new Set(['hero', 'tile', 'item', 'monster', 'npc', 'fx', 'menu']);
 const imageAnchors = new Set(['center', 'bottom-center']);
@@ -188,6 +190,10 @@ function assertMapPosition(value, label) {
     return false;
   }
   return true;
+}
+
+function assertNonEmptyString(value, label) {
+  if (typeof value !== 'string' || !value.trim()) fail(`${label}: must be a non-empty string`);
 }
 
 if (floors.schemaVersion !== expectedSchemaVersion) fail(`floors.schemaVersion: expected ${expectedSchemaVersion}, got ${floors.schemaVersion}`);
@@ -510,19 +516,27 @@ for (const npc of npcs.npcs) {
 
 for (const event of storyEvents.runtimeEvents ?? []) {
   const context = `story event ${event.id}`;
+  assertNonEmptyString(event.title, `${context}: title`);
+  assertNonEmptyString(event.body, `${context}: body`);
+  if (event.speaker !== undefined) assertNonEmptyString(event.speaker, `${context}: speaker`);
+  if (event.once !== undefined && typeof event.once !== 'boolean') fail(`${context}: once must be a boolean when present`);
+
   const floor = floors.floors.find((candidate) => candidate.id === event.floor);
   if (!floor) {
     fail(`${context}: floor ${event.floor} does not exist`);
     continue;
   }
 
-  if (!['floorEnter', 'position', 'battleWin'].includes(event.trigger)) {
+  if (!storyEventTriggers.has(event.trigger)) {
     fail(`${context}: trigger ${event.trigger} is unsupported`);
   }
 
   if (event.trigger === 'position') {
-    if (!event.position) fail(`${context}: position trigger requires position`);
-    if (event.position && !tileAt(floor.grid, event.position.x, event.position.y)) {
+    if (!event.position) {
+      fail(`${context}: position trigger requires position`);
+    } else if (!assertMapPosition(event.position, `${context}.position`)) {
+      // Position shape errors are reported by assertMapPosition.
+    } else if (!tileAt(floor.grid, event.position.x, event.position.y)) {
       fail(`${context}: trigger position is outside map`);
     }
   }
@@ -531,46 +545,77 @@ for (const event of storyEvents.runtimeEvents ?? []) {
     if (!event.monsterId) fail(`${context}: battleWin trigger requires monsterId`);
     if (event.monsterId && !monsterIds.has(event.monsterId)) {
       fail(`${context}: battleWin monster ${event.monsterId} does not exist`);
+    } else if (event.monsterId) {
+      const hasMonsterOnFloor = floor.grid.some((row) =>
+        [...row].some((tile) => floors.entityMap[tile] === event.monsterId)
+      );
+      if (!hasMonsterOnFloor) fail(`${context}: battleWin monster ${event.monsterId} is not placed on ${floor.id}`);
     }
   }
 
-  for (const action of event.actions ?? []) {
+  if (event.actions !== undefined && !Array.isArray(event.actions)) {
+    fail(`${context}: actions must be an array when present`);
+    continue;
+  }
+
+  for (const [index, action] of (event.actions ?? []).entries()) {
+    const actionContext = `${context} action ${index + 1}`;
+    if (!isPlainObject(action)) {
+      fail(`${actionContext}: must be an object`);
+      continue;
+    }
+    if (!storyActionKinds.has(action.kind)) {
+      fail(`${actionContext}: kind ${action.kind} is unsupported`);
+      continue;
+    }
+
     if (action.kind === 'replaceTile') {
       const targetFloor = action.floor
         ? floors.floors.find((candidate) => candidate.id === action.floor)
         : floor;
+      if (action.floor !== undefined) assertNonEmptyString(action.floor, `${actionContext}.floor`);
       if (!targetFloor) {
-        fail(`${context}: replaceTile target floor ${action.floor} does not exist`);
+        fail(`${actionContext}: replaceTile target floor ${action.floor} does not exist`);
+        continue;
+      }
+      if (!assertMapPosition(action.position, `${actionContext}.position`)) {
         continue;
       }
       if (!tileAt(targetFloor.grid, action.position.x, action.position.y)) {
-        fail(`${context}: replaceTile position is outside map`);
+        fail(`${actionContext}: replaceTile position is outside map`);
       }
       if (!floors.tileLegend[action.tile]) {
-        fail(`${context}: replaceTile writes unknown tile "${action.tile}"`);
+        fail(`${actionContext}: replaceTile writes unknown tile "${action.tile}"`);
       }
       if (!manifest.tilePresentation[action.tile]) {
-        fail(`${context}: replaceTile tile "${action.tile}" is missing from asset manifest`);
+        fail(`${actionContext}: replaceTile tile "${action.tile}" is missing from asset manifest`);
       }
     } else if (action.kind === 'grantStat') {
-      if (!storyRewardStats.has(action.stat)) fail(`${context}: grantStat stat ${action.stat} is unsupported`);
+      if (!storyRewardStats.has(action.stat)) fail(`${actionContext}: grantStat stat ${action.stat} is unsupported`);
       if (!Number.isFinite(action.amount) || action.amount <= 0) {
-        fail(`${context}: grantStat ${action.stat} requires a positive amount`);
+        fail(`${actionContext}: grantStat ${action.stat} requires a positive amount`);
       }
     } else if (action.kind === 'grantKey') {
-      if (!storyKeyColors.has(action.color)) fail(`${context}: grantKey color ${action.color} is unsupported`);
-      if (!Number.isFinite(action.amount) || action.amount <= 0) {
-        fail(`${context}: grantKey ${action.color} requires a positive amount`);
+      if (!storyKeyColors.has(action.color)) fail(`${actionContext}: grantKey color ${action.color} is unsupported`);
+      if (!Number.isInteger(action.amount) || action.amount <= 0) {
+        fail(`${actionContext}: grantKey ${action.color} requires a positive integer amount`);
       }
     } else if (action.kind === 'queueDialogue') {
       if (!Array.isArray(action.entries) || action.entries.length === 0) {
-        fail(`${context}: queueDialogue requires at least one entry`);
+        fail(`${actionContext}: queueDialogue requires at least one entry`);
       }
       for (const [index, entry] of (action.entries ?? []).entries()) {
-        if (!entry.body) fail(`${context}: queueDialogue entry ${index} requires body`);
+        const entryContext = `${actionContext} queueDialogue entry ${index + 1}`;
+        if (!isPlainObject(entry)) {
+          fail(`${entryContext}: must be an object`);
+          continue;
+        }
+        if (entry.title !== undefined) assertNonEmptyString(entry.title, `${entryContext}.title`);
+        if (entry.speaker !== undefined) assertNonEmptyString(entry.speaker, `${entryContext}.speaker`);
+        assertNonEmptyString(entry.body, `${entryContext}.body`);
       }
-    } else if (action.kind !== 'unlock') {
-      fail(`${context}: action kind ${action.kind} is unsupported`);
+    } else if (action.kind === 'unlock') {
+      assertNonEmptyString(action.id, `${actionContext}.id`);
     }
   }
 }
