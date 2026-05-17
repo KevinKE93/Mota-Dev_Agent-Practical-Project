@@ -23,6 +23,10 @@ const warnings = [];
 const fail = (message) => errors.push(message);
 const warn = (message) => warnings.push(message);
 
+function isPlainObject(value) {
+  return Boolean(value && typeof value === 'object' && !Array.isArray(value));
+}
+
 function assertUniqueIds(entries, label, getId = (entry) => entry.id) {
   if (!Array.isArray(entries)) {
     fail(`${label}: expected an array`);
@@ -105,9 +109,23 @@ const monsterTiers = new Set(['low', 'mid', 'high', 'boss-lite', 'boss', 'specia
 const itemTypes = new Set(['key', 'consumable', 'stat', 'equipment', 'system', 'special']);
 const itemSlots = new Set(['weapon', 'shield']);
 const itemEffectKeys = new Set(['hp', 'attack', 'defense', 'openDoor', 'unlock', 'goldMultiplier']);
+const expectedSchemaVersion = '1.0';
 
 function tileAt(grid, x, y) {
   return grid[y]?.[x];
+}
+
+function positionsOfTile(grid, tile) {
+  const positions = [];
+  if (!Array.isArray(grid)) return positions;
+
+  grid.forEach((row, y) => {
+    if (typeof row !== 'string') return;
+    [...row].forEach((candidate, x) => {
+      if (candidate === tile) positions.push({ x, y });
+    });
+  });
+  return positions;
 }
 
 function findTile(grid, tile) {
@@ -158,6 +176,44 @@ function assertPositiveNumber(value, label) {
 
 function assertNonNegativeNumber(value, label) {
   if (!Number.isFinite(value) || value < 0) fail(`${label}: must be a non-negative number`);
+}
+
+function assertPositiveInteger(value, label) {
+  if (!Number.isInteger(value) || value <= 0) fail(`${label}: must be a positive integer`);
+}
+
+function assertMapPosition(value, label) {
+  if (!isPlainObject(value) || !Number.isInteger(value.x) || !Number.isInteger(value.y)) {
+    fail(`${label}: must include integer x/y`);
+    return false;
+  }
+  return true;
+}
+
+if (floors.schemaVersion !== expectedSchemaVersion) fail(`floors.schemaVersion: expected ${expectedSchemaVersion}, got ${floors.schemaVersion}`);
+if (manifest.schemaVersion !== expectedSchemaVersion) fail(`manifest.schemaVersion: expected ${expectedSchemaVersion}, got ${manifest.schemaVersion}`);
+if (routeSmoke.schemaVersion !== expectedSchemaVersion) fail(`routeSmoke.schemaVersion: expected ${expectedSchemaVersion}, got ${routeSmoke.schemaVersion}`);
+assertPositiveInteger(floors.tileSize, 'floors.tileSize');
+assertPositiveInteger(manifest.tileSize, 'manifest.tileSize');
+if (Number.isInteger(floors.tileSize) && Number.isInteger(manifest.tileSize) && floors.tileSize !== manifest.tileSize) {
+  fail(`tileSize: floors ${floors.tileSize} must match manifest ${manifest.tileSize}`);
+}
+assertPositiveInteger(floors.mapSize?.cols, 'floors.mapSize.cols');
+assertPositiveInteger(floors.mapSize?.rows, 'floors.mapSize.rows');
+
+for (const [tile, label] of Object.entries(floors.tileLegend ?? {})) {
+  if (tile.length !== 1) fail(`tileLegend "${tile}": tile keys must be a single character`);
+  if (typeof label !== 'string' || !label.trim()) fail(`tileLegend "${tile}": label must be a non-empty string`);
+  if (!manifest.tilePresentation[tile]) fail(`tileLegend "${tile}": missing manifest tilePresentation`);
+  if (structuralTiles.has(tile) && floors.entityMap?.[tile]) fail(`entityMap "${tile}": structural tiles must not map to entities`);
+  if (!structuralTiles.has(tile) && !floors.entityMap?.[tile]) fail(`entityMap "${tile}": non-structural tile must map to an entity`);
+}
+
+for (const [tile, entityId] of Object.entries(floors.entityMap ?? {})) {
+  if (tile.length !== 1) fail(`entityMap "${tile}": tile keys must be a single character`);
+  if (!floors.tileLegend?.[tile]) fail(`entityMap "${tile}": tile is missing from tileLegend`);
+  if (structuralTiles.has(tile)) fail(`entityMap "${tile}": structural tiles must not map to entities`);
+  if (typeof entityId !== 'string' || !entityId.trim()) fail(`entityMap "${tile}": entity id must be a non-empty string`);
 }
 
 const initial = playerGrowth.initial ?? {};
@@ -215,11 +271,25 @@ for (const item of items.items) {
 
 for (const floor of floors.floors) {
   const context = `floor ${floor.id}`;
+  if (!floor.name) fail(`${context}: name is required`);
+  if (floor.up !== null && floor.up !== undefined && typeof floor.up !== 'string') fail(`${context}: up must be a floor id or null`);
+  if (floor.down !== null && floor.down !== undefined && typeof floor.down !== 'string') fail(`${context}: down must be a floor id or null`);
+
+  if (!Array.isArray(floor.grid)) {
+    fail(`${context}: grid must be an array of rows`);
+    continue;
+  }
+
   if (floor.grid.length !== floors.mapSize.rows) {
     fail(`${context}: expected ${floors.mapSize.rows} rows, got ${floor.grid.length}`);
   }
 
   floor.grid.forEach((row, rowIndex) => {
+    if (typeof row !== 'string') {
+      fail(`${context}: row ${rowIndex} must be a string`);
+      return;
+    }
+
     if (row.length !== floors.mapSize.cols) {
       fail(`${context}: row ${rowIndex} expected ${floors.mapSize.cols} cols, got ${row.length}`);
     }
@@ -248,9 +318,16 @@ for (const floor of floors.floors) {
   if (floor.up && !floorIds.has(floor.up)) fail(`${context}: up link points to missing floor ${floor.up}`);
   if (floor.down && !floorIds.has(floor.down)) fail(`${context}: down link points to missing floor ${floor.down}`);
 
-  const startTile = tileAt(floor.grid, floor.heroStart.x, floor.heroStart.y);
-  if (!startTile) fail(`${context}: heroStart is outside map`);
-  if (startTile === '#') fail(`${context}: heroStart is inside a wall`);
+  const heroMarkers = positionsOfTile(floor.grid, '@');
+  if (heroMarkers.length > 1) {
+    fail(`${context}: grid must include at most one @ hero marker, got ${heroMarkers.length}`);
+  }
+
+  if (assertMapPosition(floor.heroStart, `${context}.heroStart`)) {
+    const startTile = tileAt(floor.grid, floor.heroStart.x, floor.heroStart.y);
+    if (!startTile) fail(`${context}: heroStart is outside map`);
+    if (startTile === '#') fail(`${context}: heroStart is inside a wall`);
+  }
 
   if (floor.up) {
     const target = floors.floors.find((candidate) => candidate.id === floor.up);
@@ -840,10 +917,6 @@ function assertRoute(route, state) {
       .join(' ');
     if (!storyText.includes(text)) throw new Error(`expected story log to include ${text}, got ${storyText}`);
   }
-}
-
-function isPlainObject(value) {
-  return Boolean(value && typeof value === 'object' && !Array.isArray(value));
 }
 
 function assertRoutePosition(value, label) {
