@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const root = process.cwd();
-const routeSmoke = JSON.parse(readFileSync(join(root, 'public', 'data', 'routes.smoke.json'), 'utf8'));
+const routeSmoke = JSON.parse(readFileSync(join(root, 'tools', 'fixtures', 'routes.smoke.json'), 'utf8'));
 
 const args = process.argv.slice(2);
 const routeId = args.find((arg) => !arg.startsWith('--'));

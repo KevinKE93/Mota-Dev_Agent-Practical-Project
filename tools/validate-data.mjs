@@ -13,7 +13,7 @@ const items = readJson(join(dataDir, 'items.seed.json'));
 const shops = readJson(join(dataDir, 'shops.seed.json'));
 const npcs = readJson(join(dataDir, 'npcs.seed.json'));
 const storyEvents = readJson(join(dataDir, 'story-events.json'));
-const routeSmoke = readJson(join(dataDir, 'routes.smoke.json'));
+const routeSmoke = readJson(join(root, 'tools', 'fixtures', 'routes.smoke.json'));
 const manifest = readJson(join(root, 'public', 'assets', 'manifest.json'));
 
 const errors = [];
