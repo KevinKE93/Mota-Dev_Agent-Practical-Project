@@ -26,7 +26,30 @@
           "thief_escape_runtime"
         ],
         "lastBattle": "绿色史莱姆"
-      }
+      },
+      "segments": [
+        {
+          "id": "opening-door-and-first-battle",
+          "title": "开局拿钥匙、开黄门并完成第一战",
+          "afterStep": 5,
+          "rationale": "验证新局 floorEnter 事件、黄钥匙拾取、黄门消耗和第一只绿色史莱姆战斗都能按最短教学路径串起来。",
+          "expect": {
+            "floor": "F02_PRISON",
+            "position": {
+              "x": 4,
+              "y": 3
+            },
+            "keys": {
+              "yellow": 0
+            },
+            "minHp": 900,
+            "seenEvents": [
+              "thief_escape_runtime"
+            ],
+            "lastBattle": "绿色史莱姆"
+          }
+        }
+      ]
     },
     {
       "id": "initial_to_f05_forge_baseline",
@@ -222,7 +245,43 @@
           "monsterBook"
         ],
         "messageIncludes": "紫焰祭司"
-      }
+      },
+      "segments": [
+        {
+          "id": "initial-resource-chain-to-forge",
+          "title": "初始属性资源链进入五层",
+          "afterStep": 161,
+          "rationale": "这条长路线是后续 F06 初始路线的前置基线，验证低层钥匙、装备、怪物手册、宝石和楼梯链路能把玩家送到 F05。",
+          "expect": {
+            "floor": "F05_FORGE",
+            "position": {
+              "x": 1,
+              "y": 1
+            },
+            "hp": 1000,
+            "maxHp": 1000,
+            "attack": 49,
+            "defense": 16,
+            "gold": 23,
+            "exp": 23,
+            "keys": {
+              "yellow": 6,
+              "blue": 0,
+              "red": 1
+            },
+            "lastBattle": "骷髅人",
+            "seenEvents": [
+              "thief_escape_runtime",
+              "armory_warning",
+              "forge_pressure"
+            ],
+            "unlocks": [
+              "monsterBook"
+            ],
+            "messageIncludes": "紫焰祭司"
+          }
+        }
+      ]
     },
     {
       "id": "initial_to_f06_dragon_balanced",
@@ -901,7 +960,26 @@
           "forge_pressure"
         ],
         "messageIncludes": "紫焰祭司"
-      }
+      },
+      "segments": [
+        {
+          "id": "altar-stair-triggers-forge-pressure",
+          "title": "四层上行楼梯触发五层楼层事件",
+          "afterStep": 1,
+          "rationale": "验证从 F04 祭坛进入 F05 熔炉时，落点与 `forge_pressure` 剧情提示同步生效。",
+          "expect": {
+            "floor": "F05_FORGE",
+            "position": {
+              "x": 1,
+              "y": 1
+            },
+            "seenEvents": [
+              "forge_pressure"
+            ],
+            "messageIncludes": "紫焰祭司"
+          }
+        }
+      ]
     },
     {
       "id": "visit_shop_and_buy_attack",
@@ -948,7 +1026,41 @@
         "attack": 12,
         "gold": 4,
         "messageIncludes": "成交"
-      }
+      },
+      "segments": [
+        {
+          "id": "activate-armory-shop",
+          "title": "进入三层商店面板",
+          "afterStep": 1,
+          "rationale": "验证商店 tile 会激活 `basicShop`，并停留在商店格以便后续购买。",
+          "expect": {
+            "floor": "F03_ARMORY",
+            "position": {
+              "x": 2,
+              "y": 1
+            },
+            "activeShop": "basicShop",
+            "attack": 10,
+            "gold": 12
+          }
+        },
+        {
+          "id": "buy-attack-growth",
+          "title": "购买一次攻击成长",
+          "afterStep": 2,
+          "rationale": "验证 `{ buy: \"atk_small\" }` 命令会扣金币、提升攻击，并保留商店交互反馈。",
+          "expect": {
+            "floor": "F03_ARMORY",
+            "position": {
+              "x": 2,
+              "y": 1
+            },
+            "attack": 12,
+            "gold": 4,
+            "messageIncludes": "成交"
+          }
+        }
+      ]
     },
     {
       "id": "visit_thief_npc",
@@ -990,7 +1102,24 @@
         },
         "activeNpc": "thiefHelper",
         "messageIncludes": "同监房的小偷"
-      }
+      },
+      "segments": [
+        {
+          "id": "activate-thief-npc",
+          "title": "访问小偷 NPC 对话",
+          "afterStep": 1,
+          "rationale": "验证 NPC tile 会激活 `thiefHelper`，显示对话并与商店面板状态互斥。",
+          "expect": {
+            "floor": "F02_PRISON",
+            "position": {
+              "x": 7,
+              "y": 5
+            },
+            "activeNpc": "thiefHelper",
+            "messageIncludes": "同监房的小偷"
+          }
+        }
+      ]
     },
     {
       "id": "defeat_forge_boss_opens_gate",
