@@ -1,0 +1,59 @@
+{
+  "initial": {
+    "floor": "F02_PRISON",
+    "hp": 1000,
+    "attack": 10,
+    "defense": 10,
+    "gold": 0,
+    "exp": 0,
+    "keys": {
+      "yellow": 0,
+      "blue": 0,
+      "red": 0
+    }
+  },
+  "equipmentTiers": [
+    {
+      "tier": "initial",
+      "label": "初始",
+      "weapon": "木剑",
+      "shield": "皮盾",
+      "visual": "布衣 / 木剑 / 皮盾"
+    },
+    {
+      "tier": "iron",
+      "label": "铁剑铁盾",
+      "weapon": "铁剑",
+      "shield": "铁盾",
+      "visual": "铁甲边缘增强"
+    },
+    {
+      "tier": "silver",
+      "label": "银系",
+      "weapon": "银剑",
+      "shield": "银盾",
+      "visual": "银蓝高光"
+    },
+    {
+      "tier": "knight",
+      "label": "骑士系",
+      "weapon": "骑士剑",
+      "shield": "骑士盾",
+      "visual": "披风与肩甲"
+    },
+    {
+      "tier": "holy",
+      "label": "圣系",
+      "weapon": "圣剑",
+      "shield": "圣盾",
+      "visual": "金色圣纹"
+    },
+    {
+      "tier": "divine",
+      "label": "神圣系",
+      "weapon": "神圣剑",
+      "shield": "神圣盾",
+      "visual": "蓝白圣光与紫焰对抗"
+    }
+  ]
+}

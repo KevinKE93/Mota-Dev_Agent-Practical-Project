@@ -1,0 +1,19 @@
+# Dependencies and build output
+node_modules/
+dist/
+
+# Local/generated work artifacts
+Brief/
+docs/
+output/
+tmp/
+.playwright-cli/
+
+# OS/editor noise
+.DS_Store
+**/.DS_Store
+
+# Logs and local environment
+*.log
+.env
+.env.*

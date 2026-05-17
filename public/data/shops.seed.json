@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "status": "runtime_seed",
+    "note": "商店价格和收益用于 MVP 路线验证，后续应随正式数值表调整。"
+  },
+  "shops": [
+    {
+      "id": "basicShop",
+      "name": "流浪商人",
+      "speaker": "斗篷商人",
+      "description": "金币可以换成稳定成长。先补攻击，能让低层战斗损耗下降。",
+      "options": [
+        {
+          "id": "atk_small",
+          "label": "攻击 +2",
+          "cost": 8,
+          "effect": {
+            "attack": 2
+          }
+        },
+        {
+          "id": "def_small",
+          "label": "防御 +2",
+          "cost": 8,
+          "effect": {
+            "defense": 2
+          }
+        },
+        {
+          "id": "hp_small",
+          "label": "生命 +200",
+          "cost": 5,
+          "effect": {
+            "hp": 200
+          }
+        }
+      ]
+    }
+  ]
+}

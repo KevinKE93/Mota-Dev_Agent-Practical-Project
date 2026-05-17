@@ -1,0 +1,187 @@
+{
+  "schemaVersion": "1.0",
+  "tileSize": 48,
+  "mapSize": {
+    "cols": 11,
+    "rows": 11
+  },
+  "tileLegend": {
+    "#": "wall",
+    ".": "floor",
+    "@": "heroStart",
+    "Y": "yellowDoor",
+    "B": "blueDoor",
+    "R": "redDoor",
+    "U": "upStair",
+    "N": "downStair",
+    "K": "yellowKey",
+    "Q": "redKey",
+    "P": "smallPotion",
+    "G": "attackGem",
+    "D": "defenseGem",
+    "C": "ironSword",
+    "V": "monsterBook",
+    "$": "shop:basicShop",
+    "?": "npc:thiefHelper",
+    "&": "npc:healerFairy",
+    "S": "monster:monster01",
+    "A": "monster:monster03",
+    "M": "monster:monster05",
+    "W": "monster:monster08",
+    "L": "monster:monster02",
+    "F": "monster:monster04",
+    "T": "monster:monster09",
+    "E": "monster:monster10",
+    "H": "monster:monster11",
+    "O": "monster:monster12",
+    "X": "monster:monster13",
+    "Z": "monster:monster14",
+    "J": "monster:monster15",
+    "I": "monster:monster21",
+    "d": "monster:monster22"
+  },
+  "entityMap": {
+    "S": "monster01",
+    "A": "monster03",
+    "M": "monster05",
+    "W": "monster08",
+    "K": "yellowkey",
+    "Q": "redkey",
+    "P": "hp",
+    "G": "attackgem",
+    "D": "defencegem",
+    "C": "tiejian",
+    "V": "notepad",
+    "$": "basicShop",
+    "?": "thiefHelper",
+    "&": "healerFairy",
+    "L": "monster02",
+    "F": "monster04",
+    "T": "monster09",
+    "E": "monster10",
+    "H": "monster11",
+    "O": "monster12",
+    "X": "monster13",
+    "Z": "monster14",
+    "J": "monster15",
+    "I": "monster21",
+    "d": "monster22"
+  },
+  "floors": [
+    {
+      "id": "F02_PRISON",
+      "name": "二层监牢",
+      "up": "F03_ARMORY",
+      "down": null,
+      "heroStart": {
+        "x": 5,
+        "y": 5
+      },
+      "grid": [
+        "###########",
+        "#..K..S..U#",
+        "#.###.###.#",
+        "#P..S..G..#",
+        "###Y###.###",
+        "#..K.@.?C.#",
+        "#.###.###.#",
+        "#..G..A..P#",
+        "#.###B###.#",
+        "#..K..R..V#",
+        "###########"
+      ]
+    },
+    {
+      "id": "F03_ARMORY",
+      "name": "三层兵器库",
+      "up": "F04_ALTAR",
+      "down": "F02_PRISON",
+      "heroStart": {
+        "x": 5,
+        "y": 5
+      },
+      "grid": [
+        "###########",
+        "#N$..Y...U#",
+        "#.###.###.#",
+        "#..M..D..K#",
+        "###.###.###",
+        "#..P..@..S#",
+        "#.###.###.#",
+        "#..C..A..P#",
+        "#.###B###.#",
+        "#K..M..Q..#",
+        "###########"
+      ]
+    },
+    {
+      "id": "F04_ALTAR",
+      "name": "四层紫焰祭坛",
+      "up": "F05_FORGE",
+      "down": "F03_ARMORY",
+      "heroStart": {
+        "x": 5,
+        "y": 8
+      },
+      "grid": [
+        "###########",
+        "#N..M...K.#",
+        "#.###Y###.#",
+        "#..A...D..#",
+        "###.###.###",
+        "#P..W..G..#",
+        "#.###.###.#",
+        "#..S..C..P#",
+        "#....@...U#",
+        "#Q..M..B..#",
+        "###########"
+      ]
+    },
+    {
+      "id": "F05_FORGE",
+      "name": "五层熔炉回廊",
+      "up": "F06_OBSERVATORY",
+      "down": "F04_ALTAR",
+      "heroStart": {
+        "x": 1,
+        "y": 1
+      },
+      "grid": [
+        "###########",
+        "#N..F..T..#",
+        "#.###.###.#",
+        "#..L..E..K#",
+        "###Y###.###",
+        "#P..@.&O.D#",
+        "#.###.###.#",
+        "#..H..J..P#",
+        "#.###B###.#",
+        "#Q..Z..I..#",
+        "###########"
+      ]
+    },
+    {
+      "id": "F06_OBSERVATORY",
+      "name": "六层星镜塔台",
+      "up": null,
+      "down": "F05_FORGE",
+      "heroStart": {
+        "x": 5,
+        "y": 9
+      },
+      "grid": [
+        "###########",
+        "#..T..d..K#",
+        "#.###.###.#",
+        "#..O..D..P#",
+        "###Y###.###",
+        "#..H..R..G#",
+        "#.###.###.#",
+        "#K..X..I..#",
+        "#.###.###.#",
+        "#..P.N.Q..#",
+        "###########"
+      ]
+    }
+  ]
+}

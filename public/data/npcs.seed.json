@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "status": "runtime_seed",
+    "note": "NPC 文案为 MVP 占位，用于验证对话系统和角色素材。"
+  },
+  "npcs": [
+    {
+      "id": "thiefHelper",
+      "name": "同监房的小偷",
+      "role": "route-helper",
+      "speaker": "同监房的小偷",
+      "dialogue": "墙后那条缝只能帮你争取时间。遇到新怪物前，先看手册里的损耗。"
+    },
+    {
+      "id": "healerFairy",
+      "name": "蓝翼治疗者",
+      "role": "healer-hint",
+      "speaker": "蓝翼治疗者",
+      "dialogue": "熔炉层的怪物不一定要立刻打。保存钥匙和金币，比硬冲更重要。"
+    }
+  ]
+}

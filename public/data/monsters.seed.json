@@ -1,0 +1,179 @@
+{
+  "meta": {
+    "status": "verified_seed_from_public_h5_remake_source",
+    "note": "此文件只放已能核对的种子数据。完整原作数据请用授权资料替换/扩展。"
+  },
+  "monsters": [
+    {
+      "id": "monster01",
+      "name": "绿色史莱姆",
+      "hp": 35,
+      "attack": 18,
+      "defense": 1,
+      "money": 1,
+      "img": "monster01",
+      "tier": "low"
+    },
+    {
+      "id": "monster02",
+      "name": "红色史莱姆",
+      "hp": 45,
+      "attack": 20,
+      "defense": 2,
+      "money": 2,
+      "img": "monster02",
+      "tier": "low"
+    },
+    {
+      "id": "monster03",
+      "name": "小蝙蝠",
+      "hp": 35,
+      "attack": 38,
+      "defense": 3,
+      "money": 3,
+      "img": "monster03",
+      "tier": "low"
+    },
+    {
+      "id": "monster04",
+      "name": "初级法师",
+      "hp": 60,
+      "attack": 32,
+      "defense": 8,
+      "money": 5,
+      "img": "monster04",
+      "tier": "low"
+    },
+    {
+      "id": "monster05",
+      "name": "骷髅人",
+      "hp": 50,
+      "attack": 42,
+      "defense": 6,
+      "money": 6,
+      "img": "monster05",
+      "tier": "low"
+    },
+    {
+      "id": "monster06",
+      "name": "骷髅士兵",
+      "hp": 55,
+      "attack": 52,
+      "defense": 12,
+      "money": 8,
+      "img": "monster06",
+      "tier": "mid"
+    },
+    {
+      "id": "monster07",
+      "name": "初级卫兵",
+      "hp": 50,
+      "attack": 48,
+      "defense": 22,
+      "money": 12,
+      "img": "monster07",
+      "tier": "mid"
+    },
+    {
+      "id": "monster08",
+      "name": "骷髅队长",
+      "hp": 100,
+      "attack": 65,
+      "defense": 15,
+      "money": 30,
+      "img": "monster08",
+      "tier": "boss-lite"
+    },
+    {
+      "id": "monster09",
+      "name": "大史莱姆",
+      "hp": 130,
+      "attack": 60,
+      "defense": 3,
+      "money": 8,
+      "img": "monster09",
+      "tier": "mid"
+    },
+    {
+      "id": "monster10",
+      "name": "大蝙蝠",
+      "hp": 60,
+      "attack": 100,
+      "defense": 8,
+      "money": 12,
+      "img": "monster10",
+      "tier": "mid"
+    },
+    {
+      "id": "monster11",
+      "name": "高级法师",
+      "hp": 100,
+      "attack": 95,
+      "defense": 30,
+      "money": 18,
+      "img": "monster11",
+      "tier": "mid"
+    },
+    {
+      "id": "monster12",
+      "name": "兽人",
+      "hp": 260,
+      "attack": 85,
+      "defense": 5,
+      "money": 22,
+      "img": "monster12",
+      "tier": "mid"
+    },
+    {
+      "id": "monster13",
+      "name": "兽人武士",
+      "hp": 320,
+      "attack": 120,
+      "defense": 15,
+      "money": 30,
+      "img": "monster13",
+      "tier": "mid"
+    },
+    {
+      "id": "monster14",
+      "name": "石头人",
+      "hp": 20,
+      "attack": 100,
+      "defense": 68,
+      "money": 28,
+      "img": "monster14",
+      "tier": "special"
+    },
+    {
+      "id": "monster15",
+      "name": "大乌贼",
+      "boss": true,
+      "hp": 900,
+      "attack": 100,
+      "defense": 20,
+      "money": 100,
+      "img": "monster15",
+      "tier": "boss"
+    },
+    {
+      "id": "monster21",
+      "name": "中级卫兵",
+      "hp": 100,
+      "attack": 180,
+      "defense": 110,
+      "money": 50,
+      "img": "monster21",
+      "tier": "high"
+    },
+    {
+      "id": "monster22",
+      "name": "龙首守卫",
+      "hp": 420,
+      "attack": 120,
+      "defense": 50,
+      "money": 60,
+      "img": "monsterDragonHead",
+      "tier": "boss-lite"
+    }
+  ]
+}

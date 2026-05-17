@@ -1,0 +1,1610 @@
+{
+  "schemaVersion": "1.0",
+  "routes": [
+    {
+      "id": "opening_key_door_slime",
+      "description": "新局拿黄钥匙、开黄门并击败第一只绿色史莱姆。",
+      "start": "initial",
+      "steps": [
+        "left",
+        "left",
+        "up",
+        "up",
+        "right"
+      ],
+      "expect": {
+        "floor": "F02_PRISON",
+        "position": {
+          "x": 4,
+          "y": 3
+        },
+        "keys": {
+          "yellow": 0
+        },
+        "minHp": 900,
+        "seenEvents": [
+          "thief_escape_runtime"
+        ],
+        "lastBattle": "绿色史莱姆"
+      }
+    },
+    {
+      "id": "initial_to_f05_forge_baseline",
+      "description": "从初始属性出发，收集低层关键资源并进入五层熔炉，用作真实资源路线的当前基线。",
+      "start": "initial",
+      "steps": [
+        "right",
+        "right",
+        "right",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "right",
+        "down",
+        "down",
+        "left",
+        "right",
+        "up",
+        "up",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "down",
+        "down",
+        "down",
+        "down",
+        "up",
+        "up",
+        "up",
+        "up",
+        "left",
+        "left",
+        "left",
+        "left",
+        "down",
+        "down",
+        "left",
+        "left",
+        "left",
+        "left",
+        "down",
+        "down",
+        "right",
+        "right",
+        "left",
+        "left",
+        "up",
+        "up",
+        "up",
+        "up",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "up",
+        "up",
+        "left",
+        "left",
+        "up",
+        "up",
+        "right",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "down",
+        "down",
+        "up",
+        "up",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "down",
+        "down",
+        "right",
+        "right",
+        "down",
+        "down",
+        "left",
+        "left",
+        "down",
+        "down",
+        "down",
+        "down",
+        "up",
+        "up",
+        "up",
+        "up",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "down",
+        "down",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "down",
+        "down",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "up",
+        "up",
+        "up",
+        "up",
+        "left",
+        "left",
+        "up",
+        "up",
+        "left",
+        "right",
+        "right",
+        "right",
+        "up",
+        "up",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "down",
+        "down",
+        "left",
+        "left",
+        "down",
+        "down",
+        "right",
+        "right",
+        "down",
+        "down",
+        "left",
+        "left",
+        "left",
+        "down",
+        "right",
+        "right",
+        "right"
+      ],
+      "expect": {
+        "floor": "F05_FORGE",
+        "position": {
+          "x": 1,
+          "y": 1
+        },
+        "hp": 1000,
+        "maxHp": 1000,
+        "attack": 49,
+        "defense": 16,
+        "gold": 23,
+        "exp": 23,
+        "keys": {
+          "yellow": 6,
+          "blue": 0,
+          "red": 1
+        },
+        "lastBattle": "骷髅人",
+        "seenEvents": [
+          "thief_escape_runtime",
+          "armory_warning",
+          "forge_pressure"
+        ],
+        "unlocks": [
+          "monsterBook"
+        ],
+        "messageIncludes": "紫焰祭司"
+      }
+    },
+    {
+      "id": "initial_to_f06_dragon_balanced",
+      "description": "从初始属性出发，经低层资源、三层商店混合购买、五层 Boss 奖励和 F06 右上宝石分支，击败龙首守卫，验证真实资源路线可推进到 F06。",
+      "start": "initial",
+      "steps": [
+        "right",
+        "right",
+        "right",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "right",
+        "down",
+        "down",
+        "left",
+        "right",
+        "up",
+        "up",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "down",
+        "down",
+        "down",
+        "down",
+        "up",
+        "up",
+        "up",
+        "up",
+        "left",
+        "left",
+        "left",
+        "left",
+        "down",
+        "down",
+        "left",
+        "left",
+        "left",
+        "left",
+        "down",
+        "down",
+        "right",
+        "right",
+        "left",
+        "left",
+        "up",
+        "up",
+        "up",
+        "up",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "up",
+        "up",
+        "left",
+        "left",
+        "up",
+        "up",
+        "right",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "down",
+        "down",
+        "up",
+        "up",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "down",
+        "down",
+        "right",
+        "right",
+        "down",
+        "down",
+        "left",
+        "left",
+        "down",
+        "down",
+        "down",
+        "down",
+        "up",
+        "up",
+        "up",
+        "up",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "down",
+        "down",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "down",
+        "down",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "up",
+        "up",
+        "up",
+        "up",
+        "left",
+        "left",
+        "up",
+        "up",
+        "left",
+        "right",
+        "right",
+        "right",
+        "up",
+        "up",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "down",
+        "down",
+        "left",
+        "left",
+        "down",
+        "down",
+        "right",
+        "right",
+        "down",
+        "down",
+        "left",
+        "left",
+        "left",
+        "down",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "left",
+        "left",
+        "down",
+        "down",
+        "left",
+        "left",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "left",
+        "left",
+        "down",
+        "down",
+        "right",
+        "right",
+        "down",
+        "down",
+        "up",
+        "up",
+        "left",
+        "left",
+        "up",
+        "up",
+        "left",
+        "left",
+        "up",
+        "up",
+        "left",
+        "left",
+        "left",
+        "left",
+        "up",
+        "up",
+        "up",
+        "left",
+        "left",
+        "up",
+        "up",
+        "right",
+        "right",
+        "up",
+        "up",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        {
+          "buy": "atk_small"
+        },
+        {
+          "buy": "atk_small"
+        },
+        {
+          "buy": "atk_small"
+        },
+        {
+          "buy": "hp_small"
+        },
+        {
+          "buy": "hp_small"
+        },
+        {
+          "buy": "hp_small"
+        },
+        {
+          "buy": "hp_small"
+        },
+        {
+          "buy": "hp_small"
+        },
+        {
+          "buy": "hp_small"
+        },
+        {
+          "buy": "hp_small"
+        },
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "down",
+        "down",
+        "left",
+        "left",
+        "down",
+        "down",
+        "right",
+        "right",
+        "down",
+        "down",
+        "down",
+        "down",
+        "down",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "down",
+        "down",
+        "left",
+        "left",
+        "down",
+        "down",
+        "right",
+        "left",
+        "down",
+        "left",
+        "left",
+        "left",
+        "left",
+        "up",
+        "up",
+        "up",
+        "up",
+        "right",
+        "right",
+        "up",
+        "up",
+        "left",
+        "left",
+        "up",
+        "up",
+        "right",
+        "right",
+        "right",
+        "right",
+        "down",
+        "down",
+        "right",
+        "right",
+        "right",
+        "right",
+        "left",
+        "left",
+        "down",
+        "down",
+        "right",
+        "right",
+        "left",
+        "left",
+        "up",
+        "up",
+        "right",
+        "right",
+        "up",
+        "up",
+        "left",
+        "left",
+        "left"
+      ],
+      "expect": {
+        "floor": "F06_OBSERVATORY",
+        "position": {
+          "x": 6,
+          "y": 1
+        },
+        "hp": 321,
+        "maxHp": 3600,
+        "attack": 83,
+        "defense": 36,
+        "gold": 221,
+        "exp": 280,
+        "keys": {
+          "yellow": 8,
+          "blue": 0,
+          "red": 2
+        },
+        "lastBattle": "龙首守卫",
+        "seenEvents": [
+          "thief_escape_runtime",
+          "armory_warning",
+          "forge_pressure",
+          "forge_boss_down",
+          "observatory_pressure",
+          "dragon_head_down"
+        ],
+        "unlocks": [
+          "monsterBook",
+          "forgeBossDefeated",
+          "dragonHeadDefeated"
+        ],
+        "messageIncludes": "龙首守卫的镜片碎裂",
+        "storyLogIncludes": [
+          "塔台提示"
+        ]
+      },
+      "segments": [
+        {
+          "id": "reach-forge-baseline",
+          "title": "低层资源基线进入五层",
+          "afterStep": 161,
+          "rationale": "先拿低层钥匙、装备、怪物手册和可承受战斗收益，证明初始属性能稳定进入 F05。",
+          "expect": {
+            "floor": "F05_FORGE",
+            "position": {
+              "x": 1,
+              "y": 1
+            },
+            "hp": 1000,
+            "maxHp": 1000,
+            "attack": 49,
+            "defense": 16,
+            "gold": 23,
+            "exp": 23,
+            "keys": {
+              "yellow": 6,
+              "blue": 0,
+              "red": 1
+            },
+            "seenEvents": [
+              "forge_pressure"
+            ],
+            "unlocks": [
+              "monsterBook"
+            ]
+          }
+        },
+        {
+          "id": "harvest-forge-side-resources",
+          "title": "五层侧路换取商店预算",
+          "afterStep": 199,
+          "rationale": "绕五层上半区与右侧资源，击败可承受敌人并拿蓝宝石、黄钥匙和药水，为三层商店混合购买筹金币。",
+          "expect": {
+            "floor": "F05_FORGE",
+            "position": {
+              "x": 3,
+              "y": 1
+            },
+            "hp": 667,
+            "maxHp": 1000,
+            "attack": 49,
+            "defense": 19,
+            "gold": 72,
+            "exp": 72,
+            "keys": {
+              "yellow": 7,
+              "blue": 0,
+              "red": 1
+            },
+            "lastBattle": "兽人"
+          }
+        },
+        {
+          "id": "enter-armory-shop",
+          "title": "回到三层商店",
+          "afterStep": 227,
+          "rationale": "从 F05 回落到 F03，开一扇黄门进入商店，用前段战斗收益做一次明确的路线投资。",
+          "expect": {
+            "floor": "F03_ARMORY",
+            "position": {
+              "x": 2,
+              "y": 1
+            },
+            "activeShop": "basicShop",
+            "hp": 667,
+            "attack": 49,
+            "defense": 19,
+            "gold": 72,
+            "keys": {
+              "yellow": 6,
+              "blue": 0,
+              "red": 1
+            }
+          }
+        },
+        {
+          "id": "mixed-shop-prep",
+          "title": "混合购买而非纯堆生命",
+          "afterStep": 237,
+          "rationale": "购买 3 次攻击和 7 次生命，降低 Boss 与龙首守卫回合数，同时保留足够 HP 缓冲。",
+          "expect": {
+            "floor": "F03_ARMORY",
+            "position": {
+              "x": 2,
+              "y": 1
+            },
+            "activeShop": "basicShop",
+            "hp": 2067,
+            "maxHp": 2400,
+            "attack": 55,
+            "defense": 19,
+            "gold": 13,
+            "keys": {
+              "yellow": 6,
+              "blue": 0,
+              "red": 1
+            }
+          }
+        },
+        {
+          "id": "forge-boss-reward",
+          "title": "击败大乌贼打开六层入口",
+          "afterStep": 278,
+          "rationale": "商店准备后回到 F05 击败大乌贼，触发闸门、红钥匙和三项成长奖励，形成进入 F06 的硬门槛。",
+          "expect": {
+            "floor": "F05_FORGE",
+            "position": {
+              "x": 6,
+              "y": 7
+            },
+            "hp": 1242,
+            "maxHp": 3600,
+            "attack": 80,
+            "defense": 29,
+            "gold": 113,
+            "exp": 172,
+            "keys": {
+              "yellow": 6,
+              "blue": 0,
+              "red": 2
+            },
+            "lastBattle": "大乌贼",
+            "seenEvents": [
+              "forge_boss_down"
+            ],
+            "unlocks": [
+              "forgeBossDefeated"
+            ]
+          }
+        },
+        {
+          "id": "enter-observatory",
+          "title": "进入六层星镜塔台",
+          "afterStep": 280,
+          "rationale": "使用 Boss 打开的上行楼梯进入 F06，确认楼层事件与闸门路线衔接。",
+          "expect": {
+            "floor": "F06_OBSERVATORY",
+            "position": {
+              "x": 5,
+              "y": 9
+            },
+            "hp": 1242,
+            "maxHp": 3600,
+            "attack": 80,
+            "defense": 29,
+            "seenEvents": [
+              "observatory_pressure"
+            ]
+          }
+        },
+        {
+          "id": "f06-left-branch",
+          "title": "六层左支线拿防御与药水",
+          "afterStep": 311,
+          "rationale": "先走左侧黄门分支，处理高级法师、兽人和大史莱姆，拿蓝宝石与药水后再转向右侧宝石。",
+          "expect": {
+            "floor": "F06_OBSERVATORY",
+            "position": {
+              "x": 8,
+              "y": 5
+            },
+            "hp": 1377,
+            "maxHp": 3600,
+            "attack": 80,
+            "defense": 32,
+            "gold": 161,
+            "exp": 220,
+            "keys": {
+              "yellow": 6,
+              "blue": 0,
+              "red": 2
+            },
+            "lastBattle": "大史莱姆"
+          }
+        },
+        {
+          "id": "f06-right-gem-before-dragon",
+          "title": "右侧红宝石缩短龙首战斗",
+          "afterStep": 312,
+          "rationale": "战前补拿右侧红宝石，使龙首守卫从 18 回合降到 13 回合，减少对纯生命购买的依赖。",
+          "expect": {
+            "floor": "F06_OBSERVATORY",
+            "position": {
+              "x": 9,
+              "y": 5
+            },
+            "hp": 1377,
+            "maxHp": 3600,
+            "attack": 83,
+            "defense": 32,
+            "gold": 161,
+            "exp": 220,
+            "keys": {
+              "yellow": 6,
+              "blue": 0,
+              "red": 2
+            }
+          }
+        },
+        {
+          "id": "defeat-dragon-head",
+          "title": "击败龙首守卫完成 F06 验证",
+          "afterStep": 323,
+          "rationale": "最终状态验证初始资源路线可击败 F06 关键守卫，并留下可继续调平衡的明确 HP 边际。",
+          "expect": {
+            "floor": "F06_OBSERVATORY",
+            "position": {
+              "x": 6,
+              "y": 1
+            },
+            "hp": 321,
+            "maxHp": 3600,
+            "attack": 83,
+            "defense": 36,
+            "gold": 221,
+            "exp": 280,
+            "keys": {
+              "yellow": 8,
+              "blue": 0,
+              "red": 2
+            },
+            "lastBattle": "龙首守卫",
+            "seenEvents": [
+              "thief_escape_runtime",
+              "armory_warning",
+              "forge_pressure",
+              "forge_boss_down",
+              "observatory_pressure",
+              "dragon_head_down"
+            ],
+            "unlocks": [
+              "monsterBook",
+              "forgeBossDefeated",
+              "dragonHeadDefeated"
+            ],
+            "messageIncludes": "龙首守卫的镜片碎裂",
+            "storyLogIncludes": [
+              "塔台提示"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "altar_to_forge_transition",
+      "description": "从四层祭坛进入五层熔炉，触发五层楼层事件。",
+      "start": {
+        "floor": "F04_ALTAR",
+        "position": {
+          "x": 8,
+          "y": 8
+        },
+        "hp": 1000,
+        "maxHp": 1000,
+        "attack": 80,
+        "defense": 40,
+        "gold": 0,
+        "exp": 0,
+        "keys": {
+          "yellow": 2,
+          "blue": 1,
+          "red": 1
+        },
+        "equipment": {
+          "weapon": "铁剑",
+          "shield": "皮盾"
+        },
+        "unlocks": [
+          "monsterBook"
+        ],
+        "seenEvents": [
+          "thief_escape_runtime",
+          "armory_warning"
+        ]
+      },
+      "steps": [
+        "right"
+      ],
+      "expect": {
+        "floor": "F05_FORGE",
+        "position": {
+          "x": 1,
+          "y": 1
+        },
+        "seenEvents": [
+          "forge_pressure"
+        ],
+        "messageIncludes": "紫焰祭司"
+      }
+    },
+    {
+      "id": "visit_shop_and_buy_attack",
+      "description": "进入三层商店并购买一次攻击成长。",
+      "start": {
+        "floor": "F03_ARMORY",
+        "position": {
+          "x": 1,
+          "y": 1
+        },
+        "hp": 1000,
+        "maxHp": 1000,
+        "attack": 10,
+        "defense": 10,
+        "gold": 12,
+        "exp": 0,
+        "keys": {
+          "yellow": 0,
+          "blue": 0,
+          "red": 0
+        },
+        "equipment": {
+          "weapon": "木剑",
+          "shield": "皮盾"
+        },
+        "unlocks": [],
+        "seenEvents": [
+          "thief_escape_runtime",
+          "armory_warning"
+        ]
+      },
+      "steps": [
+        "right",
+        {
+          "buy": "atk_small"
+        }
+      ],
+      "expect": {
+        "floor": "F03_ARMORY",
+        "position": {
+          "x": 2,
+          "y": 1
+        },
+        "attack": 12,
+        "gold": 4,
+        "messageIncludes": "成交"
+      }
+    },
+    {
+      "id": "visit_thief_npc",
+      "description": "访问二层小偷 NPC，确认 NPC 对话和素材符号接入。",
+      "start": {
+        "floor": "F02_PRISON",
+        "position": {
+          "x": 6,
+          "y": 5
+        },
+        "hp": 1000,
+        "maxHp": 1000,
+        "attack": 10,
+        "defense": 10,
+        "gold": 0,
+        "exp": 0,
+        "keys": {
+          "yellow": 0,
+          "blue": 0,
+          "red": 0
+        },
+        "equipment": {
+          "weapon": "木剑",
+          "shield": "皮盾"
+        },
+        "unlocks": [],
+        "seenEvents": [
+          "thief_escape_runtime"
+        ]
+      },
+      "steps": [
+        "right"
+      ],
+      "expect": {
+        "floor": "F02_PRISON",
+        "position": {
+          "x": 7,
+          "y": 5
+        },
+        "activeNpc": "thiefHelper",
+        "messageIncludes": "同监房的小偷"
+      }
+    },
+    {
+      "id": "defeat_forge_boss_opens_gate",
+      "description": "击败五层大乌贼后触发 battleWin 事件，打开熔炉下层闸门。",
+      "start": {
+        "floor": "F05_FORGE",
+        "position": {
+          "x": 5,
+          "y": 7
+        },
+        "hp": 3000,
+        "maxHp": 3000,
+        "attack": 250,
+        "defense": 120,
+        "gold": 0,
+        "exp": 0,
+        "keys": {
+          "yellow": 0,
+          "blue": 1,
+          "red": 0
+        },
+        "equipment": {
+          "weapon": "铁剑",
+          "shield": "皮盾"
+        },
+        "unlocks": [
+          "monsterBook"
+        ],
+        "seenEvents": [
+          "thief_escape_runtime",
+          "armory_warning",
+          "forge_pressure"
+        ]
+      },
+      "steps": [
+        "right"
+      ],
+      "expect": {
+        "floor": "F05_FORGE",
+        "position": {
+          "x": 6,
+          "y": 7
+        },
+        "hp": 4200,
+        "maxHp": 4200,
+        "attack": 275,
+        "defense": 130,
+        "gold": 100,
+        "exp": 100,
+        "keys": {
+          "yellow": 0,
+          "blue": 1,
+          "red": 1
+        },
+        "lastBattle": "大乌贼",
+        "seenEvents": [
+          "thief_escape_runtime",
+          "armory_warning",
+          "forge_pressure",
+          "forge_boss_down"
+        ],
+        "unlocks": [
+          "monsterBook",
+          "forgeBossDefeated"
+        ],
+        "tiles": [
+          {
+            "floor": "F05_FORGE",
+            "position": {
+              "x": 5,
+              "y": 8
+            },
+            "tile": "U"
+          }
+        ],
+        "messageIncludes": "大乌贼沉入紫焰",
+        "storyLogIncludes": [
+          "闸门之后",
+          "路线提示"
+        ]
+      },
+      "segments": [
+        {
+          "id": "battle-win-opens-forge-gate",
+          "title": "Boss 战后打开熔炉闸门",
+          "afterStep": 1,
+          "rationale": "这条 focused route 只验证 battleWin 事件：击败大乌贼后应改写地图、解锁闸门并发放剧情奖励。",
+          "expect": {
+            "floor": "F05_FORGE",
+            "position": {
+              "x": 6,
+              "y": 7
+            },
+            "hp": 4200,
+            "maxHp": 4200,
+            "attack": 275,
+            "defense": 130,
+            "gold": 100,
+            "exp": 100,
+            "keys": {
+              "yellow": 0,
+              "blue": 1,
+              "red": 1
+            },
+            "lastBattle": "大乌贼",
+            "seenEvents": [
+              "thief_escape_runtime",
+              "armory_warning",
+              "forge_pressure",
+              "forge_boss_down"
+            ],
+            "unlocks": [
+              "monsterBook",
+              "forgeBossDefeated"
+            ],
+            "tiles": [
+              {
+                "floor": "F05_FORGE",
+                "position": {
+                  "x": 5,
+                  "y": 8
+                },
+                "tile": "U"
+              }
+            ],
+            "messageIncludes": "大乌贼沉入紫焰",
+            "storyLogIncludes": [
+              "闸门之后",
+              "路线提示"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "boss_gate_to_observatory_dragon",
+      "description": "击败五层 boss 后进入六层星镜塔台，并击败龙首守卫验证新楼层、楼梯和高层怪物接入。",
+      "start": {
+        "floor": "F05_FORGE",
+        "position": {
+          "x": 5,
+          "y": 7
+        },
+        "hp": 3000,
+        "maxHp": 3000,
+        "attack": 250,
+        "defense": 120,
+        "gold": 0,
+        "exp": 0,
+        "keys": {
+          "yellow": 0,
+          "blue": 1,
+          "red": 0
+        },
+        "equipment": {
+          "weapon": "铁剑",
+          "shield": "皮盾"
+        },
+        "unlocks": [
+          "monsterBook"
+        ],
+        "seenEvents": [
+          "thief_escape_runtime",
+          "armory_warning",
+          "forge_pressure"
+        ]
+      },
+      "steps": [
+        "right",
+        "left",
+        "down",
+        "up",
+        "up",
+        "up",
+        "up",
+        "right",
+        "right",
+        "up",
+        "up",
+        "right",
+        "right",
+        "up",
+        "up",
+        "left",
+        "left",
+        "left"
+      ],
+      "expect": {
+        "floor": "F06_OBSERVATORY",
+        "position": {
+          "x": 6,
+          "y": 1
+        },
+        "hp": 4200,
+        "maxHp": 4200,
+        "attack": 275,
+        "defense": 134,
+        "gold": 160,
+        "exp": 160,
+        "keys": {
+          "yellow": 2,
+          "blue": 1,
+          "red": 0
+        },
+        "lastBattle": "龙首守卫",
+        "seenEvents": [
+          "thief_escape_runtime",
+          "armory_warning",
+          "forge_pressure",
+          "forge_boss_down",
+          "observatory_pressure",
+          "dragon_head_down"
+        ],
+        "unlocks": [
+          "monsterBook",
+          "forgeBossDefeated",
+          "dragonHeadDefeated"
+        ],
+        "messageIncludes": "龙首守卫的镜片碎裂",
+        "storyLogIncludes": [
+          "塔台提示"
+        ]
+      },
+      "segments": [
+        {
+          "id": "forge-boss-gate-opened",
+          "title": "先触发 F05 Boss 闸门事件",
+          "afterStep": 1,
+          "rationale": "确认从高属性夹具状态击败大乌贼后，闸门、红钥匙和成长奖励都已经进入运行时状态。",
+          "expect": {
+            "floor": "F05_FORGE",
+            "position": {
+              "x": 6,
+              "y": 7
+            },
+            "hp": 4200,
+            "maxHp": 4200,
+            "attack": 275,
+            "defense": 130,
+            "gold": 100,
+            "exp": 100,
+            "keys": {
+              "yellow": 0,
+              "blue": 1,
+              "red": 1
+            },
+            "lastBattle": "大乌贼",
+            "seenEvents": [
+              "forge_boss_down"
+            ],
+            "unlocks": [
+              "forgeBossDefeated"
+            ],
+            "tiles": [
+              {
+                "floor": "F05_FORGE",
+                "position": {
+                  "x": 5,
+                  "y": 8
+                },
+                "tile": "U"
+              }
+            ]
+          }
+        },
+        {
+          "id": "observatory-floor-enter",
+          "title": "通过 Boss 闸门进入 F06",
+          "afterStep": 3,
+          "rationale": "确认 F05 动态生成的上行楼梯能落到 F06 下行楼梯，并触发星镜塔台楼层事件。",
+          "expect": {
+            "floor": "F06_OBSERVATORY",
+            "position": {
+              "x": 5,
+              "y": 9
+            },
+            "hp": 4200,
+            "maxHp": 4200,
+            "attack": 275,
+            "defense": 130,
+            "keys": {
+              "yellow": 0,
+              "blue": 1,
+              "red": 1
+            },
+            "seenEvents": [
+              "observatory_pressure"
+            ]
+          }
+        },
+        {
+          "id": "red-gate-to-dragon-lane",
+          "title": "消耗红钥匙进入龙首路线",
+          "afterStep": 9,
+          "rationale": "验证 F06 中央红门是通向龙首路线的门控，Boss 奖励的红钥匙会在此被消耗。",
+          "expect": {
+            "floor": "F06_OBSERVATORY",
+            "position": {
+              "x": 7,
+              "y": 5
+            },
+            "keys": {
+              "yellow": 0,
+              "blue": 1,
+              "red": 0
+            },
+            "unlocks": [
+              "forgeBossDefeated"
+            ]
+          }
+        },
+        {
+          "id": "dragon-head-focused-finish",
+          "title": "击败龙首守卫验证 F06 接入",
+          "afterStep": 18,
+          "rationale": "最终确认 F06 怪物、奖励事件、story follow-up 和高层解锁都能从 F05 Boss 门链路串起来。",
+          "expect": {
+            "floor": "F06_OBSERVATORY",
+            "position": {
+              "x": 6,
+              "y": 1
+            },
+            "hp": 4200,
+            "maxHp": 4200,
+            "attack": 275,
+            "defense": 134,
+            "gold": 160,
+            "exp": 160,
+            "keys": {
+              "yellow": 2,
+              "blue": 1,
+              "red": 0
+            },
+            "lastBattle": "龙首守卫",
+            "seenEvents": [
+              "thief_escape_runtime",
+              "armory_warning",
+              "forge_pressure",
+              "forge_boss_down",
+              "observatory_pressure",
+              "dragon_head_down"
+            ],
+            "unlocks": [
+              "monsterBook",
+              "forgeBossDefeated",
+              "dragonHeadDefeated"
+            ],
+            "messageIncludes": "龙首守卫的镜片碎裂",
+            "storyLogIncludes": [
+              "塔台提示"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "floor_band_f02_to_f05_integrated",
+      "description": "高属性集成路线：从二层穿过三四五层，覆盖 NPC、物品、商店、门、楼梯、怪物和 boss 事件组合。",
+      "start": {
+        "floor": "F02_PRISON",
+        "position": {
+          "x": 5,
+          "y": 5
+        },
+        "hp": 5000,
+        "maxHp": 5000,
+        "attack": 260,
+        "defense": 130,
+        "gold": 40,
+        "exp": 0,
+        "keys": {
+          "yellow": 3,
+          "blue": 1,
+          "red": 0
+        },
+        "equipment": {
+          "weapon": "铁剑",
+          "shield": "皮盾"
+        },
+        "unlocks": [
+          "monsterBook"
+        ],
+        "seenEvents": [
+          "thief_escape_runtime"
+        ]
+      },
+      "steps": [
+        "right",
+        "right",
+        "up",
+        "up",
+        "right",
+        "right",
+        "up",
+        "up",
+        "right",
+        {
+          "buy": "atk_small"
+        },
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "down",
+        "down",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "left",
+        "down",
+        "down",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "right",
+        "down",
+        "down",
+        "down",
+        "down",
+        "down",
+        "right",
+        "right",
+        "down",
+        "down",
+        "right",
+        "right",
+        "down",
+        "down",
+        "right"
+      ],
+      "expect": {
+        "floor": "F05_FORGE",
+        "position": {
+          "x": 6,
+          "y": 7
+        },
+        "minHp": 4500,
+        "lastBattle": "大乌贼",
+        "seenEvents": [
+          "armory_warning",
+          "forge_pressure",
+          "forge_boss_down"
+        ],
+        "unlocks": [
+          "forgeBossDefeated"
+        ],
+        "tiles": [
+          {
+            "floor": "F05_FORGE",
+            "position": {
+              "x": 5,
+              "y": 8
+            },
+            "tile": "U"
+          }
+        ],
+        "messageIncludes": "大乌贼沉入紫焰",
+        "storyLogIncludes": [
+          "闸门之后",
+          "路线提示"
+        ]
+      },
+      "segments": [
+        {
+          "id": "visit-thief-helper",
+          "title": "访问二层小偷 NPC",
+          "afterStep": 2,
+          "rationale": "集成路线先覆盖 NPC 访问状态，确认 NPC 面板与普通移动、后续离开不会互相污染。",
+          "expect": {
+            "floor": "F02_PRISON",
+            "position": {
+              "x": 7,
+              "y": 5
+            },
+            "activeNpc": "thiefHelper",
+            "seenEvents": [
+              "thief_escape_runtime"
+            ],
+            "unlocks": [
+              "monsterBook"
+            ]
+          }
+        },
+        {
+          "id": "armory-shop-investment",
+          "title": "进入三层商店并购买攻击",
+          "afterStep": 10,
+          "rationale": "覆盖楼梯到 F03、商店激活、购买指令、金币扣减和攻击成长这一组非战斗交互。",
+          "expect": {
+            "floor": "F03_ARMORY",
+            "position": {
+              "x": 2,
+              "y": 1
+            },
+            "activeShop": "basicShop",
+            "hp": 5000,
+            "attack": 265,
+            "defense": 130,
+            "gold": 32,
+            "seenEvents": [
+              "armory_warning"
+            ]
+          }
+        },
+        {
+          "id": "climb-to-altar",
+          "title": "穿过三层黄门进入四层",
+          "afterStep": 17,
+          "rationale": "确认黄门消耗、F03 到 F04 楼梯落点和高属性路线跨楼层连续性。",
+          "expect": {
+            "floor": "F04_ALTAR",
+            "position": {
+              "x": 1,
+              "y": 1
+            },
+            "keys": {
+              "yellow": 2,
+              "blue": 1,
+              "red": 0
+            },
+            "seenEvents": [
+              "armory_warning"
+            ]
+          }
+        },
+        {
+          "id": "altar-resource-sweep",
+          "title": "四层祭坛资源与怪物组合",
+          "afterStep": 41,
+          "rationale": "覆盖四层宝石、药水和可战斗怪物混合路径，为进入五层前的中段集成状态留检查点。",
+          "expect": {
+            "floor": "F04_ALTAR",
+            "position": {
+              "x": 9,
+              "y": 5
+            },
+            "attack": 268,
+            "defense": 133,
+            "minHp": 5000,
+            "seenEvents": [
+              "armory_warning"
+            ]
+          }
+        },
+        {
+          "id": "enter-forge-from-altar",
+          "title": "从四层进入五层熔炉",
+          "afterStep": 44,
+          "rationale": "确认 F04 上行楼梯进入 F05 的落点与 `forge_pressure` 楼层事件。",
+          "expect": {
+            "floor": "F05_FORGE",
+            "position": {
+              "x": 1,
+              "y": 1
+            },
+            "seenEvents": [
+              "forge_pressure"
+            ]
+          }
+        },
+        {
+          "id": "integrated-forge-boss-finish",
+          "title": "集成路线击败 F05 Boss",
+          "afterStep": 55,
+          "rationale": "最终覆盖 NPC、商店、门、楼梯、物品、怪物战斗和 Boss battleWin 地图改写的组合链路。",
+          "expect": {
+            "floor": "F05_FORGE",
+            "position": {
+              "x": 6,
+              "y": 7
+            },
+            "minHp": 4500,
+            "lastBattle": "大乌贼",
+            "seenEvents": [
+              "armory_warning",
+              "forge_pressure",
+              "forge_boss_down"
+            ],
+            "unlocks": [
+              "forgeBossDefeated"
+            ],
+            "tiles": [
+              {
+                "floor": "F05_FORGE",
+                "position": {
+                  "x": 5,
+                  "y": 8
+                },
+                "tile": "U"
+              }
+            ],
+            "messageIncludes": "大乌贼沉入紫焰",
+            "storyLogIncludes": [
+              "闸门之后",
+              "路线提示"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

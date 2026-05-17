@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "status": "story_beat_template",
+    "note": "用于事件系统蓝本。完整台词请用授权文本替换。"
+  },
+  "beats": [
+    {
+      "id": "intro",
+      "floor": "F01",
+      "title": "进入魔塔",
+      "summary": "勇者为营救公主进入魔塔，开局拥有神圣剑与神圣盾。"
+    },
+    {
+      "id": "ambush",
+      "floor": "F03",
+      "title": "遭遇埋伏",
+      "summary": "魔王夺走神圣剑盾，勇者被关入低层监狱。"
+    },
+    {
+      "id": "thief_escape",
+      "floor": "F02",
+      "title": "小偷相助",
+      "summary": "同监房的小偷挖开墙壁，帮助勇者逃脱。"
+    },
+    {
+      "id": "skeleton_captain",
+      "floor": "F10",
+      "title": "区域头目",
+      "summary": "击败骷髅队长，开启第一区域通路。"
+    },
+    {
+      "id": "octopus_route",
+      "floor": "F15",
+      "title": "章鱼阻路",
+      "summary": "大章鱼成为中段关卡障碍，需要路线与事件处理。"
+    },
+    {
+      "id": "cross_vampire",
+      "floor": "F20",
+      "title": "十字架与吸血鬼",
+      "summary": "取得十字架后挑战吸血鬼。"
+    },
+    {
+      "id": "secret_tunnel",
+      "floor": "F35",
+      "title": "密道",
+      "summary": "小偷在高层帮助挖出绕过强敌的通路。"
+    },
+    {
+      "id": "false_demon",
+      "floor": "F49",
+      "title": "假魔王",
+      "summary": "利用机制封印并击败假魔王，取得关键屠龙道具。"
+    },
+    {
+      "id": "dragon",
+      "floor": "F35",
+      "title": "魔龙",
+      "summary": "返回挑战魔龙，获得冰冻魔法或关键通路能力。"
+    },
+    {
+      "id": "doll_princess",
+      "floor": "F26",
+      "title": "公主反转",
+      "summary": "被救出的公主只是洋娃娃，引出最终真相。"
+    },
+    {
+      "id": "final_reveal",
+      "floor": "F50",
+      "title": "终局真相",
+      "summary": "小偷身份反转，魔塔试炼揭示神圣力量与魔王的目的。"
+    }
+  ],
+  "runtimeEvents": [
+    {
+      "id": "thief_escape_runtime",
+      "floor": "F02_PRISON",
+      "trigger": "floorEnter",
+      "once": true,
+      "title": "小偷相助",
+      "speaker": "同监房的小偷",
+      "body": "我在墙后挖出了一条缝。先拿钥匙和宝石，别急着撞强敌。",
+      "actions": [
+        {
+          "kind": "replaceTile",
+          "position": {
+            "x": 4,
+            "y": 6
+          },
+          "tile": "."
+        }
+      ]
+    },
+    {
+      "id": "armory_warning",
+      "floor": "F03_ARMORY",
+      "trigger": "floorEnter",
+      "once": true,
+      "title": "兵器库低语",
+      "speaker": "墙上的铭文",
+      "body": "装备可以改变路线价值。先比较怪物手册里的损耗，再决定是否开门。"
+    },
+    {
+      "id": "forge_pressure",
+      "floor": "F05_FORGE",
+      "trigger": "floorEnter",
+      "once": true,
+      "title": "熔炉回廊",
+      "speaker": "紫焰祭司",
+      "body": "这层开始出现高防御和高攻击怪物。能赢不代表该马上战斗。"
+    },
+    {
+      "id": "forge_boss_down",
+      "floor": "F05_FORGE",
+      "trigger": "battleWin",
+      "monsterId": "monster15",
+      "once": true,
+      "title": "熔炉闸门",
+      "speaker": "紫焰祭司",
+      "body": "大乌贼沉入紫焰，熔炉下层的闸门随之开启。",
+      "actions": [
+        {
+          "kind": "replaceTile",
+          "position": {
+            "x": 5,
+            "y": 8
+          },
+          "tile": "U"
+        },
+        {
+          "kind": "unlock",
+          "id": "forgeBossDefeated"
+        },
+        {
+          "kind": "grantStat",
+          "stat": "maxHp",
+          "amount": 1200
+        },
+        {
+          "kind": "grantStat",
+          "stat": "attack",
+          "amount": 25
+        },
+        {
+          "kind": "grantStat",
+          "stat": "defense",
+          "amount": 10
+        },
+        {
+          "kind": "grantKey",
+          "color": "red",
+          "amount": 1
+        },
+        {
+          "kind": "queueDialogue",
+          "entries": [
+            {
+              "title": "闸门之后",
+              "speaker": "蓝翼治疗者",
+              "body": "这不是终点。打开的闸门会改变回廊价值，先确认红钥匙和生命余量。"
+            },
+            {
+              "title": "路线提示",
+              "speaker": "同监房的小偷",
+              "body": "强敌倒下后，别忘了回看怪物手册；新的通道可能比硬开门更划算。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "observatory_pressure",
+      "floor": "F06_OBSERVATORY",
+      "trigger": "floorEnter",
+      "once": true,
+      "title": "星镜塔台",
+      "speaker": "星镜刻度",
+      "body": "龙影会优先考验防御。继续向上前，确认红门、黄钥匙和生命余量。"
+    },
+    {
+      "id": "dragon_head_down",
+      "floor": "F06_OBSERVATORY",
+      "trigger": "battleWin",
+      "monsterId": "monster22",
+      "once": true,
+      "title": "龙首熄光",
+      "speaker": "星镜刻度",
+      "body": "龙首守卫的镜片碎裂，塔台上的路线重新显影。",
+      "actions": [
+        {
+          "kind": "unlock",
+          "id": "dragonHeadDefeated"
+        },
+        {
+          "kind": "grantStat",
+          "stat": "defense",
+          "amount": 4
+        },
+        {
+          "kind": "grantKey",
+          "color": "yellow",
+          "amount": 1
+        },
+        {
+          "kind": "queueDialogue",
+          "entries": [
+            {
+              "title": "塔台提示",
+              "speaker": "星镜刻度",
+              "body": "高层怪物的防御开始拉开差距，宝石收益会比低层更关键。"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

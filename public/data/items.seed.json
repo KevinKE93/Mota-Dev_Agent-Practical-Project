@@ -1,0 +1,178 @@
+{
+  "meta": {
+    "status": "structural_seed",
+    "note": "物品清单来自经典魔塔生态与公开 H5 复刻素材清单，数值需按授权原作数据最终确认。"
+  },
+  "items": [
+    {
+      "id": "yellowkey",
+      "name": "黄钥匙",
+      "type": "key",
+      "effect": {
+        "openDoor": "yellow"
+      }
+    },
+    {
+      "id": "bluekey",
+      "name": "蓝钥匙",
+      "type": "key",
+      "effect": {
+        "openDoor": "blue"
+      }
+    },
+    {
+      "id": "redkey",
+      "name": "红钥匙",
+      "type": "key",
+      "effect": {
+        "openDoor": "red"
+      }
+    },
+    {
+      "id": "hp",
+      "name": "小生命药水",
+      "type": "consumable",
+      "effect": {
+        "hp": 200
+      }
+    },
+    {
+      "id": "hplarge",
+      "name": "大生命药水",
+      "type": "consumable",
+      "effect": {
+        "hp": 500
+      }
+    },
+    {
+      "id": "attackgem",
+      "name": "红宝石",
+      "type": "stat",
+      "effect": {
+        "attack": 3
+      }
+    },
+    {
+      "id": "defencegem",
+      "name": "蓝宝石",
+      "type": "stat",
+      "effect": {
+        "defense": 3
+      }
+    },
+    {
+      "id": "tiejian",
+      "name": "铁剑",
+      "type": "equipment",
+      "slot": "weapon",
+      "effect": {
+        "attack": 10
+      }
+    },
+    {
+      "id": "tiedun",
+      "name": "铁盾",
+      "type": "equipment",
+      "slot": "shield",
+      "effect": {
+        "defense": 10
+      }
+    },
+    {
+      "id": "yinjian",
+      "name": "银剑",
+      "type": "equipment",
+      "slot": "weapon",
+      "effect": {
+        "attack": 20
+      }
+    },
+    {
+      "id": "yindun",
+      "name": "银盾",
+      "type": "equipment",
+      "slot": "shield",
+      "effect": {
+        "defense": 20
+      }
+    },
+    {
+      "id": "qishijian",
+      "name": "骑士剑",
+      "type": "equipment",
+      "slot": "weapon",
+      "effect": {
+        "attack": 40
+      }
+    },
+    {
+      "id": "qishidun",
+      "name": "骑士盾",
+      "type": "equipment",
+      "slot": "shield",
+      "effect": {
+        "defense": 40
+      }
+    },
+    {
+      "id": "shengjian",
+      "name": "圣剑",
+      "type": "equipment",
+      "slot": "weapon",
+      "effect": {
+        "attack": 80
+      }
+    },
+    {
+      "id": "shengdun",
+      "name": "圣盾",
+      "type": "equipment",
+      "slot": "shield",
+      "effect": {
+        "defense": 80
+      }
+    },
+    {
+      "id": "shenshengjian",
+      "name": "神圣剑",
+      "type": "equipment",
+      "slot": "weapon",
+      "effect": {
+        "attack": 160
+      }
+    },
+    {
+      "id": "shenshengdun",
+      "name": "神圣盾",
+      "type": "equipment",
+      "slot": "shield",
+      "effect": {
+        "defense": 160
+      }
+    },
+    {
+      "id": "notepad",
+      "name": "怪物手册",
+      "type": "system",
+      "effect": {
+        "unlock": "monsterBook"
+      }
+    },
+    {
+      "id": "chuansong",
+      "name": "楼层传送器",
+      "type": "system",
+      "effect": {
+        "unlock": "floorTeleport"
+      }
+    },
+    {
+      "id": "luckycoins",
+      "name": "幸运金币",
+      "type": "special",
+      "effect": {
+        "goldMultiplier": 2
+      }
+    }
+  ]
+}

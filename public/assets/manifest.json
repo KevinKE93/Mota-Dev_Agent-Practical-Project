@@ -1,0 +1,1623 @@
+{
+  "schemaVersion": "1.0",
+  "tileSize": 48,
+  "audio": {
+    "battleHit": {
+      "category": "sfx",
+      "role": "combat-hit",
+      "synth": "hit",
+      "volume": 0.52
+    },
+    "reward": {
+      "category": "sfx",
+      "role": "reward-pickup",
+      "synth": "reward",
+      "volume": 0.42
+    },
+    "floorTransition": {
+      "category": "sfx",
+      "role": "floor-transition",
+      "synth": "floor",
+      "volume": 0.34
+    }
+  },
+  "images": {
+    "hero_idle_1": {
+      "path": "/assets/slices/hero_idle_1.png",
+      "category": "hero",
+      "role": "idle-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        38,
+        46
+      ]
+    },
+    "hero_idle_2": {
+      "path": "/assets/slices/hero_idle_2.png",
+      "category": "hero",
+      "role": "idle-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        38,
+        46
+      ]
+    },
+    "hero_idle_3": {
+      "path": "/assets/slices/hero_idle_3.png",
+      "category": "hero",
+      "role": "idle-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        38,
+        46
+      ]
+    },
+    "hero_idle_4": {
+      "path": "/assets/slices/hero_idle_4.png",
+      "category": "hero",
+      "role": "idle-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        38,
+        46
+      ]
+    },
+    "hero_walk_1": {
+      "path": "/assets/slices/hero_walk_1.png",
+      "category": "hero",
+      "role": "walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        40,
+        48
+      ]
+    },
+    "hero_walk_2": {
+      "path": "/assets/slices/hero_walk_2.png",
+      "category": "hero",
+      "role": "walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        40,
+        48
+      ]
+    },
+    "hero_walk_3": {
+      "path": "/assets/slices/hero_walk_3.png",
+      "category": "hero",
+      "role": "walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        40,
+        48
+      ]
+    },
+    "hero_walk_4": {
+      "path": "/assets/slices/hero_walk_4.png",
+      "category": "hero",
+      "role": "walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        40,
+        48
+      ]
+    },
+    "hero_down_1": {
+      "path": "/assets/generated/hero/hero-down-1.png",
+      "category": "hero",
+      "role": "down-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_down_2": {
+      "path": "/assets/generated/hero/hero-down-2.png",
+      "category": "hero",
+      "role": "down-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_down_3": {
+      "path": "/assets/generated/hero/hero-down-3.png",
+      "category": "hero",
+      "role": "down-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_down_4": {
+      "path": "/assets/generated/hero/hero-down-4.png",
+      "category": "hero",
+      "role": "down-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_left_1": {
+      "path": "/assets/generated/hero/hero-left-1.png",
+      "category": "hero",
+      "role": "left-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_left_2": {
+      "path": "/assets/generated/hero/hero-left-2.png",
+      "category": "hero",
+      "role": "left-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_left_3": {
+      "path": "/assets/generated/hero/hero-left-3.png",
+      "category": "hero",
+      "role": "left-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_left_4": {
+      "path": "/assets/generated/hero/hero-left-4.png",
+      "category": "hero",
+      "role": "left-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_right_1": {
+      "path": "/assets/generated/hero/hero-right-1.png",
+      "category": "hero",
+      "role": "right-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_right_2": {
+      "path": "/assets/generated/hero/hero-right-2.png",
+      "category": "hero",
+      "role": "right-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_right_3": {
+      "path": "/assets/generated/hero/hero-right-3.png",
+      "category": "hero",
+      "role": "right-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_right_4": {
+      "path": "/assets/generated/hero/hero-right-4.png",
+      "category": "hero",
+      "role": "right-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_up_1": {
+      "path": "/assets/generated/hero/hero-up-1.png",
+      "category": "hero",
+      "role": "up-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_up_2": {
+      "path": "/assets/generated/hero/hero-up-2.png",
+      "category": "hero",
+      "role": "up-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_up_3": {
+      "path": "/assets/generated/hero/hero-up-3.png",
+      "category": "hero",
+      "role": "up-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_up_4": {
+      "path": "/assets/generated/hero/hero-up-4.png",
+      "category": "hero",
+      "role": "up-walk-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "hero_attack_down_1": {
+      "path": "/assets/generated/hero/hero-attack-down-1.png",
+      "category": "hero",
+      "role": "down-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_down_2": {
+      "path": "/assets/generated/hero/hero-attack-down-2.png",
+      "category": "hero",
+      "role": "down-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_down_3": {
+      "path": "/assets/generated/hero/hero-attack-down-3.png",
+      "category": "hero",
+      "role": "down-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_down_4": {
+      "path": "/assets/generated/hero/hero-attack-down-4.png",
+      "category": "hero",
+      "role": "down-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_left_1": {
+      "path": "/assets/generated/hero/hero-attack-left-1.png",
+      "category": "hero",
+      "role": "left-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_left_2": {
+      "path": "/assets/generated/hero/hero-attack-left-2.png",
+      "category": "hero",
+      "role": "left-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_left_3": {
+      "path": "/assets/generated/hero/hero-attack-left-3.png",
+      "category": "hero",
+      "role": "left-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_left_4": {
+      "path": "/assets/generated/hero/hero-attack-left-4.png",
+      "category": "hero",
+      "role": "left-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_right_1": {
+      "path": "/assets/generated/hero/hero-attack-right-1.png",
+      "category": "hero",
+      "role": "right-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_right_2": {
+      "path": "/assets/generated/hero/hero-attack-right-2.png",
+      "category": "hero",
+      "role": "right-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_right_3": {
+      "path": "/assets/generated/hero/hero-attack-right-3.png",
+      "category": "hero",
+      "role": "right-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_right_4": {
+      "path": "/assets/generated/hero/hero-attack-right-4.png",
+      "category": "hero",
+      "role": "right-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_up_1": {
+      "path": "/assets/generated/hero/hero-attack-up-1.png",
+      "category": "hero",
+      "role": "up-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_up_2": {
+      "path": "/assets/generated/hero/hero-attack-up-2.png",
+      "category": "hero",
+      "role": "up-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_up_3": {
+      "path": "/assets/generated/hero/hero-attack-up-3.png",
+      "category": "hero",
+      "role": "up-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_up_4": {
+      "path": "/assets/generated/hero/hero-attack-up-4.png",
+      "category": "hero",
+      "role": "up-attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        52
+      ]
+    },
+    "hero_attack_1": {
+      "path": "/assets/slices/hero_attack_1.png",
+      "category": "hero",
+      "role": "attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        44,
+        48
+      ]
+    },
+    "hero_attack_2": {
+      "path": "/assets/slices/hero_attack_2.png",
+      "category": "hero",
+      "role": "attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        44,
+        48
+      ]
+    },
+    "hero_attack_3": {
+      "path": "/assets/slices/hero_attack_3.png",
+      "category": "hero",
+      "role": "attack-frame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        44,
+        48
+      ]
+    },
+    "monster01": {
+      "path": "/assets/slices/monster_green_slime.png",
+      "category": "monster",
+      "role": "green-slime",
+      "anchor": "bottom-center",
+      "displaySize": [
+        34,
+        42
+      ]
+    },
+    "monster02": {
+      "path": "/assets/generated/monsters/monster02-red-slime.png",
+      "category": "monster",
+      "role": "red-slime",
+      "anchor": "bottom-center",
+      "displaySize": [
+        36,
+        42
+      ]
+    },
+    "monster03": {
+      "path": "/assets/slices/monster_bat.png",
+      "category": "monster",
+      "role": "bat",
+      "anchor": "bottom-center",
+      "displaySize": [
+        36,
+        42
+      ]
+    },
+    "monster05": {
+      "path": "/assets/slices/monster_skeleton.png",
+      "category": "monster",
+      "role": "skeleton",
+      "anchor": "bottom-center",
+      "displaySize": [
+        34,
+        42
+      ]
+    },
+    "monster06": {
+      "path": "/assets/generated/monsters/monster06-skeleton-soldier.png",
+      "category": "monster",
+      "role": "skeleton-soldier",
+      "anchor": "bottom-center",
+      "displaySize": [
+        38,
+        46
+      ]
+    },
+    "monster07": {
+      "path": "/assets/generated/monsters/monster07-armored-guard.png",
+      "category": "monster",
+      "role": "armored-guard",
+      "anchor": "bottom-center",
+      "displaySize": [
+        40,
+        48
+      ]
+    },
+    "monster08": {
+      "path": "/assets/slices/monster_boss_captain.png",
+      "category": "monster",
+      "role": "skeleton-captain",
+      "anchor": "bottom-center",
+      "displaySize": [
+        40,
+        48
+      ]
+    },
+    "cover_tower": {
+      "path": "/assets/slices/cover_tower.png",
+      "category": "menu",
+      "role": "background",
+      "anchor": "center",
+      "displaySize": [
+        560,
+        430
+      ]
+    },
+    "cover_hero_panel": {
+      "path": "/assets/slices/cover_hero_panel.png",
+      "category": "menu",
+      "role": "hero-panel",
+      "anchor": "center",
+      "displaySize": [
+        196,
+        158
+      ]
+    },
+    "tile-wall": {
+      "path": "/assets/generated/runtime/tile-wall.png",
+      "category": "tile",
+      "role": "stone-wall",
+      "anchor": "center",
+      "displaySize": [
+        46,
+        46
+      ]
+    },
+    "tile-floor": {
+      "path": "/assets/generated/runtime/tile-floor.png",
+      "category": "tile",
+      "role": "stone-floor",
+      "anchor": "center",
+      "displaySize": [
+        46,
+        46
+      ]
+    },
+    "door-yellow": {
+      "path": "/assets/generated/runtime/door-yellow.png",
+      "category": "tile",
+      "role": "yellow-door",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        46
+      ]
+    },
+    "door-blue": {
+      "path": "/assets/generated/runtime/door-blue.png",
+      "category": "tile",
+      "role": "blue-door",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        46
+      ]
+    },
+    "door-red": {
+      "path": "/assets/generated/runtime/door-red.png",
+      "category": "tile",
+      "role": "red-door",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        46
+      ]
+    },
+    "stair-up": {
+      "path": "/assets/generated/runtime/stair-up.png",
+      "category": "tile",
+      "role": "up-stair",
+      "anchor": "center",
+      "displaySize": [
+        44,
+        40
+      ]
+    },
+    "stair-down": {
+      "path": "/assets/generated/runtime/stair-down.png",
+      "category": "tile",
+      "role": "down-stair",
+      "anchor": "center",
+      "displaySize": [
+        44,
+        40
+      ]
+    },
+    "key-yellow": {
+      "path": "/assets/generated/runtime/key-yellow.png",
+      "category": "item",
+      "role": "yellow-key",
+      "anchor": "center",
+      "displaySize": [
+        30,
+        40
+      ]
+    },
+    "key-red": {
+      "path": "/assets/generated/runtime/key-red.png",
+      "category": "item",
+      "role": "red-key",
+      "anchor": "center",
+      "displaySize": [
+        30,
+        40
+      ]
+    },
+    "potion-red": {
+      "path": "/assets/generated/runtime/potion-red.png",
+      "category": "item",
+      "role": "health-potion",
+      "anchor": "center",
+      "displaySize": [
+        32,
+        40
+      ]
+    },
+    "gem-attack": {
+      "path": "/assets/generated/runtime/gem-attack.png",
+      "category": "item",
+      "role": "attack-gem",
+      "anchor": "center",
+      "displaySize": [
+        34,
+        40
+      ]
+    },
+    "gem-defense": {
+      "path": "/assets/generated/runtime/gem-defense.png",
+      "category": "item",
+      "role": "defense-gem",
+      "anchor": "center",
+      "displaySize": [
+        32,
+        42
+      ]
+    },
+    "sword-iron": {
+      "path": "/assets/generated/runtime/sword-iron.png",
+      "category": "item",
+      "role": "iron-sword",
+      "anchor": "center",
+      "displaySize": [
+        40,
+        40
+      ]
+    },
+    "book-monster": {
+      "path": "/assets/generated/runtime/book-monster.png",
+      "category": "item",
+      "role": "monster-book",
+      "anchor": "center",
+      "displaySize": [
+        38,
+        40
+      ]
+    },
+    "gold-pile": {
+      "path": "/assets/generated/runtime/gold-pile.png",
+      "category": "item",
+      "role": "gold-pile",
+      "anchor": "center",
+      "displaySize": [
+        42,
+        34
+      ]
+    },
+    "altar-purple": {
+      "path": "/assets/generated/runtime/altar-purple.png",
+      "category": "tile",
+      "role": "purple-flame-altar",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        46
+      ]
+    },
+    "shopkeeper-counter": {
+      "path": "/assets/generated/npc/shopkeeper-counter.png",
+      "category": "npc",
+      "role": "shopkeeper-counter",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        44
+      ]
+    },
+    "healer-fairy": {
+      "path": "/assets/generated/npc/healer-fairy.png",
+      "category": "npc",
+      "role": "healer-fairy",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        46
+      ]
+    },
+    "thief-helper": {
+      "path": "/assets/generated/npc/thief-helper.png",
+      "category": "npc",
+      "role": "thief-helper",
+      "anchor": "bottom-center",
+      "displaySize": [
+        40,
+        46
+      ]
+    },
+    "shop-sign": {
+      "path": "/assets/generated/npc/shop-sign.png",
+      "category": "npc",
+      "role": "shop-sign",
+      "anchor": "bottom-center",
+      "displaySize": [
+        38,
+        44
+      ]
+    },
+    "monster04": {
+      "path": "/assets/generated/monsters/monster04-novice-mage.png",
+      "category": "monster",
+      "role": "novice-mage",
+      "anchor": "bottom-center",
+      "displaySize": [
+        38,
+        46
+      ]
+    },
+    "monster09": {
+      "path": "/assets/generated/monsters/monster09-large-slime.png",
+      "category": "monster",
+      "role": "large-slime",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        48
+      ]
+    },
+    "monster10": {
+      "path": "/assets/generated/monsters/monster10-large-bat.png",
+      "category": "monster",
+      "role": "large-bat",
+      "anchor": "bottom-center",
+      "displaySize": [
+        46,
+        44
+      ]
+    },
+    "monster11": {
+      "path": "/assets/generated/monsters/monster11-advanced-mage.png",
+      "category": "monster",
+      "role": "advanced-mage",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        48
+      ]
+    },
+    "monster12": {
+      "path": "/assets/generated/monsters/monster12-orc.png",
+      "category": "monster",
+      "role": "orc",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        48
+      ]
+    },
+    "monster13": {
+      "path": "/assets/generated/monsters/monster13-orc-warrior.png",
+      "category": "monster",
+      "role": "orc-warrior",
+      "anchor": "bottom-center",
+      "displaySize": [
+        43,
+        49
+      ]
+    },
+    "monster14": {
+      "path": "/assets/generated/monsters/monster14-stone-golem.png",
+      "category": "monster",
+      "role": "stone-golem",
+      "anchor": "bottom-center",
+      "displaySize": [
+        44,
+        50
+      ]
+    },
+    "monster15": {
+      "path": "/assets/generated/monsters/monster15-octopus-boss.png",
+      "category": "monster",
+      "role": "octopus-boss",
+      "anchor": "bottom-center",
+      "displaySize": [
+        48,
+        48
+      ]
+    },
+    "monster21": {
+      "path": "/assets/generated/monsters/monster21-mid-guard.png",
+      "category": "monster",
+      "role": "mid-guard",
+      "anchor": "bottom-center",
+      "displaySize": [
+        42,
+        50
+      ]
+    },
+    "monsterDragonHead": {
+      "path": "/assets/generated/monsters/monster-dragon-head.png",
+      "category": "monster",
+      "role": "dragon-head",
+      "anchor": "bottom-center",
+      "displaySize": [
+        48,
+        44
+      ]
+    },
+    "monsterDemonLord": {
+      "path": "/assets/generated/monsters/monster-demon-lord.png",
+      "category": "monster",
+      "role": "demon-lord",
+      "anchor": "bottom-center",
+      "displaySize": [
+        44,
+        48
+      ]
+    },
+    "monsterMimicChest": {
+      "path": "/assets/generated/monsters/monster-mimic-chest.png",
+      "category": "monster",
+      "role": "mimic-chest",
+      "anchor": "bottom-center",
+      "displaySize": [
+        44,
+        42
+      ]
+    },
+    "monsterGhostFlame": {
+      "path": "/assets/generated/monsters/monster-ghost-flame.png",
+      "category": "monster",
+      "role": "ghost-flame",
+      "anchor": "bottom-center",
+      "displaySize": [
+        38,
+        46
+      ]
+    },
+    "battle_hit_1": {
+      "path": "/assets/generated/fx/battle-hit-1.png",
+      "category": "fx",
+      "role": "battle-hit-frame",
+      "anchor": "center",
+      "displaySize": [
+        86,
+        86
+      ]
+    },
+    "battle_hit_2": {
+      "path": "/assets/generated/fx/battle-hit-2.png",
+      "category": "fx",
+      "role": "battle-hit-frame",
+      "anchor": "center",
+      "displaySize": [
+        86,
+        86
+      ]
+    },
+    "battle_hit_3": {
+      "path": "/assets/generated/fx/battle-hit-3.png",
+      "category": "fx",
+      "role": "battle-hit-frame",
+      "anchor": "center",
+      "displaySize": [
+        86,
+        86
+      ]
+    },
+    "battle_hit_4": {
+      "path": "/assets/generated/fx/battle-hit-4.png",
+      "category": "fx",
+      "role": "battle-hit-frame",
+      "anchor": "center",
+      "displaySize": [
+        86,
+        86
+      ]
+    },
+    "battle_hit_5": {
+      "path": "/assets/generated/fx/battle-hit-5.png",
+      "category": "fx",
+      "role": "battle-hit-frame",
+      "anchor": "center",
+      "displaySize": [
+        86,
+        86
+      ]
+    },
+    "battle_hit_6": {
+      "path": "/assets/generated/fx/battle-hit-6.png",
+      "category": "fx",
+      "role": "battle-hit-frame",
+      "anchor": "center",
+      "displaySize": [
+        86,
+        86
+      ]
+    },
+    "monster_defeat_1": {
+      "path": "/assets/generated/fx/monster-defeat-1.png",
+      "category": "fx",
+      "role": "monster-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster_defeat_2": {
+      "path": "/assets/generated/fx/monster-defeat-2.png",
+      "category": "fx",
+      "role": "monster-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster_defeat_3": {
+      "path": "/assets/generated/fx/monster-defeat-3.png",
+      "category": "fx",
+      "role": "monster-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster_defeat_4": {
+      "path": "/assets/generated/fx/monster-defeat-4.png",
+      "category": "fx",
+      "role": "monster-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster_defeat_5": {
+      "path": "/assets/generated/fx/monster-defeat-5.png",
+      "category": "fx",
+      "role": "monster-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster_defeat_6": {
+      "path": "/assets/generated/fx/monster-defeat-6.png",
+      "category": "fx",
+      "role": "monster-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster02_defeat_1": {
+      "path": "/assets/generated/fx/monster-specific/monster02-defeat-1.png",
+      "category": "fx",
+      "role": "red-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster02_defeat_2": {
+      "path": "/assets/generated/fx/monster-specific/monster02-defeat-2.png",
+      "category": "fx",
+      "role": "red-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster02_defeat_3": {
+      "path": "/assets/generated/fx/monster-specific/monster02-defeat-3.png",
+      "category": "fx",
+      "role": "red-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster02_defeat_4": {
+      "path": "/assets/generated/fx/monster-specific/monster02-defeat-4.png",
+      "category": "fx",
+      "role": "red-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster02_defeat_5": {
+      "path": "/assets/generated/fx/monster-specific/monster02-defeat-5.png",
+      "category": "fx",
+      "role": "red-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster02_defeat_6": {
+      "path": "/assets/generated/fx/monster-specific/monster02-defeat-6.png",
+      "category": "fx",
+      "role": "red-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster03_defeat_1": {
+      "path": "/assets/generated/fx/monster-specific/monster03-defeat-1.png",
+      "category": "fx",
+      "role": "bat-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster03_defeat_2": {
+      "path": "/assets/generated/fx/monster-specific/monster03-defeat-2.png",
+      "category": "fx",
+      "role": "bat-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster03_defeat_3": {
+      "path": "/assets/generated/fx/monster-specific/monster03-defeat-3.png",
+      "category": "fx",
+      "role": "bat-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster03_defeat_4": {
+      "path": "/assets/generated/fx/monster-specific/monster03-defeat-4.png",
+      "category": "fx",
+      "role": "bat-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster03_defeat_5": {
+      "path": "/assets/generated/fx/monster-specific/monster03-defeat-5.png",
+      "category": "fx",
+      "role": "bat-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster03_defeat_6": {
+      "path": "/assets/generated/fx/monster-specific/monster03-defeat-6.png",
+      "category": "fx",
+      "role": "bat-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster01_defeat_1": {
+      "path": "/assets/generated/fx/monster-specific/monster01-defeat-1.png",
+      "category": "fx",
+      "role": "green-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster01_defeat_2": {
+      "path": "/assets/generated/fx/monster-specific/monster01-defeat-2.png",
+      "category": "fx",
+      "role": "green-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster01_defeat_3": {
+      "path": "/assets/generated/fx/monster-specific/monster01-defeat-3.png",
+      "category": "fx",
+      "role": "green-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster01_defeat_4": {
+      "path": "/assets/generated/fx/monster-specific/monster01-defeat-4.png",
+      "category": "fx",
+      "role": "green-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster01_defeat_5": {
+      "path": "/assets/generated/fx/monster-specific/monster01-defeat-5.png",
+      "category": "fx",
+      "role": "green-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster01_defeat_6": {
+      "path": "/assets/generated/fx/monster-specific/monster01-defeat-6.png",
+      "category": "fx",
+      "role": "green-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster09_defeat_1": {
+      "path": "/assets/generated/fx/monster-specific/monster09-defeat-1.png",
+      "category": "fx",
+      "role": "large-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster09_defeat_2": {
+      "path": "/assets/generated/fx/monster-specific/monster09-defeat-2.png",
+      "category": "fx",
+      "role": "large-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster09_defeat_3": {
+      "path": "/assets/generated/fx/monster-specific/monster09-defeat-3.png",
+      "category": "fx",
+      "role": "large-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster09_defeat_4": {
+      "path": "/assets/generated/fx/monster-specific/monster09-defeat-4.png",
+      "category": "fx",
+      "role": "large-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster09_defeat_5": {
+      "path": "/assets/generated/fx/monster-specific/monster09-defeat-5.png",
+      "category": "fx",
+      "role": "large-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    },
+    "monster09_defeat_6": {
+      "path": "/assets/generated/fx/monster-specific/monster09-defeat-6.png",
+      "category": "fx",
+      "role": "large-slime-defeat-frame",
+      "anchor": "center",
+      "displaySize": [
+        82,
+        82
+      ]
+    }
+  },
+  "animations": {
+    "hero-idle-down": {
+      "frames": [
+        "hero_down_1",
+        "hero_down_3"
+      ],
+      "frameRate": 4,
+      "repeat": -1
+    },
+    "hero-idle-up": {
+      "frames": [
+        "hero_up_1",
+        "hero_up_3"
+      ],
+      "frameRate": 4,
+      "repeat": -1
+    },
+    "hero-idle-left": {
+      "frames": [
+        "hero_left_1",
+        "hero_left_3"
+      ],
+      "frameRate": 4,
+      "repeat": -1
+    },
+    "hero-idle-right": {
+      "frames": [
+        "hero_right_1",
+        "hero_right_3"
+      ],
+      "frameRate": 4,
+      "repeat": -1
+    },
+    "hero-walk-down": {
+      "frames": [
+        "hero_down_1",
+        "hero_down_2",
+        "hero_down_3",
+        "hero_down_4"
+      ],
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "hero-walk-up": {
+      "frames": [
+        "hero_up_1",
+        "hero_up_2",
+        "hero_up_3",
+        "hero_up_4"
+      ],
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "hero-walk-left": {
+      "frames": [
+        "hero_left_1",
+        "hero_left_2",
+        "hero_left_3",
+        "hero_left_4"
+      ],
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "hero-walk-right": {
+      "frames": [
+        "hero_right_1",
+        "hero_right_2",
+        "hero_right_3",
+        "hero_right_4"
+      ],
+      "frameRate": 10,
+      "repeat": 0
+    },
+    "hero-attack-down": {
+      "frames": [
+        "hero_attack_down_1",
+        "hero_attack_down_2",
+        "hero_attack_down_3",
+        "hero_attack_down_4"
+      ],
+      "frameRate": 12,
+      "repeat": 0
+    },
+    "hero-attack-up": {
+      "frames": [
+        "hero_attack_up_1",
+        "hero_attack_up_2",
+        "hero_attack_up_3",
+        "hero_attack_up_4"
+      ],
+      "frameRate": 12,
+      "repeat": 0
+    },
+    "hero-attack-left": {
+      "frames": [
+        "hero_attack_left_1",
+        "hero_attack_left_2",
+        "hero_attack_left_3",
+        "hero_attack_left_4"
+      ],
+      "frameRate": 12,
+      "repeat": 0
+    },
+    "hero-attack-right": {
+      "frames": [
+        "hero_attack_right_1",
+        "hero_attack_right_2",
+        "hero_attack_right_3",
+        "hero_attack_right_4"
+      ],
+      "frameRate": 12,
+      "repeat": 0
+    },
+    "battle-hit-burst": {
+      "frames": [
+        "battle_hit_1",
+        "battle_hit_2",
+        "battle_hit_3",
+        "battle_hit_4",
+        "battle_hit_5",
+        "battle_hit_6"
+      ],
+      "frameRate": 12,
+      "repeat": 0
+    },
+    "monster-defeat-burst": {
+      "frames": [
+        "monster_defeat_1",
+        "monster_defeat_2",
+        "monster_defeat_3",
+        "monster_defeat_4",
+        "monster_defeat_5",
+        "monster_defeat_6"
+      ],
+      "frameRate": 11,
+      "repeat": 0
+    },
+    "monster-defeat-monster02": {
+      "frames": [
+        "monster02_defeat_1",
+        "monster02_defeat_2",
+        "monster02_defeat_3",
+        "monster02_defeat_4",
+        "monster02_defeat_5",
+        "monster02_defeat_6"
+      ],
+      "frameRate": 12,
+      "repeat": 0
+    },
+    "monster-defeat-monster03": {
+      "frames": [
+        "monster03_defeat_1",
+        "monster03_defeat_2",
+        "monster03_defeat_3",
+        "monster03_defeat_4",
+        "monster03_defeat_5",
+        "monster03_defeat_6"
+      ],
+      "frameRate": 12,
+      "repeat": 0
+    },
+    "monster-defeat-monster01": {
+      "frames": [
+        "monster01_defeat_1",
+        "monster01_defeat_2",
+        "monster01_defeat_3",
+        "monster01_defeat_4",
+        "monster01_defeat_5",
+        "monster01_defeat_6"
+      ],
+      "frameRate": 12,
+      "repeat": 0
+    },
+    "monster-defeat-monster09": {
+      "frames": [
+        "monster09_defeat_1",
+        "monster09_defeat_2",
+        "monster09_defeat_3",
+        "monster09_defeat_4",
+        "monster09_defeat_5",
+        "monster09_defeat_6"
+      ],
+      "frameRate": 12,
+      "repeat": 0
+    }
+  },
+  "monsterDefeatAnimations": {
+    "monster01": "monster-defeat-monster01",
+    "monster02": "monster-defeat-monster02",
+    "monster03": "monster-defeat-monster03",
+    "monster09": "monster-defeat-monster09"
+  },
+  "entitySprites": {
+    "monster01": "monster01",
+    "monster02": "monster02",
+    "monster03": "monster03",
+    "monster05": "monster05",
+    "monster06": "monster06",
+    "monster07": "monster07",
+    "monster08": "monster08",
+    "monster04": "monster04",
+    "monster09": "monster09",
+    "monster10": "monster10",
+    "monster11": "monster11",
+    "monster12": "monster12",
+    "monster13": "monster13",
+    "monster14": "monster14",
+    "monster15": "monster15",
+    "monster21": "monster21",
+    "monster22": "monsterDragonHead"
+  },
+  "tilePresentation": {
+    "#": {
+      "kind": "image",
+      "imageKey": "tile-wall"
+    },
+    ".": {
+      "kind": "procedural",
+      "label": "floor"
+    },
+    "@": {
+      "kind": "procedural",
+      "label": "heroStart"
+    },
+    "Y": {
+      "kind": "image",
+      "imageKey": "door-yellow"
+    },
+    "B": {
+      "kind": "image",
+      "imageKey": "door-blue"
+    },
+    "R": {
+      "kind": "image",
+      "imageKey": "door-red"
+    },
+    "U": {
+      "kind": "image",
+      "imageKey": "stair-up"
+    },
+    "N": {
+      "kind": "image",
+      "imageKey": "stair-down"
+    },
+    "K": {
+      "kind": "image",
+      "imageKey": "key-yellow"
+    },
+    "Q": {
+      "kind": "image",
+      "imageKey": "key-red"
+    },
+    "P": {
+      "kind": "image",
+      "imageKey": "potion-red"
+    },
+    "G": {
+      "kind": "image",
+      "imageKey": "gem-attack"
+    },
+    "D": {
+      "kind": "image",
+      "imageKey": "gem-defense"
+    },
+    "C": {
+      "kind": "image",
+      "imageKey": "sword-iron"
+    },
+    "V": {
+      "kind": "image",
+      "imageKey": "book-monster"
+    },
+    "$": {
+      "kind": "image",
+      "imageKey": "shopkeeper-counter"
+    },
+    "?": {
+      "kind": "image",
+      "imageKey": "thief-helper"
+    },
+    "&": {
+      "kind": "image",
+      "imageKey": "healer-fairy"
+    },
+    "S": {
+      "kind": "entity",
+      "entityId": "monster01"
+    },
+    "A": {
+      "kind": "entity",
+      "entityId": "monster03"
+    },
+    "M": {
+      "kind": "entity",
+      "entityId": "monster05"
+    },
+    "W": {
+      "kind": "entity",
+      "entityId": "monster08"
+    },
+    "L": {
+      "kind": "entity",
+      "entityId": "monster02"
+    },
+    "F": {
+      "kind": "entity",
+      "entityId": "monster04"
+    },
+    "T": {
+      "kind": "entity",
+      "entityId": "monster09"
+    },
+    "E": {
+      "kind": "entity",
+      "entityId": "monster10"
+    },
+    "H": {
+      "kind": "entity",
+      "entityId": "monster11"
+    },
+    "O": {
+      "kind": "entity",
+      "entityId": "monster12"
+    },
+    "X": {
+      "kind": "entity",
+      "entityId": "monster13"
+    },
+    "Z": {
+      "kind": "entity",
+      "entityId": "monster14"
+    },
+    "J": {
+      "kind": "entity",
+      "entityId": "monster15"
+    },
+    "I": {
+      "kind": "entity",
+      "entityId": "monster21"
+    },
+    "d": {
+      "kind": "entity",
+      "entityId": "monster22"
+    }
+  },
+  "generatedSources": {
+    "mota-runtime-atlas": {
+      "tool": "imagegen built-in plus chroma-key removal",
+      "sourcePath": "/assets/generated/mota-runtime-atlas.png",
+      "promptSummary": "4x4 dark fantasy pixel-art Magic Tower runtime sprite sheet on chroma-key background, no text or labels"
+    },
+    "mota-monster-atlas": {
+      "tool": "imagegen built-in plus chroma-key removal",
+      "sourcePath": "/assets/generated/mota-monster-atlas.png",
+      "promptSummary": "4x4 dark fantasy pixel-art Magic Tower monster sprite sheet on chroma-key background, no text or labels"
+    },
+    "mota-npc-shop-atlas": {
+      "tool": "imagegen built-in plus chroma-key removal",
+      "sourcePath": "/assets/generated/mota-npc-shop-atlas.png",
+      "promptSummary": "2x2 dark fantasy pixel-art NPC and shop sprite sheet on chroma-key background, no text or labels"
+    },
+    "mota-hero-directional-atlas": {
+      "tool": "imagegen built-in plus chroma-key removal",
+      "sourcePath": "/assets/generated/mota-hero-directional-atlas.png",
+      "promptSummary": "4x4 dark fantasy pixel-art Mota hero directional walk sprite sheet on chroma-key background, rows down/left/right/up"
+    },
+    "mota-hero-directional-attack-atlas": {
+      "tool": "imagegen built-in plus chroma-key removal",
+      "sourcePath": "/assets/generated/mota-hero-directional-attack-atlas.png",
+      "promptSummary": "4x4 dark fantasy pixel-art Mota hero directional attack sprite sheet on chroma-key background, rows down/left/right/up"
+    },
+    "mota-battle-hit-fx-atlas": {
+      "tool": "imagegen built-in plus chroma-key removal",
+      "sourcePath": "/assets/generated/mota-battle-hit-fx-atlas.png",
+      "promptSummary": "1x6 golden-white pixel-art battle hit FX sprite sheet on chroma-key background"
+    },
+    "mota-monster-defeat-fx-atlas": {
+      "tool": "imagegen built-in plus chroma-key removal",
+      "sourcePath": "/assets/generated/mota-monster-defeat-fx-atlas.png",
+      "promptSummary": "1x6 purple pixel-art monster defeat dissolve FX sprite sheet on chroma-key background"
+    },
+    "mota-monster-specific-defeat-atlas": {
+      "tool": "imagegen built-in plus chroma-key removal",
+      "sourcePath": "/assets/generated/mota-monster-specific-defeat-atlas.png",
+      "promptSummary": "4x6 dark fantasy pixel-art monster-specific defeat sprite sheet for red slime, bat, green slime, and large slime on chroma-key background"
+    }
+  }
+}

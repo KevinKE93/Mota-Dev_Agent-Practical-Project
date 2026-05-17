@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "0.1",
+  "tileSize": 32,
+  "mapSize": {
+    "cols": 11,
+    "rows": 11
+  },
+  "tileLegend": {
+    "#": "wall",
+    ".": "floor",
+    "@": "heroStart",
+    "Y": "yellowDoor",
+    "B": "blueDoor",
+    "R": "redDoor",
+    "U": "upStair",
+    "N": "downStair",
+    "K": "yellowKey",
+    "P": "potion",
+    "G": "gem",
+    "S": "monster:monster01"
+  },
+  "sampleFloor": {
+    "id": "F01_SAMPLE",
+    "name": "试作楼层",
+    "up": "F02_SAMPLE",
+    "down": null,
+    "heroStart": {
+      "x": 5,
+      "y": 9
+    },
+    "grid": [
+      "###########",
+      "#..K..S..N#",
+      "#.###.###.#",
+      "#P..S..G..#",
+      "###Y###.###",
+      "#.....@..C#",
+      "#.###.###.#",
+      "#..G..S..P#",
+      "#.###B###.#",
+      "#U..K..R..#",
+      "###########"
+    ],
+    "events": [
+      {
+        "trigger": "afterBattle",
+        "target": "monster01",
+        "action": "openDoor",
+        "payload": {
+          "doorId": "tutorialGate"
+        }
+      }
+    ]
+  }
+}
