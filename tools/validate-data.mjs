@@ -69,8 +69,10 @@ const itemIds = new Set(items.items.map((item) => item.id));
 const itemById = new Map(items.items.map((item) => [item.id, item]));
 const shopIds = new Set(shops.shops.map((shop) => shop.id));
 const shopById = new Map(shops.shops.map((shop) => [shop.id, shop]));
+const shopOptionIds = new Set((shops.shops ?? []).flatMap((shop) => (shop.options ?? []).map((option) => option.id)));
 const npcIds = new Set(npcs.npcs.map((npc) => npc.id));
 const npcById = new Map(npcs.npcs.map((npc) => [npc.id, npc]));
+const runtimeEventIds = new Set((storyEvents.runtimeEvents ?? []).map((event) => event.id));
 const imageIds = new Set(Object.keys(manifest.images));
 const audioIds = new Set(Object.keys(manifest.audio ?? {}));
 const structuralTiles = new Set(['#', '.', '@', 'Y', 'B', 'R', 'U', 'N']);
@@ -85,6 +87,7 @@ const directionDelta = {
   left: { x: -1, y: 0 },
   right: { x: 1, y: 0 }
 };
+const routeDirections = new Set(Object.keys(directionDelta));
 
 const tileDoors = {
   Y: 'yellow',
@@ -839,7 +842,243 @@ function assertRoute(route, state) {
   }
 }
 
+function isPlainObject(value) {
+  return Boolean(value && typeof value === 'object' && !Array.isArray(value));
+}
+
+function assertRoutePosition(value, label) {
+  if (!isPlainObject(value) || !Number.isInteger(value.x) || !Number.isInteger(value.y)) {
+    fail(`${label}: must include integer x/y`);
+    return false;
+  }
+  return true;
+}
+
+function assertRouteMapPosition(floorId, position, label) {
+  if (!assertRoutePosition(position, label)) return false;
+  if (!floorIds.has(floorId)) return false;
+
+  const floor = floorById.get(floorId);
+  const tile = tileAt(floor.grid, position.x, position.y);
+  if (!tile) {
+    fail(`${label}: position is outside map`);
+    return false;
+  }
+  return true;
+}
+
+function assertRouteFloorPosition(floorId, position, label) {
+  if (!assertRouteMapPosition(floorId, position, label)) return;
+
+  const floor = floorById.get(floorId);
+  const tile = tileAt(floor.grid, position.x, position.y);
+  if (tile === '#') {
+    fail(`${label}: position cannot be inside a wall`);
+  }
+}
+
+function assertStringArray(value, label, validateEntry) {
+  if (value === undefined) return;
+  if (!Array.isArray(value)) {
+    fail(`${label}: must be an array`);
+    return;
+  }
+
+  value.forEach((entry, index) => {
+    if (typeof entry !== 'string' || !entry.trim()) {
+      fail(`${label}[${index}]: must be a non-empty string`);
+      return;
+    }
+    validateEntry?.(entry, index);
+  });
+}
+
+function validateRouteExpectation(expect, context, defaultFloorId) {
+  if (expect === undefined) return;
+  if (!isPlainObject(expect)) {
+    fail(`${context}: expect must be an object when present`);
+    return;
+  }
+
+  const expectedFloor = expect.floor ?? defaultFloorId;
+  if (expect.floor && !floorIds.has(expect.floor)) fail(`${context}.floor: floor ${expect.floor} does not exist`);
+  if (expect.position) {
+    if (expectedFloor) {
+      assertRouteFloorPosition(expectedFloor, expect.position, `${context}.position`);
+    } else {
+      assertRoutePosition(expect.position, `${context}.position`);
+    }
+  }
+
+  for (const stat of ['hp', 'maxHp', 'attack', 'defense', 'gold', 'exp', 'minHp']) {
+    if (Object.hasOwn(expect, stat)) assertNonNegativeNumber(expect[stat], `${context}.${stat}`);
+  }
+
+  if (expect.keys !== undefined) {
+    if (!isPlainObject(expect.keys)) {
+      fail(`${context}.keys: must be an object`);
+    } else {
+      for (const [color, value] of Object.entries(expect.keys)) {
+        if (!storyKeyColors.has(color)) {
+          fail(`${context}.keys.${color}: color is unsupported`);
+        } else if (!Number.isInteger(value) || value < 0) {
+          fail(`${context}.keys.${color}: must be a non-negative integer`);
+        }
+      }
+    }
+  }
+
+  assertStringArray(expect.seenEvents, `${context}.seenEvents`, (eventId) => {
+    if (!runtimeEventIds.has(eventId)) fail(`${context}.seenEvents: event ${eventId} does not exist`);
+  });
+  assertStringArray(expect.unlocks, `${context}.unlocks`);
+  assertStringArray(expect.storyLogIncludes, `${context}.storyLogIncludes`);
+
+  if (expect.tiles !== undefined) {
+    if (!Array.isArray(expect.tiles)) {
+      fail(`${context}.tiles: must be an array`);
+    } else {
+      expect.tiles.forEach((expectedTile, index) => {
+        const tileContext = `${context}.tiles[${index}]`;
+        if (!isPlainObject(expectedTile)) {
+          fail(`${tileContext}: must be an object`);
+          return;
+        }
+
+        const floorId = expectedTile.floor ?? expectedFloor;
+        if (floorId && !floorIds.has(floorId)) fail(`${tileContext}.floor: floor ${floorId} does not exist`);
+        if (floorId) {
+          assertRouteMapPosition(floorId, expectedTile.position, `${tileContext}.position`);
+        } else {
+          assertRoutePosition(expectedTile.position, `${tileContext}.position`);
+        }
+        if (!floors.tileLegend[expectedTile.tile]) fail(`${tileContext}.tile: tile "${expectedTile.tile}" is missing from tileLegend`);
+      });
+    }
+  }
+
+  if (expect.lastBattle && !monsters.monsters.some((monster) => monster.name === expect.lastBattle)) {
+    fail(`${context}.lastBattle: monster name ${expect.lastBattle} does not exist`);
+  }
+  if (expect.activeNpc && !npcIds.has(expect.activeNpc)) fail(`${context}.activeNpc: npc ${expect.activeNpc} does not exist`);
+  if (expect.activeShop && !shopIds.has(expect.activeShop)) fail(`${context}.activeShop: shop ${expect.activeShop} does not exist`);
+  if (expect.messageIncludes !== undefined && typeof expect.messageIncludes !== 'string') {
+    fail(`${context}.messageIncludes: must be a string`);
+  }
+}
+
+function validateRouteStart(route) {
+  if (route.start === 'initial') return;
+
+  const context = `route ${route.id} start`;
+  if (!isPlainObject(route.start)) {
+    fail(`${context}: must be "initial" or an object start`);
+    return;
+  }
+
+  if (!floorIds.has(route.start.floor)) {
+    fail(`${context}.floor: floor ${route.start.floor} does not exist`);
+  } else {
+    assertRouteFloorPosition(route.start.floor, route.start.position, `${context}.position`);
+  }
+
+  for (const stat of ['hp', 'maxHp', 'attack', 'defense', 'gold', 'exp']) {
+    assertNonNegativeNumber(route.start[stat], `${context}.${stat}`);
+  }
+  if (Number.isFinite(route.start.hp) && Number.isFinite(route.start.maxHp) && route.start.hp > route.start.maxHp) {
+    fail(`${context}: hp cannot exceed maxHp`);
+  }
+
+  if (!isPlainObject(route.start.keys)) {
+    fail(`${context}.keys: must be an object`);
+  } else {
+    for (const color of storyKeyColors) {
+      if (!Number.isInteger(route.start.keys[color]) || route.start.keys[color] < 0) {
+        fail(`${context}.keys.${color}: must be a non-negative integer`);
+      }
+    }
+  }
+
+  if (!isPlainObject(route.start.equipment)
+    || typeof route.start.equipment.weapon !== 'string'
+    || typeof route.start.equipment.shield !== 'string') {
+    fail(`${context}.equipment: weapon and shield are required`);
+  }
+  if (route.start.direction && !routeDirections.has(route.start.direction)) {
+    fail(`${context}.direction: ${route.start.direction} is unsupported`);
+  }
+
+  assertStringArray(route.start.unlocks, `${context}.unlocks`);
+  assertStringArray(route.start.seenEvents, `${context}.seenEvents`, (eventId) => {
+    if (!runtimeEventIds.has(eventId)) fail(`${context}.seenEvents: event ${eventId} does not exist`);
+  });
+  if (route.start.storyLog !== undefined && !Array.isArray(route.start.storyLog)) {
+    fail(`${context}.storyLog: must be an array`);
+  }
+}
+
+function validateRouteShape(route) {
+  const context = `route ${route.id}`;
+  if (typeof route.description !== 'string' || !route.description.trim()) fail(`${context}: description is required`);
+  validateRouteStart(route);
+
+  if (!Array.isArray(route.steps)) {
+    fail(`${context}: steps must be an array`);
+  } else if (route.steps.length === 0) {
+    fail(`${context}: steps must include at least one step`);
+  } else {
+    route.steps.forEach((step, index) => {
+      const stepContext = `${context} step ${index + 1}`;
+      if (typeof step === 'string') {
+        if (!routeDirections.has(step)) fail(`${stepContext}: direction ${step} is unsupported`);
+        return;
+      }
+
+      if (!isPlainObject(step)) {
+        fail(`${stepContext}: must be a direction string or supported action object`);
+        return;
+      }
+
+      const unsupportedKeys = Object.keys(step).filter((key) => key !== 'buy');
+      if (unsupportedKeys.length) fail(`${stepContext}: unsupported keys ${unsupportedKeys.join(', ')}`);
+      if (typeof step.buy !== 'string' || !step.buy.trim()) {
+        fail(`${stepContext}: buy action requires an option id`);
+      } else if (!shopOptionIds.has(step.buy)) {
+        fail(`${stepContext}: shop option ${step.buy} does not exist`);
+      }
+    });
+  }
+
+  validateRouteExpectation(route.expect, `${context}.expect`);
+
+  if (route.segments !== undefined && !Array.isArray(route.segments)) {
+    fail(`${context}: segments must be an array`);
+    return;
+  }
+
+  for (const [index, segment] of (route.segments ?? []).entries()) {
+    const segmentContext = `${context} segment ${segment?.id ?? index}`;
+    if (!isPlainObject(segment)) {
+      fail(`${segmentContext}: must be an object`);
+      continue;
+    }
+    if (typeof segment.id !== 'string' || !segment.id.trim()) fail(`${segmentContext}: id is required`);
+    if (typeof segment.title !== 'string' || !segment.title.trim()) fail(`${segmentContext}: title is required`);
+    if (typeof segment.rationale !== 'string' || !segment.rationale.trim()) fail(`${segmentContext}: rationale is required`);
+    if (!Array.isArray(route.steps)) {
+      fail(`${segmentContext}: route steps must be valid before checking afterStep`);
+    } else if (!Number.isInteger(segment.afterStep) || segment.afterStep < 0 || segment.afterStep > route.steps.length) {
+      fail(`${segmentContext}: afterStep must be between 0 and ${route.steps.length}`);
+    }
+    validateRouteExpectation(segment.expect, `${segmentContext}.expect`);
+  }
+}
+
 for (const route of routeSmoke.routes ?? []) {
+  const errorCountBeforeRouteShape = errors.length;
+  validateRouteShape(route);
+  if (errors.length > errorCountBeforeRouteShape) continue;
+
   try {
     const state = makeInitialRouteState(route);
     const segmentsByStep = new Map();
