@@ -15,6 +15,8 @@ npm run validate
 npm run build
 ```
 
+The `dev` branch also runs the same validation and build checks in GitHub Actions on push and pull request events.
+
 Optional local preview:
 
 ```bash
