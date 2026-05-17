@@ -79,13 +79,32 @@ function formatExpectation(expect = {}) {
   return parts.length ? parts.join(' | ') : 'no explicit expectation';
 }
 
+function formatRouteSegments(route) {
+  if (!route.segments?.length) return 'none';
+  return route.segments
+    .map((segment) => `[${segment.afterStep}] ${segment.title}`)
+    .join('; ');
+}
+
+function formatRouteDestination(route) {
+  const finalPosition = formatPosition(route.expect);
+  return finalPosition || 'not specified';
+}
+
 function printRouteList(routes) {
   console.log(`# Route Smoke Summary`);
   console.log('');
   for (const route of routes) {
     const counts = countSteps(route.steps ?? []);
     const segmentCount = route.segments?.length ?? 0;
-    console.log(`- ${route.id}: ${route.steps?.length ?? 0} steps, ${counts.moves} moves, buys ${formatBuys(counts.buys)}, ${segmentCount} segments`);
+    console.log(`## ${route.id}`);
+    console.log(route.description);
+    console.log('');
+    console.log(`- Start: ${formatStart(route.start)}`);
+    console.log(`- Final: ${formatRouteDestination(route)}`);
+    console.log(`- Coverage: ${route.steps?.length ?? 0} steps, ${counts.moves} moves, buys ${formatBuys(counts.buys)}, ${segmentCount} segments`);
+    console.log(`- Segments: ${formatRouteSegments(route)}`);
+    console.log('');
   }
 }
 
