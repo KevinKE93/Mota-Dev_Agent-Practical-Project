@@ -3,7 +3,7 @@ import { playSfx } from '../audio/sfx';
 import { services } from '../services';
 import type { Direction, GameSnapshot, LastBattle } from '../types';
 
-const TILE_SIZE = 48;
+const DEFAULT_TILE_SIZE = 48;
 
 export class MapScene extends Phaser.Scene {
   private layer?: Phaser.GameObjects.Container;
@@ -86,21 +86,19 @@ export class MapScene extends Phaser.Scene {
     this.layer = this.add.container(0, 0);
 
     const grid = this.snapshot.floors[this.snapshot.player.floor];
-    const mapWidth = grid[0].length * TILE_SIZE;
-    const mapHeight = grid.length * TILE_SIZE;
-    const originX = Math.round((this.scale.width - mapWidth) / 2);
-    const originY = Math.round((this.scale.height - mapHeight) / 2 + 14);
+    const tileSize = this.tileSize();
+    const { originX, originY, mapWidth, mapHeight } = this.mapOrigin(grid);
 
     this.addPanel(originX - 12, originY - 12, mapWidth + 24, mapHeight + 24);
 
     grid.forEach((row, y) => {
       row.forEach((tile, x) => {
-        this.drawTile(tile, originX + x * TILE_SIZE, originY + y * TILE_SIZE);
+        this.drawTile(tile, originX + x * tileSize, originY + y * tileSize);
       });
     });
 
-    const heroX = originX + this.snapshot.player.x * TILE_SIZE + TILE_SIZE / 2;
-    const heroY = originY + this.snapshot.player.y * TILE_SIZE + TILE_SIZE / 2 + 2;
+    const heroX = originX + this.snapshot.player.x * tileSize + tileSize / 2;
+    const heroY = originY + this.snapshot.player.y * tileSize + tileSize / 2 + 2;
     const heroGlow = this.add.ellipse(heroX, heroY + 18, 36, 12, 0x6bb8ff, 0.28)
       .setStrokeStyle(1, 0xf6c861, 0.48)
       .setDepth(19);
@@ -114,8 +112,8 @@ export class MapScene extends Phaser.Scene {
 
     if (attacked) {
       const battlePosition = this.snapshot.lastBattle?.position ?? this.snapshot.player;
-      const battleX = originX + battlePosition.x * TILE_SIZE + TILE_SIZE / 2;
-      const battleY = originY + battlePosition.y * TILE_SIZE + TILE_SIZE / 2 + 2;
+      const battleX = originX + battlePosition.x * tileSize + tileSize / 2;
+      const battleY = originY + battlePosition.y * tileSize + tileSize / 2 + 2;
       this.playDefeatedMonsterEcho(this.snapshot.lastBattle?.monsterId, battleX, battleY);
       this.playImpactEffect(battleX, battleY - 10);
       this.playDefeatEffect(this.snapshot.lastBattle?.monsterId, battleX, battleY - 2, 95);
@@ -370,9 +368,10 @@ export class MapScene extends Phaser.Scene {
   }
 
   private drawTile(tile: string, x: number, y: number) {
-    const centerX = x + TILE_SIZE / 2;
-    const centerY = y + TILE_SIZE / 2;
-    const base = this.add.rectangle(x + 1, y + 1, TILE_SIZE - 2, TILE_SIZE - 2, this.tileColor(tile), 1)
+    const tileSize = this.tileSize();
+    const centerX = x + tileSize / 2;
+    const centerY = y + tileSize / 2;
+    const base = this.add.rectangle(x + 1, y + 1, tileSize - 2, tileSize - 2, this.tileColor(tile), 1)
       .setOrigin(0)
       .setStrokeStyle(1, this.tileStroke(tile), 0.78);
     this.layer?.add(base);
@@ -399,8 +398,9 @@ export class MapScene extends Phaser.Scene {
   }
 
   private addStoneDetail(x: number, y: number) {
-    const line = this.add.rectangle(x + 7, y + 12, TILE_SIZE - 14, 2, 0x59606d, 0.25).setOrigin(0);
-    const chip = this.add.rectangle(x + 12, y + 30, TILE_SIZE - 24, 2, 0x000000, 0.28).setOrigin(0);
+    const tileSize = this.tileSize();
+    const line = this.add.rectangle(x + 7, y + 12, tileSize - 14, 2, 0x59606d, 0.25).setOrigin(0);
+    const chip = this.add.rectangle(x + 12, y + 30, tileSize - 24, 2, 0x000000, 0.28).setOrigin(0);
     this.layer?.add([line, chip]);
   }
 
@@ -426,12 +426,28 @@ export class MapScene extends Phaser.Scene {
   private pointerToTile(pointerX: number, pointerY: number) {
     if (!this.snapshot) return null;
     const grid = this.snapshot.floors[this.snapshot.player.floor];
-    const originX = Math.round((this.scale.width - grid[0].length * TILE_SIZE) / 2);
-    const originY = Math.round((this.scale.height - grid.length * TILE_SIZE) / 2 + 14);
-    const x = Math.floor((pointerX - originX) / TILE_SIZE);
-    const y = Math.floor((pointerY - originY) / TILE_SIZE);
+    const tileSize = this.tileSize();
+    const { originX, originY } = this.mapOrigin(grid);
+    const x = Math.floor((pointerX - originX) / tileSize);
+    const y = Math.floor((pointerY - originY) / tileSize);
     if (x < 0 || y < 0 || y >= grid.length || x >= grid[0].length) return null;
     return { x, y };
+  }
+
+  private tileSize() {
+    return services.assets?.tileSize ?? DEFAULT_TILE_SIZE;
+  }
+
+  private mapOrigin(grid: string[][]) {
+    const tileSize = this.tileSize();
+    const mapWidth = grid[0].length * tileSize;
+    const mapHeight = grid.length * tileSize;
+    return {
+      originX: Math.round((this.scale.width - mapWidth) / 2),
+      originY: Math.round((this.scale.height - mapHeight) / 2 + 14),
+      mapWidth,
+      mapHeight
+    };
   }
 
   private tileColor(tile: string) {
