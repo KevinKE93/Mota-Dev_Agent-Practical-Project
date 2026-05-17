@@ -283,6 +283,15 @@ for (const [tile, presentation] of Object.entries(manifest.tilePresentation)) {
   }
 }
 
+for (const [entityId, spriteKey] of Object.entries(manifest.entitySprites ?? {})) {
+  if (!monsterIds.has(entityId)) fail(`entitySprites ${entityId}: entity must exist in monsters.seed.json`);
+  if (!spriteKey) {
+    fail(`entitySprites ${entityId}: sprite key is required`);
+  } else if (!imageIds.has(spriteKey)) {
+    fail(`entitySprites ${entityId}: sprite key ${spriteKey} missing from manifest.images`);
+  }
+}
+
 for (const monsterId of usedMonsterIds) {
   const spriteKey = manifest.entitySprites[monsterId];
   if (!spriteKey) {
