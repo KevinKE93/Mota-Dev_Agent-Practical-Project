@@ -56,6 +56,8 @@ const tileDoors = {
 const storyRewardStats = new Set(['hp', 'maxHp', 'attack', 'defense', 'gold', 'exp']);
 const storyKeyColors = new Set(['yellow', 'blue', 'red']);
 const audioSynths = new Set(['hit', 'reward', 'floor']);
+const imageCategories = new Set(['hero', 'tile', 'item', 'monster', 'npc', 'fx', 'menu']);
+const imageAnchors = new Set(['center', 'bottom-center']);
 
 function tileAt(grid, x, y) {
   return grid[y]?.[x];
@@ -164,8 +166,25 @@ for (const floor of floors.floors) {
 }
 
 for (const [key, image] of Object.entries(manifest.images)) {
-  const localPath = join(assetDir, image.path.replace(/^\//, ''));
-  if (!existsSync(localPath)) fail(`asset ${key}: missing file ${image.path}`);
+  if (!image.path) {
+    fail(`asset ${key}: path is required`);
+  } else {
+    if (!image.path.startsWith('/assets/')) fail(`asset ${key}: path must stay under /assets/`);
+    if (image.path.includes('..')) fail(`asset ${key}: path cannot contain path traversal`);
+    const localPath = join(assetDir, image.path.replace(/^\//, ''));
+    if (!existsSync(localPath)) fail(`asset ${key}: missing file ${image.path}`);
+  }
+  if (!imageCategories.has(image.category)) fail(`asset ${key}: category ${image.category} is unsupported`);
+  if (!image.role) fail(`asset ${key}: role is required`);
+  if (!imageAnchors.has(image.anchor)) fail(`asset ${key}: anchor ${image.anchor} is unsupported`);
+  if (!Array.isArray(image.displaySize) || image.displaySize.length !== 2) {
+    fail(`asset ${key}: displaySize must be a [width, height] pair`);
+  } else {
+    const [width, height] = image.displaySize;
+    if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+      fail(`asset ${key}: displaySize values must be positive numbers`);
+    }
+  }
 }
 
 for (const [sourceKey, source] of Object.entries(manifest.generatedSources ?? {})) {
