@@ -1450,8 +1450,8 @@
       "imageKey": "tile-wall"
     },
     ".": {
-      "kind": "procedural",
-      "label": "floor"
+      "kind": "image",
+      "imageKey": "tile-floor"
     },
     "@": {
       "kind": "procedural",
