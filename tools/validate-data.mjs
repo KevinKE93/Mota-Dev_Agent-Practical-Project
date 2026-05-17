@@ -12,6 +12,7 @@ const monsters = readJson(join(dataDir, 'monsters.seed.json'));
 const items = readJson(join(dataDir, 'items.seed.json'));
 const shops = readJson(join(dataDir, 'shops.seed.json'));
 const npcs = readJson(join(dataDir, 'npcs.seed.json'));
+const playerGrowth = readJson(join(dataDir, 'player-growth.json'));
 const storyEvents = readJson(join(dataDir, 'story-events.json'));
 const routeSmoke = readJson(join(root, 'tools', 'fixtures', 'routes.smoke.json'));
 const manifest = readJson(join(root, 'public', 'assets', 'manifest.json'));
@@ -97,6 +98,10 @@ const audioSynths = new Set(['hit', 'reward', 'floor']);
 const imageCategories = new Set(['hero', 'tile', 'item', 'monster', 'npc', 'fx', 'menu']);
 const imageAnchors = new Set(['center', 'bottom-center']);
 const tilePresentationKinds = new Set(['procedural', 'glyph', 'entity', 'image']);
+const monsterTiers = new Set(['low', 'mid', 'high', 'boss-lite', 'boss', 'special']);
+const itemTypes = new Set(['key', 'consumable', 'stat', 'equipment', 'system', 'special']);
+const itemSlots = new Set(['weapon', 'shield']);
+const itemEffectKeys = new Set(['hp', 'attack', 'defense', 'openDoor', 'unlock', 'goldMultiplier']);
 
 function tileAt(grid, x, y) {
   return grid[y]?.[x];
@@ -142,6 +147,67 @@ function reachableFloorTiles(floor) {
   }
 
   return seen;
+}
+
+function assertPositiveNumber(value, label) {
+  if (!Number.isFinite(value) || value <= 0) fail(`${label}: must be a positive number`);
+}
+
+function assertNonNegativeNumber(value, label) {
+  if (!Number.isFinite(value) || value < 0) fail(`${label}: must be a non-negative number`);
+}
+
+const initial = playerGrowth.initial ?? {};
+if (!floorIds.has(initial.floor)) fail(`playerGrowth.initial: floor ${initial.floor} does not exist`);
+assertPositiveNumber(initial.hp, 'playerGrowth.initial.hp');
+assertNonNegativeNumber(initial.attack, 'playerGrowth.initial.attack');
+assertNonNegativeNumber(initial.defense, 'playerGrowth.initial.defense');
+assertNonNegativeNumber(initial.gold, 'playerGrowth.initial.gold');
+assertNonNegativeNumber(initial.exp, 'playerGrowth.initial.exp');
+for (const color of storyKeyColors) {
+  if (!Number.isInteger(initial.keys?.[color]) || initial.keys[color] < 0) {
+    fail(`playerGrowth.initial.keys.${color}: must be a non-negative integer`);
+  }
+}
+
+for (const monster of monsters.monsters) {
+  const context = `monster ${monster.id}`;
+  if (!monster.name) fail(`${context}: name is required`);
+  assertPositiveNumber(monster.hp, `${context}.hp`);
+  assertNonNegativeNumber(monster.attack, `${context}.attack`);
+  assertNonNegativeNumber(monster.defense, `${context}.defense`);
+  assertNonNegativeNumber(monster.money, `${context}.money`);
+  if (!monster.img) fail(`${context}: img is required`);
+  if (!monsterTiers.has(monster.tier)) fail(`${context}: tier ${monster.tier} is unsupported`);
+}
+
+for (const item of items.items) {
+  const context = `item ${item.id}`;
+  if (!item.name) fail(`${context}: name is required`);
+  if (!itemTypes.has(item.type)) fail(`${context}: type ${item.type} is unsupported`);
+  if (item.type === 'equipment') {
+    if (!itemSlots.has(item.slot)) fail(`${context}: equipment slot must be weapon or shield`);
+  } else if (item.slot && !itemSlots.has(item.slot)) {
+    fail(`${context}: slot ${item.slot} is unsupported`);
+  }
+
+  const effectEntries = Object.entries(item.effect ?? {});
+  if (!effectEntries.length) fail(`${context}: effect must define at least one field`);
+  for (const [key, value] of effectEntries) {
+    if (!itemEffectKeys.has(key)) {
+      fail(`${context}: effect ${key} is unsupported`);
+      continue;
+    }
+    if (['hp', 'attack', 'defense', 'goldMultiplier'].includes(key)) {
+      assertPositiveNumber(value, `${context}.effect.${key}`);
+    }
+    if (key === 'openDoor' && !storyKeyColors.has(value)) {
+      fail(`${context}.effect.openDoor: ${value} is unsupported`);
+    }
+    if (key === 'unlock' && typeof value !== 'string') {
+      fail(`${context}.effect.unlock: must be a string`);
+    }
+  }
 }
 
 for (const floor of floors.floors) {
