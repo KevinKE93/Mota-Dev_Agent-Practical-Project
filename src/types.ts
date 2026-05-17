@@ -222,7 +222,6 @@ export interface AssetManifest {
   generatedSources?: Record<string, {
     tool: string;
     sourcePath: string;
-    promptSummary: string;
   }>;
 }
 

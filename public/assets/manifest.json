@@ -1581,43 +1581,35 @@
   "generatedSources": {
     "mota-runtime-atlas": {
       "tool": "imagegen built-in plus chroma-key removal",
-      "sourcePath": "/assets/generated/mota-runtime-atlas.png",
-      "promptSummary": "4x4 dark fantasy pixel-art Magic Tower runtime sprite sheet on chroma-key background, no text or labels"
+      "sourcePath": "/assets/generated/mota-runtime-atlas.png"
     },
     "mota-monster-atlas": {
       "tool": "imagegen built-in plus chroma-key removal",
-      "sourcePath": "/assets/generated/mota-monster-atlas.png",
-      "promptSummary": "4x4 dark fantasy pixel-art Magic Tower monster sprite sheet on chroma-key background, no text or labels"
+      "sourcePath": "/assets/generated/mota-monster-atlas.png"
     },
     "mota-npc-shop-atlas": {
       "tool": "imagegen built-in plus chroma-key removal",
-      "sourcePath": "/assets/generated/mota-npc-shop-atlas.png",
-      "promptSummary": "2x2 dark fantasy pixel-art NPC and shop sprite sheet on chroma-key background, no text or labels"
+      "sourcePath": "/assets/generated/mota-npc-shop-atlas.png"
     },
     "mota-hero-directional-atlas": {
       "tool": "imagegen built-in plus chroma-key removal",
-      "sourcePath": "/assets/generated/mota-hero-directional-atlas.png",
-      "promptSummary": "4x4 dark fantasy pixel-art Mota hero directional walk sprite sheet on chroma-key background, rows down/left/right/up"
+      "sourcePath": "/assets/generated/mota-hero-directional-atlas.png"
     },
     "mota-hero-directional-attack-atlas": {
       "tool": "imagegen built-in plus chroma-key removal",
-      "sourcePath": "/assets/generated/mota-hero-directional-attack-atlas.png",
-      "promptSummary": "4x4 dark fantasy pixel-art Mota hero directional attack sprite sheet on chroma-key background, rows down/left/right/up"
+      "sourcePath": "/assets/generated/mota-hero-directional-attack-atlas.png"
     },
     "mota-battle-hit-fx-atlas": {
       "tool": "imagegen built-in plus chroma-key removal",
-      "sourcePath": "/assets/generated/mota-battle-hit-fx-atlas.png",
-      "promptSummary": "1x6 golden-white pixel-art battle hit FX sprite sheet on chroma-key background"
+      "sourcePath": "/assets/generated/mota-battle-hit-fx-atlas.png"
     },
     "mota-monster-defeat-fx-atlas": {
       "tool": "imagegen built-in plus chroma-key removal",
-      "sourcePath": "/assets/generated/mota-monster-defeat-fx-atlas.png",
-      "promptSummary": "1x6 purple pixel-art monster defeat dissolve FX sprite sheet on chroma-key background"
+      "sourcePath": "/assets/generated/mota-monster-defeat-fx-atlas.png"
     },
     "mota-monster-specific-defeat-atlas": {
       "tool": "imagegen built-in plus chroma-key removal",
-      "sourcePath": "/assets/generated/mota-monster-specific-defeat-atlas.png",
-      "promptSummary": "4x6 dark fantasy pixel-art monster-specific defeat sprite sheet for red slime, bat, green slime, and large slime on chroma-key background"
+      "sourcePath": "/assets/generated/mota-monster-specific-defeat-atlas.png"
     }
   }
 }
