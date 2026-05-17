@@ -228,6 +228,16 @@ function assertAnimationFrameCategory(animationKey, category, label = `animation
   }
 }
 
+function readPngSize(path) {
+  const bytes = readFileSync(path);
+  const pngSignature = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+  if (bytes.length < 24 || !bytes.subarray(0, 8).equals(pngSignature)) return null;
+  return {
+    width: bytes.readUInt32BE(16),
+    height: bytes.readUInt32BE(20)
+  };
+}
+
 if (floors.schemaVersion !== expectedSchemaVersion) fail(`floors.schemaVersion: expected ${expectedSchemaVersion}, got ${floors.schemaVersion}`);
 if (manifest.schemaVersion !== expectedSchemaVersion) fail(`manifest.schemaVersion: expected ${expectedSchemaVersion}, got ${manifest.schemaVersion}`);
 if (routeSmoke.schemaVersion !== expectedSchemaVersion) fail(`routeSmoke.schemaVersion: expected ${expectedSchemaVersion}, got ${routeSmoke.schemaVersion}`);
@@ -389,13 +399,23 @@ for (const floor of floors.floors) {
 }
 
 for (const [key, image] of Object.entries(manifest.images)) {
+  let sourceSize = null;
   if (!image.path) {
     fail(`asset ${key}: path is required`);
   } else {
     if (!image.path.startsWith('/assets/')) fail(`asset ${key}: path must stay under /assets/`);
     if (image.path.includes('..')) fail(`asset ${key}: path cannot contain path traversal`);
     const localPath = join(assetDir, image.path.replace(/^\//, ''));
-    if (!existsSync(localPath)) fail(`asset ${key}: missing file ${image.path}`);
+    if (!existsSync(localPath)) {
+      fail(`asset ${key}: missing file ${image.path}`);
+    } else {
+      sourceSize = readPngSize(localPath);
+      if (!sourceSize) {
+        fail(`asset ${key}: file must be a readable PNG`);
+      } else if (sourceSize.width <= 0 || sourceSize.height <= 0) {
+        fail(`asset ${key}: PNG source dimensions must be positive`);
+      }
+    }
   }
   if (!imageCategories.has(image.category)) fail(`asset ${key}: category ${image.category} is unsupported`);
   if (!image.role) fail(`asset ${key}: role is required`);
@@ -406,6 +426,10 @@ for (const [key, image] of Object.entries(manifest.images)) {
     const [width, height] = image.displaySize;
     if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
       fail(`asset ${key}: displaySize values must be positive numbers`);
+    } else if (sourceSize) {
+      if (width > sourceSize.width * 1.25 || height > sourceSize.height * 1.25) {
+        fail(`asset ${key}: displaySize must not upscale source PNG by more than 1.25x`);
+      }
     }
   }
 }

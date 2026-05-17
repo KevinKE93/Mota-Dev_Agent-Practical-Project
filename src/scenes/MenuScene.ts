@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { services } from '../services';
 
 export class MenuScene extends Phaser.Scene {
   constructor() {
@@ -7,9 +8,11 @@ export class MenuScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.scale;
+    const [coverWidth, coverHeight] = this.displaySizeFor('cover_tower', [560, 430]);
+    const [panelWidth, panelHeight] = this.displaySizeFor('cover_hero_panel', [196, 158]);
     this.add.rectangle(width / 2, height / 2, width, height, 0x08070d);
-    this.add.image(width / 2, height / 2 - 28, 'cover_tower').setAlpha(0.38).setDisplaySize(560, 430);
-    this.add.image(width - 138, height - 162, 'cover_hero_panel').setAlpha(0.54).setDisplaySize(196, 158);
+    this.add.image(width / 2, height / 2 - 28, 'cover_tower').setAlpha(0.38).setDisplaySize(coverWidth, coverHeight);
+    this.add.image(width - 138, height - 162, 'cover_hero_panel').setAlpha(0.54).setDisplaySize(panelWidth, panelHeight);
 
     this.add.text(width / 2, 150, '魔塔：紫焰试炼', {
       fontFamily: 'serif',
@@ -49,5 +52,9 @@ export class MenuScene extends Phaser.Scene {
     this.scene.launch('UIScene');
     this.scene.launch('BattleScene');
     this.scene.start('MapScene');
+  }
+
+  private displaySizeFor(key: string, fallback: [number, number]): [number, number] {
+    return services.assets?.images[key]?.displaySize ?? fallback;
   }
 }
