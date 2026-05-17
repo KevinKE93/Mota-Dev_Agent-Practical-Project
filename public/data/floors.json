@@ -123,6 +123,17 @@
         "x": 5,
         "y": 8
       },
+      "decorations": [
+        {
+          "id": "purple-flame-altar",
+          "imageKey": "altar-purple",
+          "position": {
+            "x": 5,
+            "y": 5
+          },
+          "alpha": 0.92
+        }
+      ],
       "grid": [
         "###########",
         "#N..M...K.#",

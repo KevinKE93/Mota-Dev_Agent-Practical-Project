@@ -26,6 +26,7 @@ async function boot() {
     playerGrowth: await loadJson('/data/player-growth.json'),
     storyEvents: await loadJson('/data/story-events.json')
   };
+  services.data = data;
   services.assets = await loadJson<AssetManifest>('/assets/manifest.json');
 
   const store = new GameStore(data);

@@ -6,6 +6,13 @@ export interface Position {
   y: number;
 }
 
+export interface FloorDecorationDefinition {
+  id: string;
+  imageKey: string;
+  position: Position;
+  alpha?: number;
+}
+
 export interface KeysState {
   yellow: number;
   blue: number;
@@ -38,6 +45,7 @@ export interface FloorDefinition {
   down: string | null;
   heroStart: Position;
   grid: string[];
+  decorations?: FloorDecorationDefinition[];
 }
 
 export interface FloorsPayload {

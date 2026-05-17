@@ -377,6 +377,28 @@ for (const floor of floors.floors) {
     if (startTile === '#') fail(`${context}: heroStart is inside a wall`);
   }
 
+  assertUniqueIds(floor.decorations ?? [], `${context} decorations`);
+  for (const [index, decoration] of (floor.decorations ?? []).entries()) {
+    const decorationContext = `${context} decoration ${decoration?.id ?? index}`;
+    if (!isPlainObject(decoration)) {
+      fail(`${decorationContext}: must be an object`);
+      continue;
+    }
+    assertNonEmptyString(decoration.id, `${decorationContext}.id`);
+    assertNonEmptyString(decoration.imageKey, `${decorationContext}.imageKey`);
+    if (decoration.imageKey && !imageIds.has(decoration.imageKey)) {
+      fail(`${decorationContext}: image ${decoration.imageKey} missing from manifest.images`);
+    }
+    if (assertMapPosition(decoration.position, `${decorationContext}.position`)) {
+      const decorationTile = tileAt(floor.grid, decoration.position.x, decoration.position.y);
+      if (!decorationTile) fail(`${decorationContext}: position is outside map`);
+      if (decorationTile === '#') fail(`${decorationContext}: position cannot be inside a wall`);
+    }
+    if (decoration.alpha !== undefined && (!Number.isFinite(decoration.alpha) || decoration.alpha <= 0 || decoration.alpha > 1)) {
+      fail(`${decorationContext}.alpha: must be between 0 and 1`);
+    }
+  }
+
   if (floor.up) {
     const target = floors.floors.find((candidate) => candidate.id === floor.up);
     if (target && !findTile(target.grid, 'N') && !eventWritesTile(target.id, 'N')) {

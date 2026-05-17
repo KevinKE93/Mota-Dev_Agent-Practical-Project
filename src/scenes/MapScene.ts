@@ -96,6 +96,7 @@ export class MapScene extends Phaser.Scene {
         this.drawTile(tile, originX + x * tileSize, originY + y * tileSize);
       });
     });
+    this.drawFloorDecorations(originX, originY);
 
     const heroX = originX + this.snapshot.player.x * tileSize + tileSize / 2;
     const heroY = originY + this.snapshot.player.y * tileSize + tileSize / 2 + 2;
@@ -402,6 +403,25 @@ export class MapScene extends Phaser.Scene {
     const line = this.add.rectangle(x + 7, y + 12, tileSize - 14, 2, 0x59606d, 0.25).setOrigin(0);
     const chip = this.add.rectangle(x + 12, y + 30, tileSize - 24, 2, 0x000000, 0.28).setOrigin(0);
     this.layer?.add([line, chip]);
+  }
+
+  private drawFloorDecorations(originX: number, originY: number) {
+    const floor = services.data?.floors.floors.find((candidate) => candidate.id === this.snapshot?.player.floor);
+    if (!floor?.decorations?.length) return;
+
+    const tileSize = this.tileSize();
+    for (const decoration of floor.decorations) {
+      const image = services.assets?.images[decoration.imageKey];
+      if (!image || !this.textures.exists(decoration.imageKey)) continue;
+
+      const centerX = originX + decoration.position.x * tileSize + tileSize / 2;
+      const centerY = originY + decoration.position.y * tileSize + tileSize / 2;
+      const [width, height] = image.displaySize;
+      const sprite = this.add.image(centerX, centerY + (image.anchor === 'bottom-center' ? 4 : 0), decoration.imageKey)
+        .setDisplaySize(width, height)
+        .setAlpha(decoration.alpha ?? 1);
+      this.layer?.add(sprite);
+    }
   }
 
   private addManifestImage(tile: string, centerX: number, centerY: number) {
