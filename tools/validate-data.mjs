@@ -168,6 +168,26 @@ for (const [key, image] of Object.entries(manifest.images)) {
   if (!existsSync(localPath)) fail(`asset ${key}: missing file ${image.path}`);
 }
 
+for (const [sourceKey, source] of Object.entries(manifest.generatedSources ?? {})) {
+  if (!source.tool) fail(`generated source ${sourceKey}: tool is required`);
+  if (!source.sourcePath) {
+    fail(`generated source ${sourceKey}: sourcePath is required`);
+    continue;
+  }
+  if (!source.sourcePath.startsWith('/assets/generated/')) {
+    fail(`generated source ${sourceKey}: sourcePath must stay under /assets/generated/`);
+  }
+  if (source.sourcePath.includes('..')) {
+    fail(`generated source ${sourceKey}: sourcePath cannot contain path traversal`);
+  }
+  if (Object.hasOwn(source, 'promptSummary')) {
+    fail(`generated source ${sourceKey}: promptSummary should stay out of the public manifest`);
+  }
+
+  const localPath = join(assetDir, source.sourcePath.replace(/^\//, ''));
+  if (!existsSync(localPath)) fail(`generated source ${sourceKey}: missing source file ${source.sourcePath}`);
+}
+
 for (const [animationKey, animation] of Object.entries(manifest.animations)) {
   for (const frame of animation.frames) {
     if (!imageIds.has(frame)) fail(`animation ${animationKey}: missing frame image ${frame}`);
@@ -713,4 +733,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Data validation passed: ${floors.floors.length} floors, ${usedEntityIds.size} used entities, ${Object.keys(manifest.images).length} images, ${audioIds.size} audio cues, ${Object.keys(manifest.monsterDefeatAnimations ?? {}).length} monster defeat animations, ${(routeSmoke.routes ?? []).length} smoke routes.`);
+console.log(`Data validation passed: ${floors.floors.length} floors, ${usedEntityIds.size} used entities, ${Object.keys(manifest.images).length} images, ${Object.keys(manifest.generatedSources ?? {}).length} generated sources, ${audioIds.size} audio cues, ${Object.keys(manifest.monsterDefeatAnimations ?? {}).length} monster defeat animations, ${(routeSmoke.routes ?? []).length} smoke routes.`);
