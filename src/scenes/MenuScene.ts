@@ -8,11 +8,13 @@ export class MenuScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.scale;
-    const [coverWidth, coverHeight] = this.displaySizeFor('cover_tower', [560, 430]);
-    const [panelWidth, panelHeight] = this.displaySizeFor('cover_hero_panel', [196, 158]);
+    const coverKey = this.sceneImage('menuCover', 'cover_tower');
+    const panelKey = this.sceneImage('menuHeroPanel', 'cover_hero_panel');
+    const [coverWidth, coverHeight] = this.displaySizeFor(coverKey, [560, 430]);
+    const [panelWidth, panelHeight] = this.displaySizeFor(panelKey, [196, 158]);
     this.add.rectangle(width / 2, height / 2, width, height, 0x08070d);
-    this.add.image(width / 2, height / 2 - 28, 'cover_tower').setAlpha(0.38).setDisplaySize(coverWidth, coverHeight);
-    this.add.image(width - 138, height - 162, 'cover_hero_panel').setAlpha(0.54).setDisplaySize(panelWidth, panelHeight);
+    this.add.image(width / 2, height / 2 - 28, coverKey).setAlpha(0.38).setDisplaySize(coverWidth, coverHeight);
+    this.add.image(width - 138, height - 162, panelKey).setAlpha(0.54).setDisplaySize(panelWidth, panelHeight);
 
     this.add.text(width / 2, 150, '魔塔：紫焰试炼', {
       fontFamily: 'serif',
@@ -56,5 +58,9 @@ export class MenuScene extends Phaser.Scene {
 
   private displaySizeFor(key: string, fallback: [number, number]): [number, number] {
     return services.assets?.images[key]?.displaySize ?? fallback;
+  }
+
+  private sceneImage(slot: string, fallback: string) {
+    return services.assets?.sceneImages?.[slot] ?? fallback;
   }
 }

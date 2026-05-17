@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import type { LastBattle } from '../types';
 import { services } from '../services';
 
-const REWARD_ICON_KEY = 'gold-pile';
+const REWARD_ICON_SLOT = 'battleRewardIcon';
 
 export class BattleScene extends Phaser.Scene {
   private panel?: Phaser.GameObjects.Container;
@@ -65,16 +65,22 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private hasRewardIcon() {
-    return Boolean(services.assets?.images[REWARD_ICON_KEY] && this.textures.exists(REWARD_ICON_KEY));
+    const key = this.rewardIconKey();
+    return Boolean(services.assets?.images[key] && this.textures.exists(key));
   }
 
   private createRewardIcon(y: number) {
-    const image = services.assets?.images[REWARD_ICON_KEY];
-    if (!image || !this.textures.exists(REWARD_ICON_KEY)) return [];
+    const key = this.rewardIconKey();
+    const image = services.assets?.images[key];
+    if (!image || !this.textures.exists(key)) return [];
 
     const [width, height] = image.displaySize;
     const glow = this.add.circle(-156, y, 24, 0x3d2710, 0.8).setStrokeStyle(1, 0xf6c861, 0.35);
-    const icon = this.add.image(-156, y, REWARD_ICON_KEY).setDisplaySize(width * 0.72, height * 0.72);
+    const icon = this.add.image(-156, y, key).setDisplaySize(width * 0.72, height * 0.72);
     return [glow, icon];
+  }
+
+  private rewardIconKey() {
+    return services.assets?.sceneImages?.[REWARD_ICON_SLOT] ?? 'gold-pile';
   }
 }

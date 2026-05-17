@@ -214,6 +214,11 @@ export interface AssetAudioDefinition {
   volume: number;
 }
 
+export interface ReservedAssetDefinition {
+  reason: string;
+  images: string[];
+}
+
 export interface AssetManifest {
   schemaVersion: string;
   tileSize: number;
@@ -227,6 +232,8 @@ export interface AssetManifest {
   monsterDefeatAnimations?: Record<string, string>;
   entitySprites: Record<string, string>;
   tilePresentation: Record<string, TilePresentation>;
+  sceneImages?: Record<string, string>;
+  reservedImages?: Record<string, ReservedAssetDefinition>;
   generatedSources?: Record<string, {
     tool: string;
     sourcePath: string;

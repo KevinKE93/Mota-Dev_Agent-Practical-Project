@@ -1578,6 +1578,37 @@
       "entityId": "monster22"
     }
   },
+  "sceneImages": {
+    "menuCover": "cover_tower",
+    "menuHeroPanel": "cover_hero_panel",
+    "battleRewardIcon": "gold-pile"
+  },
+  "reservedImages": {
+    "legacyHeroPrototype": {
+      "reason": "Retained as source-reference frames from the first hero prototype; runtime uses directional hero animations.",
+      "images": [
+        "hero_idle_1",
+        "hero_idle_2",
+        "hero_idle_3",
+        "hero_idle_4",
+        "hero_walk_1",
+        "hero_walk_2",
+        "hero_walk_3",
+        "hero_walk_4",
+        "hero_attack_1",
+        "hero_attack_2",
+        "hero_attack_3"
+      ]
+    },
+    "futureMonsterSet": {
+      "reason": "Reserved for future floor content; these monsters are not placed in the current MVP data.",
+      "images": [
+        "monsterDemonLord",
+        "monsterMimicChest",
+        "monsterGhostFlame"
+      ]
+    }
+  },
   "generatedSources": {
     "mota-runtime-atlas": {
       "tool": "imagegen built-in plus chroma-key removal",

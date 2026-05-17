@@ -78,6 +78,8 @@ const npcIds = new Set(npcs.npcs.map((npc) => npc.id));
 const npcById = new Map(npcs.npcs.map((npc) => [npc.id, npc]));
 const runtimeEventIds = new Set((storyEvents.runtimeEvents ?? []).map((event) => event.id));
 const imageIds = new Set(Object.keys(manifest.images));
+const usedImageIds = new Set();
+const reservedImageIds = new Set();
 const audioIds = new Set(Object.keys(manifest.audio ?? {}));
 const structuralTiles = new Set(['#', '.', '@', 'Y', 'B', 'R', 'U', 'N']);
 const usedEntityIds = new Set();
@@ -196,6 +198,10 @@ function assertMapPosition(value, label) {
 
 function assertNonEmptyString(value, label) {
   if (typeof value !== 'string' || !value.trim()) fail(`${label}: must be a non-empty string`);
+}
+
+function markUsedImage(imageKey) {
+  if (typeof imageKey === 'string' && imageKey.trim()) usedImageIds.add(imageKey);
 }
 
 function assertExactAnimationFrames(animationKey, expectedFrames, label = `animation ${animationKey}`) {
@@ -388,6 +394,8 @@ for (const floor of floors.floors) {
     assertNonEmptyString(decoration.imageKey, `${decorationContext}.imageKey`);
     if (decoration.imageKey && !imageIds.has(decoration.imageKey)) {
       fail(`${decorationContext}: image ${decoration.imageKey} missing from manifest.images`);
+    } else {
+      markUsedImage(decoration.imageKey);
     }
     if (assertMapPosition(decoration.position, `${decorationContext}.position`)) {
       const decorationTile = tileAt(floor.grid, decoration.position.x, decoration.position.y);
@@ -456,6 +464,57 @@ for (const [key, image] of Object.entries(manifest.images)) {
   }
 }
 
+if (manifest.sceneImages !== undefined && !isPlainObject(manifest.sceneImages)) {
+  fail('sceneImages: must be an object when present');
+} else {
+  for (const [slot, imageKey] of Object.entries(manifest.sceneImages ?? {})) {
+    const context = `sceneImages ${slot}`;
+    if (!slot.trim()) fail(`${context}: slot must be a non-empty string`);
+    if (typeof imageKey !== 'string' || !imageKey.trim()) {
+      fail(`${context}: image key must be a non-empty string`);
+      continue;
+    }
+    if (!imageIds.has(imageKey)) {
+      fail(`${context}: image ${imageKey} missing from manifest.images`);
+    } else {
+      markUsedImage(imageKey);
+    }
+  }
+}
+
+if (manifest.reservedImages !== undefined && !isPlainObject(manifest.reservedImages)) {
+  fail('reservedImages: must be an object when present');
+} else {
+  for (const [groupId, group] of Object.entries(manifest.reservedImages ?? {})) {
+    const context = `reservedImages ${groupId}`;
+    if (!groupId.trim()) fail(`${context}: group id must be a non-empty string`);
+    if (!isPlainObject(group)) {
+      fail(`${context}: must be an object`);
+      continue;
+    }
+    assertNonEmptyString(group.reason, `${context}.reason`);
+    if (!Array.isArray(group.images) || group.images.length === 0) {
+      fail(`${context}.images: must include at least one image key`);
+      continue;
+    }
+    group.images.forEach((imageKey, index) => {
+      if (typeof imageKey !== 'string' || !imageKey.trim()) {
+        fail(`${context}.images[${index}]: must be a non-empty string`);
+        return;
+      }
+      if (!imageIds.has(imageKey)) {
+        fail(`${context}.images[${index}]: image ${imageKey} missing from manifest.images`);
+        return;
+      }
+      if (reservedImageIds.has(imageKey)) {
+        fail(`${context}.images[${index}]: image ${imageKey} is reserved more than once`);
+        return;
+      }
+      reservedImageIds.add(imageKey);
+    });
+  }
+}
+
 for (const [sourceKey, source] of Object.entries(manifest.generatedSources ?? {})) {
   if (!source.tool) fail(`generated source ${sourceKey}: tool is required`);
   if (!source.sourcePath) {
@@ -485,6 +544,8 @@ for (const [animationKey, animation] of Object.entries(manifest.animations)) {
         fail(`animation ${animationKey}: frame keys must be strings`);
       } else if (!imageIds.has(frame)) {
         fail(`animation ${animationKey}: missing frame image ${frame}`);
+      } else {
+        markUsedImage(frame);
       }
     }
   }
@@ -584,6 +645,8 @@ for (const [tile, presentation] of Object.entries(manifest.tilePresentation)) {
       fail(`manifest tilePresentation "${tile}": image presentation requires imageKey`);
     } else if (!imageIds.has(presentation.imageKey)) {
       fail(`manifest tilePresentation "${tile}": image key ${presentation.imageKey} missing from manifest.images`);
+    } else {
+      markUsedImage(presentation.imageKey);
     }
   }
 
@@ -600,6 +663,8 @@ for (const [tile, presentation] of Object.entries(manifest.tilePresentation)) {
       fail(`manifest tilePresentation "${tile}": monster entity ${presentation.entityId} missing sprite mapping`);
     } else if (spriteKey && !imageIds.has(spriteKey)) {
       fail(`manifest tilePresentation "${tile}": sprite key ${spriteKey} missing from manifest.images`);
+    } else if (spriteKey) {
+      markUsedImage(spriteKey);
     }
   }
 }
@@ -610,6 +675,8 @@ for (const [entityId, spriteKey] of Object.entries(manifest.entitySprites ?? {})
     fail(`entitySprites ${entityId}: sprite key is required`);
   } else if (!imageIds.has(spriteKey)) {
     fail(`entitySprites ${entityId}: sprite key ${spriteKey} missing from manifest.images`);
+  } else {
+    markUsedImage(spriteKey);
   }
 }
 
@@ -625,6 +692,18 @@ for (const monsterId of usedMonsterIds) {
 for (const entityId of usedEntityIds) {
   if (!monsterIds.has(entityId) && !itemIds.has(entityId) && !shopIds.has(entityId) && !npcIds.has(entityId)) {
     fail(`used entity ${entityId} is unresolved`);
+  }
+}
+
+for (const imageKey of imageIds) {
+  if (!usedImageIds.has(imageKey) && !reservedImageIds.has(imageKey)) {
+    fail(`asset ${imageKey}: image is not referenced by runtime/data contracts and is not listed in reservedImages`);
+  }
+}
+
+for (const imageKey of reservedImageIds) {
+  if (usedImageIds.has(imageKey)) {
+    fail(`reserved image ${imageKey}: image is already referenced by runtime/data contracts`);
   }
 }
 
