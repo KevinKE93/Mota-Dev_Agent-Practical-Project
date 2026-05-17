@@ -58,6 +58,7 @@ const storyKeyColors = new Set(['yellow', 'blue', 'red']);
 const audioSynths = new Set(['hit', 'reward', 'floor']);
 const imageCategories = new Set(['hero', 'tile', 'item', 'monster', 'npc', 'fx', 'menu']);
 const imageAnchors = new Set(['center', 'bottom-center']);
+const tilePresentationKinds = new Set(['procedural', 'glyph', 'entity', 'image']);
 
 function tileAt(grid, x, y) {
   return grid[y]?.[x];
@@ -208,8 +209,22 @@ for (const [sourceKey, source] of Object.entries(manifest.generatedSources ?? {}
 }
 
 for (const [animationKey, animation] of Object.entries(manifest.animations)) {
-  for (const frame of animation.frames) {
-    if (!imageIds.has(frame)) fail(`animation ${animationKey}: missing frame image ${frame}`);
+  if (!Array.isArray(animation.frames) || animation.frames.length === 0) {
+    fail(`animation ${animationKey}: frames must include at least one image key`);
+  } else {
+    for (const frame of animation.frames) {
+      if (typeof frame !== 'string') {
+        fail(`animation ${animationKey}: frame keys must be strings`);
+      } else if (!imageIds.has(frame)) {
+        fail(`animation ${animationKey}: missing frame image ${frame}`);
+      }
+    }
+  }
+  if (!Number.isFinite(animation.frameRate) || animation.frameRate <= 0) {
+    fail(`animation ${animationKey}: frameRate must be a positive number`);
+  }
+  if (!Number.isInteger(animation.repeat) || animation.repeat < -1) {
+    fail(`animation ${animationKey}: repeat must be an integer >= -1`);
   }
 }
 
@@ -229,12 +244,33 @@ for (const [audioKey, audio] of Object.entries(manifest.audio ?? {})) {
 
 for (const [tile, presentation] of Object.entries(manifest.tilePresentation)) {
   if (!floors.tileLegend[tile]) fail(`manifest tilePresentation "${tile}": tile is not in floor tileLegend`);
+  if (!tilePresentationKinds.has(presentation.kind)) {
+    fail(`manifest tilePresentation "${tile}": kind ${presentation.kind} is unsupported`);
+    continue;
+  }
 
-  if (presentation.kind === 'image' && !imageIds.has(presentation.imageKey)) {
-    fail(`manifest tilePresentation "${tile}": image key ${presentation.imageKey} missing from manifest.images`);
+  if (presentation.kind === 'procedural' && !presentation.label) {
+    fail(`manifest tilePresentation "${tile}": procedural presentation requires label`);
+  }
+
+  if (presentation.kind === 'glyph') {
+    if (!presentation.glyph) fail(`manifest tilePresentation "${tile}": glyph presentation requires glyph`);
+    if (!presentation.color) fail(`manifest tilePresentation "${tile}": glyph presentation requires color`);
+  }
+
+  if (presentation.kind === 'image') {
+    if (!presentation.imageKey) {
+      fail(`manifest tilePresentation "${tile}": image presentation requires imageKey`);
+    } else if (!imageIds.has(presentation.imageKey)) {
+      fail(`manifest tilePresentation "${tile}": image key ${presentation.imageKey} missing from manifest.images`);
+    }
   }
 
   if (presentation.kind === 'entity') {
+    if (!presentation.entityId) {
+      fail(`manifest tilePresentation "${tile}": entity presentation requires entityId`);
+      continue;
+    }
     if (!monsterIds.has(presentation.entityId) && !itemIds.has(presentation.entityId) && !shopIds.has(presentation.entityId) && !npcIds.has(presentation.entityId)) {
       fail(`manifest tilePresentation "${tile}": entity ${presentation.entityId} missing from data`);
     }
