@@ -22,6 +22,44 @@ const warnings = [];
 const fail = (message) => errors.push(message);
 const warn = (message) => warnings.push(message);
 
+function assertUniqueIds(entries, label, getId = (entry) => entry.id) {
+  if (!Array.isArray(entries)) {
+    fail(`${label}: expected an array`);
+    return;
+  }
+
+  const seen = new Map();
+  entries.forEach((entry, index) => {
+    const id = getId(entry);
+    if (!id) {
+      fail(`${label}[${index}]: id is required`);
+      return;
+    }
+    const previousIndex = seen.get(id);
+    if (previousIndex !== undefined) {
+      fail(`${label}: duplicate id "${id}" at indexes ${previousIndex} and ${index}`);
+    }
+    seen.set(id, index);
+  });
+}
+
+assertUniqueIds(floors.floors, 'floors');
+assertUniqueIds(monsters.monsters, 'monsters');
+assertUniqueIds(items.items, 'items');
+assertUniqueIds(shops.shops, 'shops');
+assertUniqueIds(npcs.npcs, 'npcs');
+assertUniqueIds(storyEvents.beats ?? [], 'story beats');
+assertUniqueIds(storyEvents.runtimeEvents ?? [], 'story runtime events');
+assertUniqueIds(routeSmoke.routes ?? [], 'smoke routes');
+
+for (const shop of shops.shops ?? []) {
+  assertUniqueIds(shop.options ?? [], `shop ${shop.id} options`);
+}
+
+for (const route of routeSmoke.routes ?? []) {
+  assertUniqueIds(route.segments ?? [], `route ${route.id} segments`);
+}
+
 const floorIds = new Set(floors.floors.map((floor) => floor.id));
 const floorById = new Map(floors.floors.map((floor) => [floor.id, floor]));
 const monsterIds = new Set(monsters.monsters.map((monster) => monster.id));
