@@ -112,6 +112,8 @@ const itemTypes = new Set(['key', 'consumable', 'stat', 'equipment', 'system', '
 const itemSlots = new Set(['weapon', 'shield']);
 const itemEffectKeys = new Set(['hp', 'attack', 'defense', 'openDoor', 'unlock', 'goldMultiplier']);
 const expectedSchemaVersion = '1.0';
+const heroActions = ['idle', 'walk', 'attack'];
+const heroDirections = Object.keys(directionDelta);
 
 function tileAt(grid, x, y) {
   return grid[y]?.[x];
@@ -194,6 +196,36 @@ function assertMapPosition(value, label) {
 
 function assertNonEmptyString(value, label) {
   if (typeof value !== 'string' || !value.trim()) fail(`${label}: must be a non-empty string`);
+}
+
+function assertExactAnimationFrames(animationKey, expectedFrames, label = `animation ${animationKey}`) {
+  const animation = manifest.animations[animationKey];
+  if (!animation) {
+    fail(`${label}: animation is required`);
+    return;
+  }
+
+  const actualFrames = animation.frames ?? [];
+  if (actualFrames.length !== expectedFrames.length) {
+    fail(`${label}: expected ${expectedFrames.length} frames, got ${actualFrames.length}`);
+    return;
+  }
+
+  expectedFrames.forEach((frame, index) => {
+    if (actualFrames[index] !== frame) {
+      fail(`${label}: frame ${index + 1} expected ${frame}, got ${actualFrames[index]}`);
+    }
+  });
+}
+
+function assertAnimationFrameCategory(animationKey, category, label = `animation ${animationKey}`) {
+  const animation = manifest.animations[animationKey];
+  if (!animation) return;
+
+  for (const frame of animation.frames ?? []) {
+    const image = manifest.images[frame];
+    if (image && image.category !== category) fail(`${label}: frame ${frame} must use ${category} category`);
+  }
 }
 
 if (floors.schemaVersion !== expectedSchemaVersion) fail(`floors.schemaVersion: expected ${expectedSchemaVersion}, got ${floors.schemaVersion}`);
@@ -418,9 +450,62 @@ for (const [animationKey, animation] of Object.entries(manifest.animations)) {
   }
 }
 
+for (const action of heroActions) {
+  for (const direction of heroDirections) {
+    const animationKey = `hero-${action}-${direction}`;
+    const expectedFrames = action === 'idle'
+      ? [`hero_${direction}_1`, `hero_${direction}_3`]
+      : Array.from({ length: 4 }, (_, index) =>
+        action === 'attack'
+          ? `hero_attack_${direction}_${index + 1}`
+          : `hero_${direction}_${index + 1}`
+      );
+    const expectedRepeat = action === 'idle' ? -1 : 0;
+    assertExactAnimationFrames(animationKey, expectedFrames, `hero ${action} ${direction}`);
+
+    const animation = manifest.animations[animationKey];
+    if (!animation) continue;
+    if (animation.repeat !== expectedRepeat) fail(`hero ${action} ${direction}: repeat must be ${expectedRepeat}`);
+    for (const frame of animation.frames ?? []) {
+      const image = manifest.images[frame];
+      if (!image) continue;
+      if (image.category !== 'hero') fail(`hero ${action} ${direction}: frame ${frame} must use hero category`);
+      if (!image.role.includes(action === 'attack' ? 'attack' : direction)) {
+        fail(`hero ${action} ${direction}: frame ${frame} role ${image.role} does not match action/direction`);
+      }
+    }
+  }
+}
+
+assertExactAnimationFrames(
+  'battle-hit-burst',
+  Array.from({ length: 6 }, (_, index) => `battle_hit_${index + 1}`),
+  'battle hit animation'
+);
+assertAnimationFrameCategory('battle-hit-burst', 'fx', 'battle hit animation');
+assertExactAnimationFrames(
+  'monster-defeat-burst',
+  Array.from({ length: 6 }, (_, index) => `monster_defeat_${index + 1}`),
+  'generic monster defeat animation'
+);
+assertAnimationFrameCategory('monster-defeat-burst', 'fx', 'generic monster defeat animation');
+
 for (const [monsterId, animationKey] of Object.entries(manifest.monsterDefeatAnimations ?? {})) {
   if (!monsterIds.has(monsterId)) fail(`monster defeat animation ${monsterId}: monster does not exist`);
-  if (!manifest.animations[animationKey]) fail(`monster defeat animation ${monsterId}: animation ${animationKey} does not exist`);
+  if (!manifest.animations[animationKey]) {
+    fail(`monster defeat animation ${monsterId}: animation ${animationKey} does not exist`);
+    continue;
+  }
+  const expectedFrames = Array.from({ length: 6 }, (_, index) => `${monsterId}_defeat_${index + 1}`);
+  assertExactAnimationFrames(animationKey, expectedFrames, `monster defeat animation ${monsterId}`);
+  for (const frame of manifest.animations[animationKey].frames ?? []) {
+    const image = manifest.images[frame];
+    if (!image) continue;
+    if (image.category !== 'fx') fail(`monster defeat animation ${monsterId}: frame ${frame} must use fx category`);
+    if (!image.role.endsWith('defeat-frame')) {
+      fail(`monster defeat animation ${monsterId}: frame ${frame} role ${image.role} must end with defeat-frame`);
+    }
+  }
 }
 
 for (const [audioKey, audio] of Object.entries(manifest.audio ?? {})) {
