@@ -8,6 +8,7 @@ docs/
 output/
 tmp/
 .playwright-cli/
+.dev-agent/
 
 # OS/editor noise
 .DS_Store

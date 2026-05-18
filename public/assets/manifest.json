@@ -19,6 +19,12 @@
       "role": "floor-transition",
       "synth": "floor",
       "volume": 0.34
+    },
+    "footstep": {
+      "category": "sfx",
+      "role": "stone-footstep",
+      "synth": "step",
+      "volume": 0.34
     }
   },
   "images": {

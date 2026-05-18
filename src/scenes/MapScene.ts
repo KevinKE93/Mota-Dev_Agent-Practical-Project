@@ -127,6 +127,7 @@ export class MapScene extends Phaser.Scene {
       this.playFloorTransition(this.snapshot.activeFloorName);
     } else if (moved) {
       this.playMoveFeedback(heroGlow);
+      playSfx('footstep');
     }
 
     this.previousFloor = currentPosition.floor;

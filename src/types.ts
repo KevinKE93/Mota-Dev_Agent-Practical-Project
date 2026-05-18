@@ -210,7 +210,7 @@ export interface AssetImageDefinition {
 export interface AssetAudioDefinition {
   category: string;
   role: string;
-  synth: 'hit' | 'reward' | 'floor';
+  synth: 'hit' | 'reward' | 'floor' | 'step';
   volume: number;
 }
 

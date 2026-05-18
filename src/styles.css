@@ -5,8 +5,8 @@
 :root {
   color-scheme: dark;
   --bg: #08070d;
-  --panel: rgba(17, 20, 30, 0.92);
-  --panel-soft: rgba(24, 20, 33, 0.78);
+  --panel: rgba(17, 20, 30, 0.74);
+  --panel-soft: rgba(24, 20, 33, 0.58);
   --line: rgba(246, 200, 97, 0.2);
   --line-strong: rgba(246, 200, 97, 0.42);
   --text: #fff7df;
@@ -55,8 +55,8 @@ a {
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: 16px;
-  padding: 18px;
+  gap: 12px;
+  padding: 14px;
 }
 
 .topbar {
@@ -119,8 +119,8 @@ a {
 
 .play-layout {
   display: grid;
-  grid-template-columns: minmax(230px, 280px) minmax(420px, 1fr) minmax(260px, 320px);
-  gap: 16px;
+  grid-template-columns: minmax(176px, 220px) minmax(580px, 1fr) minmax(230px, 286px);
+  gap: 12px;
   align-items: start;
 }
 
@@ -133,6 +133,7 @@ a {
 }
 
 .stage-wrap {
+  position: relative;
   min-height: 0;
   display: grid;
   place-items: center;
@@ -140,15 +141,15 @@ a {
   border: 1px solid var(--line);
   border-radius: 10px;
   background:
-    linear-gradient(180deg, rgba(19, 16, 27, 0.82), rgba(8, 8, 12, 0.9)),
+    linear-gradient(180deg, rgba(19, 16, 27, 0.9), rgba(8, 8, 12, 0.96)),
     repeating-linear-gradient(90deg, rgba(246, 200, 97, 0.04) 0 1px, transparent 1px 48px);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+  box-shadow: 0 28px 78px rgba(0, 0, 0, 0.46);
   overflow: hidden;
 }
 
 #game-root {
   width: 100%;
-  min-height: min(72vh, 740px);
+  min-height: min(78vh, 780px);
   display: grid;
   place-items: center;
 }
@@ -156,15 +157,91 @@ a {
 #game-root canvas {
   image-rendering: pixelated;
   max-width: 100%;
-  max-height: min(72vh, 740px);
+  max-height: min(78vh, 780px);
 }
 
 .panel {
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: linear-gradient(180deg, var(--panel), rgba(9, 10, 16, 0.92));
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
-  padding: 14px;
+  background: linear-gradient(180deg, var(--panel), rgba(9, 10, 16, 0.72));
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
+  padding: 12px;
+}
+
+.hud-column .panel,
+.side-column .panel {
+  border-color: rgba(246, 200, 97, 0.14);
+  background: linear-gradient(180deg, rgba(17, 20, 30, 0.68), rgba(9, 10, 16, 0.62));
+}
+
+.toast-root {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(16px, 3vh, 28px);
+  z-index: 20;
+  width: min(560px, calc(100% - 32px));
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.game-toast {
+  display: grid;
+  gap: 4px;
+  max-width: 100%;
+  border: 1px solid rgba(246, 200, 97, 0.28);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: rgba(9, 10, 16, 0.72);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(8px);
+  animation: toast-rise 2.7s ease both;
+}
+
+.game-toast span {
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.game-toast strong {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.control-hint {
+  position: absolute;
+  left: 50%;
+  top: 16px;
+  z-index: 18;
+  transform: translateX(-50%);
+  border: 1px solid rgba(246, 200, 97, 0.2);
+  border-radius: 999px;
+  padding: 7px 11px;
+  color: rgba(255, 247, 223, 0.82);
+  background: rgba(8, 7, 13, 0.58);
+  backdrop-filter: blur(8px);
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+@keyframes toast-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  11%,
+  78% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 }
 
 .eyebrow {
@@ -178,7 +255,7 @@ a {
 
 .hero-status h1 {
   margin: 0 0 14px;
-  font-size: 28px;
+  font-size: 22px;
   line-height: 1.1;
 }
 
@@ -195,7 +272,7 @@ a {
 }
 
 .hp-readout strong {
-  font-size: 30px;
+  font-size: 26px;
   color: var(--text);
 }
 
@@ -227,7 +304,7 @@ a {
 .gear-row {
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 8px;
-  padding: 10px;
+  padding: 9px;
   background: rgba(255, 255, 255, 0.035);
 }
 
@@ -242,7 +319,7 @@ a {
 .gear-row strong {
   display: block;
   margin-top: 4px;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .key-grid {
@@ -278,7 +355,7 @@ a {
 .key-badge strong {
   display: block;
   margin-top: 6px;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .equipment-panel {
@@ -302,7 +379,6 @@ a {
   font-style: normal;
 }
 
-.message-panel p,
 .battle-panel p,
 .story-panel p,
 .shop-panel p,
@@ -561,52 +637,6 @@ a {
   font-size: 13px;
 }
 
-.controls-panel {
-  display: grid;
-  gap: 10px;
-}
-
-.dpad {
-  display: grid;
-  grid-template-columns: repeat(3, 54px);
-  grid-template-rows: repeat(3, 54px);
-  justify-content: center;
-  gap: 7px;
-}
-
-.dpad button {
-  border: 1px solid var(--line-strong);
-  border-radius: 8px;
-  color: var(--text);
-  background: linear-gradient(180deg, rgba(36, 42, 56, 0.95), rgba(16, 19, 28, 0.95));
-  font-size: 22px;
-  font-weight: 900;
-}
-
-.dpad button:active {
-  transform: translateY(1px);
-  filter: brightness(1.2);
-}
-
-.dpad .up {
-  grid-column: 2;
-}
-
-.dpad .left {
-  grid-column: 1;
-  grid-row: 2;
-}
-
-.dpad .down {
-  grid-column: 2;
-  grid-row: 3;
-}
-
-.dpad .right {
-  grid-column: 3;
-  grid-row: 2;
-}
-
 .save-panel {
   display: grid;
   gap: 8px;
@@ -690,7 +720,7 @@ a {
 
 @media (max-width: 1180px) {
   .play-layout {
-    grid-template-columns: 240px minmax(380px, 1fr);
+    grid-template-columns: 206px minmax(420px, 1fr);
   }
 
   .side-column {
@@ -702,20 +732,50 @@ a {
 
 @media (max-width: 760px) {
   .game-shell {
-    padding: 10px;
+    gap: 8px;
+    padding: 8px;
   }
 
   .topbar {
-    align-items: flex-start;
+    align-items: center;
+    padding: 8px 9px;
+    border-radius: 8px;
+  }
+
+  .brand-mark {
+    width: 30px;
+    height: 30px;
   }
 
   .brand-lockup strong {
-    font-size: 17px;
+    font-size: 15px;
+  }
+
+  .brand-lockup span:last-child {
+    display: none;
+  }
+
+  .top-actions button {
+    padding: 7px 9px;
+    font-size: 13px;
   }
 
   .play-layout,
   .side-column {
     grid-template-columns: 1fr;
+  }
+
+  .stage-wrap {
+    order: 1;
+    min-height: min(calc(100vw - 16px), 650px);
+  }
+
+  .hud-column {
+    order: 2;
+  }
+
+  .side-column {
+    order: 3;
   }
 
   .side-column {
@@ -725,35 +785,86 @@ a {
 
   .hud-column {
     display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  .stage-wrap {
-    min-height: 390px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 
   #game-root {
-    min-height: 390px;
+    min-height: min(calc(100vw - 18px), 650px);
   }
 
   #game-root canvas {
-    max-height: 68vh;
+    max-height: min(calc(100vw - 18px), 650px);
+  }
+
+  .hero-status {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 4px 12px;
+  }
+
+  .hero-status .eyebrow {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .hero-status h1 {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .hp-readout {
+    min-width: 128px;
   }
 
   .stats-panel {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-column: 1 / -1;
   }
 
   .stat-row {
-    padding: 8px;
+    padding: 7px;
   }
 
   .stat-row strong {
-    font-size: 17px;
+    font-size: 15px;
   }
 
-  .controls-panel {
-    background: rgba(17, 20, 30, 0.86);
+  .keys-panel,
+  .equipment-panel {
+    padding: 9px;
+  }
+
+  .equipment-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .equipment-panel .eyebrow,
+  .equipment-panel .unlock-row {
+    grid-column: 1 / -1;
+  }
+
+  .toast-root {
+    bottom: 12px;
+    width: min(460px, calc(100% - 20px));
+  }
+
+  .game-toast {
+    padding: 8px 10px;
+  }
+
+  .game-toast strong {
+    font-size: 13px;
+  }
+
+  .control-hint {
+    top: 10px;
+    max-width: calc(100% - 18px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 11px;
   }
 }
 
@@ -767,6 +878,19 @@ a {
   }
 
   .hero-status h1 {
-    font-size: 23px;
+    font-size: 17px;
+  }
+
+  .hero-status {
+    grid-template-columns: 1fr;
+  }
+
+  .hp-readout {
+    min-width: 0;
+  }
+
+  .keys-panel,
+  .equipment-panel {
+    grid-column: 1 / -1;
   }
 }

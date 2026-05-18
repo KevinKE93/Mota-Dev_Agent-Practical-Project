@@ -1,16 +1,10 @@
 import type { BattlePreview, GameSnapshot, LastBattle, StoryRewardView } from '../types';
 import type { GameStore } from '../state/GameStore';
 
-const moveButtons = [
-  ['up', '↑'],
-  ['left', '←'],
-  ['down', '↓'],
-  ['right', '→']
-] as const;
-
 export function mountHud(store: GameStore) {
   const hudRoot = document.querySelector<HTMLElement>('#hud-root');
   const sideRoot = document.querySelector<HTMLElement>('#side-root');
+  const toastRoot = document.querySelector<HTMLElement>('#toast-root');
   const resetRun = document.querySelector<HTMLButtonElement>('#resetRun');
   if (!hudRoot || !sideRoot) throw new Error('Missing HUD roots');
 
@@ -18,20 +12,12 @@ export function mountHud(store: GameStore) {
   store.subscribe((snapshot) => {
     hudRoot.innerHTML = renderHud(snapshot);
     sideRoot.innerHTML = renderSide(snapshot);
+    if (toastRoot) toastRoot.innerHTML = renderToast(snapshot);
     wireButtons(sideRoot, store);
   });
 }
 
 function wireButtons(root: HTMLElement, store: GameStore) {
-  root.querySelectorAll<HTMLButtonElement>('[data-move]').forEach((button) => {
-    const direction = button.dataset.move as 'up' | 'down' | 'left' | 'right';
-    button.addEventListener('pointerenter', () => store.face(direction));
-    button.addEventListener('focus', () => store.face(direction));
-    button.addEventListener('click', () => {
-      store.move(direction);
-    });
-  });
-
   root.querySelectorAll<HTMLButtonElement>('[data-save]').forEach((button) => {
     button.addEventListener('click', () => store.saveSlot(Number(button.dataset.save)));
   });
@@ -86,22 +72,12 @@ function renderHud(snapshot: GameSnapshot) {
 
 function renderSide(snapshot: GameSnapshot) {
   return `
-    <section class="panel message-panel">
-      <p class="eyebrow">Log</p>
-      <p>${snapshot.message}</p>
-    </section>
     ${renderStoryEvent(snapshot)}
     ${renderShop(snapshot)}
     ${renderNpc(snapshot)}
     ${renderBattlePreview(snapshot.targetPreview)}
-    ${renderMonsterBook(snapshot)}
     ${renderLastBattle(snapshot.lastBattle)}
-    <section class="panel controls-panel">
-      <p class="eyebrow">Controls</p>
-      <div class="dpad">
-        ${moveButtons.map(([direction, label]) => `<button class="${direction}" data-move="${direction}" aria-label="向${label}移动">${label}</button>`).join('')}
-      </div>
-    </section>
+    ${renderMonsterBook(snapshot)}
     <section class="panel save-panel">
       <p class="eyebrow">Local saves</p>
       ${[1, 2, 3].map((slot) => `
@@ -115,6 +91,15 @@ function renderSide(snapshot: GameSnapshot) {
         </div>
       `).join('')}
     </section>
+  `;
+}
+
+function renderToast(snapshot: GameSnapshot) {
+  return `
+    <div class="game-toast" data-version="${snapshot.version}">
+      <span>Log</span>
+      <strong>${snapshot.message}</strong>
+    </div>
   `;
 }
 

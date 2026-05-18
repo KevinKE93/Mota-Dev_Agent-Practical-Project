@@ -1,6 +1,6 @@
 import { services } from '../services';
 
-type SfxKey = 'battleHit' | 'reward' | 'floorTransition';
+type SfxKey = 'battleHit' | 'reward' | 'floorTransition' | 'footstep';
 
 type WebAudioContext = AudioContext & {
   createGain(): GainNode;
@@ -38,6 +38,7 @@ export function playSfx(key: SfxKey) {
     if (definition.synth === 'hit') playHit(context, volume);
     if (definition.synth === 'reward') playReward(context, volume);
     if (definition.synth === 'floor') playFloor(context, volume);
+    if (definition.synth === 'step') playStep(context, volume);
   } catch {
     // Audio is presentation-only; never let browser audio policy break input.
   }
@@ -76,4 +77,9 @@ function playReward(context: AudioContext, volume: number) {
 function playFloor(context: AudioContext, volume: number) {
   playTone(context, 220, 0.18, volume * 0.24, 'sine');
   playTone(context, 440, 0.2, volume * 0.18, 'triangle', 0.05);
+}
+
+function playStep(context: AudioContext, volume: number) {
+  playTone(context, 92, 0.055, volume * 0.2, 'triangle');
+  playTone(context, 138, 0.045, volume * 0.13, 'sine', 0.025);
 }

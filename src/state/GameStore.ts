@@ -208,7 +208,7 @@ export class GameStore {
         unlocks: []
       },
       floors: grids,
-      message: '方向键 / WASD 移动。面对怪物时右侧会预判战斗损耗。',
+      message: '方向键 / WASD 或点击相邻格移动。面对怪物时会预判战斗损耗。',
       activeFloorName: firstFloor.name,
       targetPreview: null,
       monsterBook: [],
