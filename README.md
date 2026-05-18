@@ -52,3 +52,17 @@ npm run build
 ```
 
 `npm run validate` 会检查地图、实体、资源清单和路线烟测；`npm run build` 会生成可部署的静态站点。
+
+## Cloudflare 部署
+
+本项目已配置 Cloudflare Workers Static Assets，生产域名为：
+
+[https://mota-by-dev-agent.laoke.ai](https://mota-by-dev-agent.laoke.ai)
+
+部署命令：
+
+```bash
+npm run deploy:cloudflare
+```
+
+部署前会先执行 `npm run build`，生成 `dist` 后通过 Wrangler 发布到 Cloudflare。
