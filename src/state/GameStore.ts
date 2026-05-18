@@ -108,6 +108,12 @@ export class GameStore {
     this.emit(`已清空存档 ${slot}。`);
   }
 
+  dismissVictory() {
+    if (!this.snapshot.victory.visible) return;
+    this.snapshot.victory.visible = false;
+    this.emit('星镜塔台仍有未探索的回声。');
+  }
+
   buyShopOption(optionId: string) {
     const shop = this.snapshot.activeShop ? this.shops.get(this.snapshot.activeShop.id) : null;
     const option = shop?.options.find((candidate) => candidate.id === optionId);
@@ -218,6 +224,10 @@ export class GameStore {
       storyLog: [],
       seenEvents: [],
       lastBattle: null,
+      victory: {
+        completed: false,
+        visible: false
+      },
       version: 0
     };
   }
@@ -241,7 +251,8 @@ export class GameStore {
       message: this.snapshot.message,
       seenEvents: [...this.snapshot.seenEvents],
       storyLog: structuredClone(this.snapshot.storyLog),
-      lastBattle: this.snapshot.lastBattle
+      lastBattle: this.snapshot.lastBattle,
+      victory: structuredClone(this.snapshot.victory)
     };
   }
 
@@ -262,6 +273,10 @@ export class GameStore {
         storyLog: parsed.storyLog ?? [],
         seenEvents: parsed.seenEvents ?? [],
         lastBattle: parsed.lastBattle,
+        victory: parsed.victory ?? {
+          completed: parsed.player.unlocks?.includes('dragonHeadDefeated') ?? false,
+          visible: false
+        },
         version: this.snapshot.version + 1
       };
       this.emit(message, false);
@@ -496,6 +511,12 @@ export class GameStore {
       if (action.kind === 'unlock' && !this.snapshot.player.unlocks.includes(action.id)) {
         this.snapshot.player.unlocks.push(action.id);
         rewards.push({ kind: 'unlock', label: '解锁', value: this.unlockLabel(action.id) });
+        if (action.id === 'dragonHeadDefeated') {
+          this.snapshot.victory = {
+            completed: true,
+            visible: true
+          };
+        }
       }
 
       if (action.kind === 'grantStat') {

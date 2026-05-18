@@ -290,6 +290,11 @@ export interface StoryEventView {
   rewards?: StoryRewardView[];
 }
 
+export interface VictoryState {
+  completed: boolean;
+  visible: boolean;
+}
+
 export interface ActiveShopView {
   id: string;
   name: string;
@@ -319,6 +324,7 @@ export interface GameSnapshot {
   storyLog: StoryEventView[];
   seenEvents: string[];
   lastBattle: LastBattle | null;
+  victory: VictoryState;
   version: number;
 }
 
@@ -329,4 +335,5 @@ export interface SerializedGame {
   seenEvents: string[];
   storyLog: StoryEventView[];
   lastBattle: LastBattle | null;
+  victory?: VictoryState;
 }

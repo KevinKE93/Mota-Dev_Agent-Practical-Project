@@ -860,6 +860,7 @@ function makeInitialRouteState(route) {
     storyLog: [],
     message: '',
     lastBattle: null,
+    victory: false,
     activeShop: null,
     activeNpc: null
   };
@@ -955,6 +956,7 @@ function triggerRouteEvent(state, trigger, position, context = {}) {
     }
     if (action.kind === 'unlock' && !state.player.unlocks.includes(action.id)) {
       state.player.unlocks.push(action.id);
+      if (action.id === 'dragonHeadDefeated') state.victory = true;
     }
     if (action.kind === 'grantStat') {
       applyRouteStoryStatReward(state, action.stat, action.amount);
@@ -1152,6 +1154,9 @@ function assertRoute(route, state) {
   if (expected.lastBattle && state.lastBattle !== expected.lastBattle) {
     throw new Error(`expected last battle ${expected.lastBattle}, got ${state.lastBattle}`);
   }
+  if (typeof expected.victory === 'boolean' && state.victory !== expected.victory) {
+    throw new Error(`expected victory ${expected.victory}, got ${state.victory}`);
+  }
   if (expected.activeNpc && state.activeNpc !== expected.activeNpc) {
     throw new Error(`expected active npc ${expected.activeNpc}, got ${state.activeNpc}`);
   }
@@ -1287,6 +1292,9 @@ function validateRouteExpectation(expect, context, defaultFloorId) {
 
   if (expect.lastBattle && !monsters.monsters.some((monster) => monster.name === expect.lastBattle)) {
     fail(`${context}.lastBattle: monster name ${expect.lastBattle} does not exist`);
+  }
+  if (expect.victory !== undefined && typeof expect.victory !== 'boolean') {
+    fail(`${context}.victory: must be a boolean`);
   }
   if (expect.activeNpc && !npcIds.has(expect.activeNpc)) fail(`${context}.activeNpc: npc ${expect.activeNpc} does not exist`);
   if (expect.activeShop && !shopIds.has(expect.activeShop)) fail(`${context}.activeShop: shop ${expect.activeShop} does not exist`);

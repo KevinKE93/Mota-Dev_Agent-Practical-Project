@@ -22,19 +22,19 @@
 html,
 body {
   margin: 0;
-  min-height: 100%;
+  height: 100%;
   background: var(--bg);
   color: var(--text);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
   background:
     radial-gradient(circle at 50% 0%, rgba(122, 73, 255, 0.3), transparent 28%),
     radial-gradient(circle at 16% 24%, rgba(255, 115, 72, 0.15), transparent 24%),
     linear-gradient(180deg, #111018 0%, #07070d 62%, #050507 100%);
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 button,
@@ -52,11 +52,13 @@ a {
 }
 
 .game-shell {
-  min-height: 100vh;
+  height: 100svh;
+  min-height: 0;
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto minmax(0, 1fr);
   gap: 12px;
   padding: 14px;
+  overflow: hidden;
 }
 
 .topbar {
@@ -119,9 +121,11 @@ a {
 
 .play-layout {
   display: grid;
-  grid-template-columns: minmax(176px, 220px) minmax(580px, 1fr) minmax(230px, 286px);
+  grid-template-columns: minmax(190px, 240px) minmax(0, 1fr) minmax(260px, 320px);
   gap: 12px;
-  align-items: start;
+  align-items: stretch;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .hud-column,
@@ -130,11 +134,15 @@ a {
   flex-direction: column;
   gap: 12px;
   min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 .stage-wrap {
   position: relative;
   min-height: 0;
+  height: 100%;
   display: grid;
   place-items: center;
   width: 100%;
@@ -149,7 +157,8 @@ a {
 
 #game-root {
   width: 100%;
-  min-height: min(78vh, 780px);
+  height: 100%;
+  min-height: 0;
   display: grid;
   place-items: center;
 }
@@ -157,7 +166,7 @@ a {
 #game-root canvas {
   image-rendering: pixelated;
   max-width: 100%;
-  max-height: min(78vh, 780px);
+  max-height: 100%;
 }
 
 .panel {
@@ -172,6 +181,7 @@ a {
 .side-column .panel {
   border-color: rgba(246, 200, 97, 0.14);
   background: linear-gradient(180deg, rgba(17, 20, 30, 0.68), rgba(9, 10, 16, 0.62));
+  min-height: 0;
 }
 
 .toast-root {
@@ -226,6 +236,82 @@ a {
   font-size: 12px;
   white-space: nowrap;
   pointer-events: none;
+}
+
+.victory-root {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.victory-panel {
+  width: min(440px, calc(100% - 36px));
+  border: 1px solid rgba(246, 200, 97, 0.48);
+  border-radius: 10px;
+  padding: 18px;
+  background:
+    linear-gradient(180deg, rgba(28, 20, 34, 0.9), rgba(8, 9, 14, 0.86)),
+    radial-gradient(circle at 50% 0%, rgba(122, 73, 255, 0.28), transparent 55%);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.48);
+  backdrop-filter: blur(12px);
+  pointer-events: auto;
+}
+
+.victory-panel h2 {
+  margin: 0 0 8px;
+  font-size: 26px;
+}
+
+.victory-panel p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.victory-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.victory-stats span {
+  border: 1px solid rgba(246, 200, 97, 0.18);
+  border-radius: 8px;
+  padding: 8px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.045);
+  font-size: 11px;
+}
+
+.victory-stats strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--text);
+  font-size: 16px;
+}
+
+.victory-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.victory-actions button {
+  flex: 1;
+  border: 1px solid rgba(246, 200, 97, 0.32);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.victory-actions button:first-child {
+  color: #180d08;
+  background: var(--gold);
 }
 
 @keyframes toast-rise {
@@ -667,6 +753,25 @@ a {
   font-size: 12px;
 }
 
+.story-panel,
+.npc-panel,
+.battle-panel,
+.monster-book-panel,
+.result-panel,
+.shop-panel {
+  overflow: hidden;
+}
+
+.story-panel p,
+.npc-panel p,
+.battle-panel p,
+.monster-book-panel p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
 .fatal {
   min-height: 100vh;
   display: grid;
@@ -718,7 +823,7 @@ a {
   overflow-wrap: anywhere;
 }
 
-@media (max-width: 1180px) {
+@media (max-width: 1180px) and (min-aspect-ratio: 3/4) {
   .play-layout {
     grid-template-columns: 206px minmax(420px, 1fr);
   }
@@ -730,25 +835,27 @@ a {
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-aspect-ratio: 3/4) {
   .game-shell {
-    gap: 8px;
-    padding: 8px;
+    --mobile-stage: min(44svh, calc(100vw - 16px));
+    gap: 6px;
+    padding: 6px;
   }
 
   .topbar {
     align-items: center;
-    padding: 8px 9px;
+    padding: 7px 8px;
     border-radius: 8px;
+    min-height: 0;
   }
 
   .brand-mark {
-    width: 30px;
-    height: 30px;
+    width: clamp(28px, 6vw, 42px);
+    height: clamp(28px, 6vw, 42px);
   }
 
   .brand-lockup strong {
-    font-size: 15px;
+    font-size: clamp(15px, 2.6vw, 28px);
   }
 
   .brand-lockup span:last-child {
@@ -756,89 +863,142 @@ a {
   }
 
   .top-actions button {
-    padding: 7px 9px;
-    font-size: 13px;
+    padding: clamp(6px, 1.4vw, 12px) clamp(8px, 2vw, 18px);
+    font-size: clamp(12px, 2.3vw, 22px);
   }
 
-  .play-layout,
-  .side-column {
+  .play-layout {
+    grid-template-rows: var(--mobile-stage) auto minmax(0, 1fr);
     grid-template-columns: 1fr;
+    gap: 6px;
   }
 
   .stage-wrap {
     order: 1;
-    min-height: min(calc(100vw - 16px), 650px);
+    height: var(--mobile-stage);
+    min-height: 0;
   }
 
   .hud-column {
     order: 2;
+    height: auto;
   }
 
   .side-column {
     order: 3;
-  }
-
-  .side-column {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+    gap: 6px;
+    height: 100%;
+    overflow: hidden;
   }
 
   .hud-column {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    grid-template-areas:
+      "hero keys"
+      "stats equipment";
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: 6px;
   }
 
   #game-root {
-    min-height: min(calc(100vw - 18px), 650px);
+    height: 100%;
+    min-height: 0;
   }
 
   #game-root canvas {
-    max-height: min(calc(100vw - 18px), 650px);
+    max-height: 100%;
   }
 
   .hero-status {
-    grid-column: 1 / -1;
+    grid-area: hero;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: end;
-    gap: 4px 12px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+    padding: clamp(6px, 1.5vw, 12px);
   }
 
   .hero-status .eyebrow {
-    grid-column: 1 / -1;
     margin-bottom: 0;
   }
 
   .hero-status h1 {
     margin: 0;
-    font-size: 18px;
+    font-size: clamp(15px, 3vw, 30px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .hp-readout {
-    min-width: 128px;
+    min-width: 0;
+    gap: 3px 8px;
+  }
+
+  .hp-readout strong {
+    font-size: clamp(20px, 5vw, 46px);
+  }
+
+  .hp-readout i {
+    height: clamp(6px, 1.2vw, 12px);
   }
 
   .stats-panel {
+    grid-area: stats;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-column: 1 / -1;
+    gap: 4px;
+  }
+
+  .keys-panel {
+    grid-area: keys;
+  }
+
+  .equipment-panel {
+    grid-area: equipment;
   }
 
   .stat-row {
-    padding: 7px;
+    padding: clamp(5px, 1.2vw, 9px);
+  }
+
+  .stat-row span,
+  .gear-row span {
+    font-size: clamp(9px, 1.7vw, 15px);
   }
 
   .stat-row strong {
-    font-size: 15px;
+    font-size: clamp(13px, 2.5vw, 24px);
   }
 
   .keys-panel,
   .equipment-panel {
-    padding: 9px;
+    padding: clamp(6px, 1.4vw, 11px);
+  }
+
+  .key-grid {
+    gap: 4px;
+  }
+
+  .key-badge {
+    padding: clamp(5px, 1.2vw, 9px);
+  }
+
+  .key-badge span {
+    width: clamp(19px, 4vw, 34px);
+    height: clamp(19px, 4vw, 34px);
+    font-size: clamp(11px, 2.2vw, 19px);
+  }
+
+  .key-badge strong,
+  .gear-row strong {
+    font-size: clamp(14px, 2.8vw, 24px);
   }
 
   .equipment-panel {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
   }
 
   .equipment-panel .eyebrow,
@@ -847,24 +1007,166 @@ a {
   }
 
   .toast-root {
-    bottom: 12px;
+    bottom: 8px;
     width: min(460px, calc(100% - 20px));
   }
 
   .game-toast {
-    padding: 8px 10px;
+    padding: 6px 8px;
   }
 
   .game-toast strong {
-    font-size: 13px;
+    font-size: clamp(11px, 2vw, 18px);
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .control-hint {
-    top: 10px;
+    top: 8px;
     max-width: calc(100% - 18px);
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 11px;
+    font-size: clamp(10px, 1.9vw, 18px);
+  }
+
+  .panel {
+    padding: clamp(6px, 1.3vw, 10px);
+    border-radius: 7px;
+  }
+
+  .eyebrow {
+    margin-bottom: 4px;
+    font-size: clamp(9px, 1.7vw, 15px);
+  }
+
+  .side-column .panel {
+    display: grid;
+    align-content: start;
+    gap: 3px;
+  }
+
+  .side-column h2,
+  .battle-panel h2,
+  .monster-book-panel h2,
+  .shop-panel h2,
+  .npc-panel h2,
+  .story-panel h2 {
+    margin: 0;
+    font-size: clamp(13px, 2.6vw, 24px);
+    line-height: 1.12;
+  }
+
+  .side-column p,
+  .battle-panel p,
+  .story-panel p,
+  .shop-panel p,
+  .npc-panel p {
+    font-size: clamp(10px, 1.9vw, 17px);
+    line-height: 1.35;
+    -webkit-line-clamp: 2;
+  }
+
+  .story-followups,
+  .reward-chips {
+    display: none;
+  }
+
+  .monster-stats {
+    gap: 3px;
+    margin-bottom: 4px;
+  }
+
+  .monster-stats span,
+  .book-entry div span,
+  .unlock-row span,
+  .unlock-row em {
+    padding: 3px 5px;
+    font-size: clamp(8px, 1.5vw, 13px);
+  }
+
+  .loss-line {
+    margin: 4px 0;
+    padding: 5px 7px;
+  }
+
+  .loss-line strong {
+    font-size: clamp(16px, 3vw, 28px);
+  }
+
+  .book-list {
+    gap: 4px;
+    overflow: hidden;
+  }
+
+  .book-entry {
+    padding: 5px;
+  }
+
+  .book-entry:nth-of-type(n+4) {
+    display: none;
+  }
+
+  .book-entry div {
+    gap: 3px;
+    margin-top: 4px;
+  }
+
+  .save-panel {
+    grid-column: 1 / -1;
+    grid-template-columns: auto repeat(3, minmax(0, 1fr));
+    align-items: center;
+    gap: 5px;
+  }
+
+  .save-panel .eyebrow {
+    margin: 0;
+  }
+
+  .save-row {
+    padding: 5px;
+    gap: 4px;
+  }
+
+  .save-row strong {
+    font-size: clamp(11px, 2vw, 17px);
+    white-space: nowrap;
+  }
+
+  .save-row span {
+    gap: 3px;
+  }
+
+  .save-row button {
+    padding: 4px 5px;
+    font-size: clamp(10px, 1.7vw, 14px);
+  }
+
+  .victory-panel {
+    width: min(460px, calc(100% - 24px));
+    padding: clamp(12px, 2.4vw, 22px);
+  }
+
+  .victory-panel h2 {
+    font-size: clamp(22px, 4.4vw, 40px);
+  }
+
+  .victory-panel p {
+    font-size: clamp(12px, 2.2vw, 18px);
+  }
+
+  .victory-stats {
+    gap: 5px;
+    margin-top: 10px;
+  }
+
+  .victory-stats span {
+    padding: 6px;
+  }
+
+  .victory-actions {
+    margin-top: 10px;
   }
 }
 
@@ -873,24 +1175,7 @@ a {
     display: none;
   }
 
-  .stats-panel {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .hero-status h1 {
-    font-size: 17px;
-  }
-
-  .hero-status {
-    grid-template-columns: 1fr;
-  }
-
-  .hp-readout {
-    min-width: 0;
-  }
-
-  .keys-panel,
-  .equipment-panel {
-    grid-column: 1 / -1;
+    font-size: 15px;
   }
 }

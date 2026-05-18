@@ -5,6 +5,7 @@ export function mountHud(store: GameStore) {
   const hudRoot = document.querySelector<HTMLElement>('#hud-root');
   const sideRoot = document.querySelector<HTMLElement>('#side-root');
   const toastRoot = document.querySelector<HTMLElement>('#toast-root');
+  const victoryRoot = document.querySelector<HTMLElement>('#victory-root');
   const resetRun = document.querySelector<HTMLButtonElement>('#resetRun');
   if (!hudRoot || !sideRoot) throw new Error('Missing HUD roots');
 
@@ -13,6 +14,10 @@ export function mountHud(store: GameStore) {
     hudRoot.innerHTML = renderHud(snapshot);
     sideRoot.innerHTML = renderSide(snapshot);
     if (toastRoot) toastRoot.innerHTML = renderToast(snapshot);
+    if (victoryRoot) {
+      victoryRoot.innerHTML = renderVictory(snapshot);
+      wireVictory(victoryRoot, store);
+    }
     wireButtons(sideRoot, store);
   });
 }
@@ -33,6 +38,11 @@ function wireButtons(root: HTMLElement, store: GameStore) {
   root.querySelectorAll<HTMLButtonElement>('[data-shop-buy]').forEach((button) => {
     button.addEventListener('click', () => store.buyShopOption(String(button.dataset.shopBuy)));
   });
+}
+
+function wireVictory(root: HTMLElement, store: GameStore) {
+  root.querySelector<HTMLButtonElement>('[data-victory-dismiss]')?.addEventListener('click', () => store.dismissVictory());
+  root.querySelector<HTMLButtonElement>('[data-victory-reset]')?.addEventListener('click', () => store.startNewRun());
 }
 
 function renderHud(snapshot: GameSnapshot) {
@@ -82,10 +92,10 @@ function renderSide(snapshot: GameSnapshot) {
       <p class="eyebrow">Local saves</p>
       ${[1, 2, 3].map((slot) => `
         <div class="save-row">
-          <strong>存档 ${slot}</strong>
+          <strong>槽 ${slot}</strong>
           <span>
-            <button data-save="${slot}">保存</button>
-            <button data-load="${slot}">读取</button>
+            <button data-save="${slot}">存</button>
+            <button data-load="${slot}">读</button>
             <button data-delete="${slot}" aria-label="删除存档 ${slot}">×</button>
           </span>
         </div>
@@ -100,6 +110,28 @@ function renderToast(snapshot: GameSnapshot) {
       <span>Log</span>
       <strong>${snapshot.message}</strong>
     </div>
+  `;
+}
+
+function renderVictory(snapshot: GameSnapshot) {
+  if (!snapshot.victory.visible) return '';
+  const player = snapshot.player;
+  return `
+    <section class="victory-panel">
+      <p class="eyebrow">Trial clear</p>
+      <h2>紫焰试炼完成</h2>
+      <p>龙首守卫已被击败，星镜塔台重新显影。当前路线已形成完整通关闭环。</p>
+      <div class="victory-stats">
+        <span>HP <strong>${player.hp}</strong></span>
+        <span>ATK <strong>${player.attack}</strong></span>
+        <span>DEF <strong>${player.defense}</strong></span>
+        <span>Gold <strong>${player.gold}</strong></span>
+      </div>
+      <div class="victory-actions">
+        <button type="button" data-victory-dismiss>继续探索</button>
+        <button type="button" data-victory-reset>重新开始</button>
+      </div>
+    </section>
   `;
 }
 

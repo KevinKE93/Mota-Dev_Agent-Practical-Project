@@ -664,6 +664,7 @@
           "dragonHeadDefeated"
         ],
         "messageIncludes": "龙首守卫的镜片碎裂",
+        "victory": true,
         "storyLogIncludes": [
           "塔台提示"
         ]
@@ -1402,6 +1403,7 @@
           "dragonHeadDefeated"
         ],
         "messageIncludes": "龙首守卫的镜片碎裂",
+        "victory": true,
         "storyLogIncludes": [
           "塔台提示"
         ]

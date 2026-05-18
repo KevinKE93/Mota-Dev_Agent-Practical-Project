@@ -67,6 +67,7 @@ function formatExpectation(expect = {}) {
   if (expect.activeShop) parts.push(`shop ${expect.activeShop}`);
   if (expect.activeNpc) parts.push(`npc ${expect.activeNpc}`);
   if (expect.lastBattle) parts.push(`lastBattle ${expect.lastBattle}`);
+  if (expect.victory) parts.push('victory clear');
   if (expect.seenEvents?.length) parts.push(`events ${expect.seenEvents.join(', ')}`);
   if (expect.unlocks?.length) parts.push(`unlocks ${expect.unlocks.join(', ')}`);
   if (expect.tiles?.length) {
