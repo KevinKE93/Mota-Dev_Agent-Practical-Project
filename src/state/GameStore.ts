@@ -10,6 +10,7 @@ import type {
   MonsterBookEntry,
   MonsterDefinition,
   NpcDefinition,
+  ObjectiveState,
   Position,
   SerializedGame,
   ShopDefinition,
@@ -71,6 +72,7 @@ export class GameStore {
     data.npcs.npcs.forEach((npc) => this.npcs.set(npc.id, npc));
     this.snapshot = this.createInitialSnapshot();
     this.triggerStoryEvents('floorEnter');
+    this.refreshDerivedState();
   }
 
   subscribe(listener: Listener) {
@@ -228,15 +230,19 @@ export class GameStore {
         completed: false,
         visible: false
       },
+      objective: {
+        title: '取得怪物手册',
+        body: '先拿二层右下角的怪物手册，再比较损耗推进路线。',
+        progressLabel: '0/5',
+        milestones: []
+      },
       version: 0
     };
   }
 
   private emit(message?: string, shouldAutosave = true) {
     if (message) this.snapshot.message = message;
-    this.snapshot.activeFloorName = this.getCurrentFloor().name;
-    this.snapshot.targetPreview = this.getFacingBattlePreview();
-    this.snapshot.monsterBook = this.buildMonsterBook();
+    this.refreshDerivedState();
     this.snapshot.version += 1;
     if (shouldAutosave) localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(this.serialize()));
     const snapshot = this.getSnapshot();
@@ -276,6 +282,12 @@ export class GameStore {
         victory: parsed.victory ?? {
           completed: parsed.player.unlocks?.includes('dragonHeadDefeated') ?? false,
           visible: false
+        },
+        objective: {
+          title: '继续紫焰试炼',
+          body: '读取完成后会根据当前进度刷新下一步目标。',
+          progressLabel: '0/5',
+          milestones: []
         },
         version: this.snapshot.version + 1
       };
@@ -534,6 +546,74 @@ export class GameStore {
       }
     });
     return { followups, rewards };
+  }
+
+  private refreshDerivedState() {
+    this.snapshot.activeFloorName = this.getCurrentFloor().name;
+    this.snapshot.targetPreview = this.getFacingBattlePreview();
+    this.snapshot.monsterBook = this.buildMonsterBook();
+    this.snapshot.objective = this.buildObjective();
+  }
+
+  private buildObjective(): ObjectiveState {
+    const player = this.snapshot.player;
+    const hasUnlock = (id: string) => player.unlocks.includes(id);
+    const reachedF03 = this.hasReachedFloor('F03_ARMORY');
+    const reachedF05 = this.hasReachedFloor('F05_FORGE');
+    const reachedF06 = this.hasReachedFloor('F06_OBSERVATORY') || hasUnlock('dragonHeadDefeated');
+    const armed = player.equipment.weapon !== '木剑';
+    const milestones = [
+      { id: 'book', label: '手册', completed: hasUnlock('monsterBook') },
+      { id: 'armory', label: '武装', completed: reachedF03 && armed },
+      { id: 'forge', label: '熔炉', completed: hasUnlock('forgeBossDefeated') || reachedF06 },
+      { id: 'observatory', label: '塔台', completed: reachedF06 },
+      { id: 'clear', label: '通关', completed: hasUnlock('dragonHeadDefeated') }
+    ];
+    const completedCount = milestones.filter((milestone) => milestone.completed).length;
+
+    let title = '击败六层龙首守卫';
+    let body = '收集资源、控制钥匙消耗，最终在六层击败龙首守卫。';
+
+    if (hasUnlock('dragonHeadDefeated')) {
+      title = 'Demo 已通关';
+      body = '龙首守卫已经倒下。可以继续探索剩余资源，或重开一局优化路线。';
+    } else if (!hasUnlock('monsterBook')) {
+      title = '取得怪物手册';
+      body = '二层右下角的手册会解锁损耗预判，这是稳定通关的第一步。';
+    } else if (!armed) {
+      title = '拿到铁剑并积累钥匙';
+      body = '从东北楼梯进入三层，优先拿铁剑、宝石和低损耗战斗收益。';
+    } else if (!reachedF05) {
+      title = '推进到五层熔炉';
+      body = '经过四层祭坛继续上行，保留红钥匙并收集能安全拿到的宝石。';
+    } else if (!hasUnlock('forgeBossDefeated')) {
+      title = '击败五层大乌贼';
+      body = '金币回三层商店转化为攻击和生命，准备好后击败大乌贼打开六层入口。';
+    } else if (!reachedF06) {
+      title = '进入六层星镜塔台';
+      body = '大乌贼倒下后，五层下方会打开新楼梯，带着红钥匙进入六层。';
+    } else if (player.floor === 'F06_OBSERVATORY') {
+      title = '挑战龙首守卫';
+      body = '先拿六层可承受分支的宝石和药水，再打开红门击败龙首守卫。';
+    } else {
+      title = '回到五层新楼梯';
+      body = '熔炉闸门已开，返回五层下方的新楼梯进入最终 Demo 楼层。';
+    }
+
+    return {
+      title,
+      body,
+      progressLabel: `${completedCount}/${milestones.length}`,
+      milestones
+    };
+  }
+
+  private hasReachedFloor(floorId: string) {
+    if (this.snapshot.player.floor === floorId) return true;
+    return this.snapshot.seenEvents.some((eventId) => {
+      const event = this.data.storyEvents.runtimeEvents.find((candidate) => candidate.id === eventId);
+      return event?.floor === floorId && event.trigger === 'floorEnter';
+    });
   }
 
   private applyStoryStatReward(stat: 'hp' | 'maxHp' | 'attack' | 'defense' | 'gold' | 'exp', amount: number) {

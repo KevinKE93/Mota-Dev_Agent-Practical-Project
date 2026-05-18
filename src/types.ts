@@ -295,6 +295,19 @@ export interface VictoryState {
   visible: boolean;
 }
 
+export interface ObjectiveMilestone {
+  id: string;
+  label: string;
+  completed: boolean;
+}
+
+export interface ObjectiveState {
+  title: string;
+  body: string;
+  progressLabel: string;
+  milestones: ObjectiveMilestone[];
+}
+
 export interface ActiveShopView {
   id: string;
   name: string;
@@ -325,6 +338,7 @@ export interface GameSnapshot {
   seenEvents: string[];
   lastBattle: LastBattle | null;
   victory: VictoryState;
+  objective: ObjectiveState;
   version: number;
 }
 

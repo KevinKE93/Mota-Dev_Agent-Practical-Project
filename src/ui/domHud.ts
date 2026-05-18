@@ -51,6 +51,7 @@ function renderHud(snapshot: GameSnapshot) {
     <section class="panel hero-status">
       <p class="eyebrow">Current floor</p>
       <h1>${snapshot.activeFloorName}</h1>
+      ${renderObjective(snapshot)}
       <div class="hp-readout">
         <span>HP</span>
         <strong>${player.hp}</strong>
@@ -77,6 +78,26 @@ function renderHud(snapshot: GameSnapshot) {
       <div class="gear-row"><span>盾牌</span><strong>${player.equipment.shield}</strong></div>
       <div class="unlock-row">${player.unlocks.length ? player.unlocks.map((item) => `<span>${unlockLabel(item)}</span>`).join('') : '<em>尚未解锁系统道具</em>'}</div>
     </section>
+  `;
+}
+
+function renderObjective(snapshot: GameSnapshot) {
+  const objective = snapshot.objective;
+  return `
+    <div class="objective-strip">
+      <div>
+        <span>目标 ${objective.progressLabel}</span>
+        <strong>${objective.title}</strong>
+        <p>${objective.body}</p>
+      </div>
+      <ol aria-label="Demo 通关进度">
+        ${objective.milestones.map((milestone) => `
+          <li class="${milestone.completed ? 'done' : ''}">
+            <span>${milestone.label}</span>
+          </li>
+        `).join('')}
+      </ol>
+    </div>
   `;
 }
 
