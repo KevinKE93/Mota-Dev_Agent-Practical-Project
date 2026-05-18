@@ -1,19 +1,41 @@
 import type { BattlePreview, GameSnapshot, LastBattle, StoryRewardView } from '../types';
 import type { GameStore } from '../state/GameStore';
+import { startBackgroundMusic } from '../audio/sfx';
+import { getAudioSettings, setAudioVolume, type AudioSettings } from '../audio/settings';
+
+const TOAST_HIDE_DELAY_MS = 1800;
+const TOAST_REPEAT_WINDOW_MS = 1400;
+
+interface ToastState {
+  message: string;
+  repeat: number;
+  lastAt: number;
+  hideTimer?: number;
+}
 
 export function mountHud(store: GameStore) {
   const hudRoot = document.querySelector<HTMLElement>('#hud-root');
   const sideRoot = document.querySelector<HTMLElement>('#side-root');
   const toastRoot = document.querySelector<HTMLElement>('#toast-root');
   const victoryRoot = document.querySelector<HTMLElement>('#victory-root');
+  const settingsRoot = document.querySelector<HTMLElement>('#settings-root');
+  const settingsToggle = document.querySelector<HTMLButtonElement>('#settingsToggle');
   const resetRun = document.querySelector<HTMLButtonElement>('#resetRun');
   if (!hudRoot || !sideRoot) throw new Error('Missing HUD roots');
+
+  const toastState: ToastState = {
+    message: '',
+    repeat: 0,
+    lastAt: 0
+  };
+
+  if (settingsRoot && settingsToggle) mountAudioSettings(settingsRoot, settingsToggle);
 
   resetRun?.addEventListener('click', () => store.startNewRun());
   store.subscribe((snapshot) => {
     hudRoot.innerHTML = renderHud(snapshot);
     sideRoot.innerHTML = renderSide(snapshot);
-    if (toastRoot) toastRoot.innerHTML = renderToast(snapshot);
+    if (toastRoot) updateToast(toastRoot, snapshot, toastState);
     if (victoryRoot) {
       victoryRoot.innerHTML = renderVictory(snapshot);
       wireVictory(victoryRoot, store);
@@ -43,6 +65,52 @@ function wireButtons(root: HTMLElement, store: GameStore) {
 function wireVictory(root: HTMLElement, store: GameStore) {
   root.querySelector<HTMLButtonElement>('[data-victory-dismiss]')?.addEventListener('click', () => store.dismissVictory());
   root.querySelector<HTMLButtonElement>('[data-victory-reset]')?.addEventListener('click', () => store.startNewRun());
+}
+
+function mountAudioSettings(root: HTMLElement, toggle: HTMLButtonElement) {
+  const render = () => {
+    root.innerHTML = renderAudioSettings(getAudioSettings());
+  };
+  render();
+
+  toggle.addEventListener('click', () => {
+    const shouldOpen = root.hidden;
+    if (shouldOpen) render();
+    root.hidden = !shouldOpen;
+    toggle.setAttribute('aria-expanded', String(shouldOpen));
+    if (shouldOpen) startBackgroundMusic();
+  });
+
+  root.addEventListener('input', (event) => {
+    const input = event.target as HTMLInputElement;
+    const key = input.dataset.audioVolume as keyof AudioSettings | undefined;
+    if (!key) return;
+    const percent = Number(input.value);
+    setAudioVolume(key, percent / 100);
+    const valueLabel = input.closest('.volume-control')?.querySelector<HTMLElement>('em');
+    if (valueLabel) valueLabel.textContent = `${percent}%`;
+    if (key === 'musicVolume') startBackgroundMusic();
+  });
+}
+
+function renderAudioSettings(settings: AudioSettings) {
+  return `
+    <section class="settings-panel" aria-label="声音设置">
+      <p class="eyebrow">Audio</p>
+      ${renderVolumeControl('背景音乐', 'musicVolume', settings.musicVolume)}
+      ${renderVolumeControl('音效', 'sfxVolume', settings.sfxVolume)}
+    </section>
+  `;
+}
+
+function renderVolumeControl(label: string, key: keyof AudioSettings, value: number) {
+  const percent = Math.round(value * 100);
+  return `
+    <label class="volume-control">
+      <span><strong>${label}</strong><em>${percent}%</em></span>
+      <input type="range" min="0" max="100" step="1" value="${percent}" data-audio-volume="${key}" />
+    </label>
+  `;
 }
 
 function renderHud(snapshot: GameSnapshot) {
@@ -125,13 +193,48 @@ function renderSide(snapshot: GameSnapshot) {
   `;
 }
 
-function renderToast(snapshot: GameSnapshot) {
+function updateToast(root: HTMLElement, snapshot: GameSnapshot, state: ToastState) {
+  const message = snapshot.message.trim();
+  if (!message) return;
+
+  const now = performance.now();
+  const isRepeat = message === state.message && now - state.lastAt <= TOAST_REPEAT_WINDOW_MS;
+  state.repeat = isRepeat ? state.repeat + 1 : 1;
+  state.message = message;
+  state.lastAt = now;
+
+  const existing = root.querySelector<HTMLElement>('.game-toast');
+  if (!existing || !isRepeat) {
+    root.innerHTML = renderToast(message, state.repeat);
+  } else {
+    existing.classList.remove('is-hidden');
+    existing.dataset.repeat = String(state.repeat);
+    const messageNode = existing.querySelector<HTMLElement>('[data-toast-message]');
+    const repeatNode = existing.querySelector<HTMLElement>('[data-toast-repeat]');
+    if (messageNode) messageNode.textContent = message;
+    if (repeatNode) repeatNode.textContent = repeatLabel(state.repeat);
+  }
+
+  root.querySelector<HTMLElement>('.game-toast')?.classList.remove('is-hidden');
+  if (state.hideTimer) window.clearTimeout(state.hideTimer);
+  state.hideTimer = window.setTimeout(() => {
+    root.querySelector<HTMLElement>('.game-toast')?.classList.add('is-hidden');
+  }, TOAST_HIDE_DELAY_MS);
+}
+
+function renderToast(message: string, repeat: number) {
   return `
-    <div class="game-toast" data-version="${snapshot.version}">
-      <span>Log</span>
-      <strong>${snapshot.message}</strong>
+    <div class="game-toast" data-repeat="${repeat}">
+      <span class="toast-label">Log</span>
+      <strong data-toast-message>${escapeHtml(message)}</strong>
+      <em class="toast-repeat" data-toast-repeat>${repeatLabel(repeat)}</em>
     </div>
   `;
+}
+
+function repeatLabel(repeat: number) {
+  if (repeat <= 1) return '';
+  return `×${repeat > 99 ? '99+' : repeat}`;
 }
 
 function renderVictory(snapshot: GameSnapshot) {
@@ -319,4 +422,13 @@ function unlockLabel(id: string) {
     forgeBossDefeated: '熔炉闸门'
   };
   return labels[id] ?? id;
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
 }

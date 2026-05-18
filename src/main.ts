@@ -5,6 +5,7 @@ import { BootScene } from './scenes/BootScene';
 import { MapScene } from './scenes/MapScene';
 import { MenuScene } from './scenes/MenuScene';
 import { UIScene } from './scenes/UIScene';
+import { primeAudioOnGesture } from './audio/sfx';
 import { services } from './services';
 import { GameStore } from './state/GameStore';
 import type { AssetManifest, GameData } from './types';
@@ -33,6 +34,7 @@ async function boot() {
   services.store = store;
   services.resumeGame = store.loadAutosave();
   mountHud(store);
+  primeAudioOnGesture();
 
   new Phaser.Game({
     type: Phaser.AUTO,

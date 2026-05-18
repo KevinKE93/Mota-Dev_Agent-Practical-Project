@@ -1,4 +1,5 @@
 import { services } from '../services';
+import { getAudioSettings, subscribeAudioSettings } from './settings';
 
 type SfxKey = 'battleHit' | 'reward' | 'floorTransition' | 'footstep';
 
@@ -11,6 +12,14 @@ type AudioWindow = Window & typeof globalThis & {
 };
 
 let audioContext: WebAudioContext | null = null;
+let musicGain: GainNode | null = null;
+let musicStarted = false;
+let audioGesturePrimed = false;
+
+subscribeAudioSettings((settings) => {
+  if (!audioContext || !musicGain) return;
+  musicGain.gain.setTargetAtTime(settings.musicVolume * 0.12, audioContext.currentTime, 0.08);
+});
 
 function getAudioContext() {
   if (audioContext) return audioContext;
@@ -21,11 +30,20 @@ function getAudioContext() {
   return audioContext;
 }
 
-export function playSfx(key: SfxKey) {
-  const definition = services.assets?.audio?.[key];
-  if (!definition) return;
-  window.dispatchEvent(new CustomEvent('mota:sfx', { detail: { key, synth: definition.synth } }));
+export function primeAudioOnGesture() {
+  if (audioGesturePrimed) return;
+  audioGesturePrimed = true;
 
+  const handleGesture = () => {
+    startBackgroundMusic();
+    window.removeEventListener('pointerdown', handleGesture);
+    window.removeEventListener('keydown', handleGesture);
+  };
+  window.addEventListener('pointerdown', handleGesture, { passive: true });
+  window.addEventListener('keydown', handleGesture);
+}
+
+export function startBackgroundMusic() {
   const context = getAudioContext();
   if (!context) return;
 
@@ -33,7 +51,56 @@ export function playSfx(key: SfxKey) {
     void context.resume().catch(() => undefined);
   }
 
-  const volume = Math.max(0, Math.min(1, definition.volume));
+  const settings = getAudioSettings();
+  if (musicGain) {
+    musicGain.gain.setTargetAtTime(settings.musicVolume * 0.12, context.currentTime, 0.08);
+  }
+  if (musicStarted) return;
+
+  try {
+    musicGain = context.createGain();
+    musicGain.gain.setValueAtTime(settings.musicVolume * 0.12, context.currentTime);
+
+    const filter = context.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(720, context.currentTime);
+    filter.Q.setValueAtTime(0.7, context.currentTime);
+
+    const root = context.createOscillator();
+    root.type = 'sine';
+    root.frequency.setValueAtTime(82.41, context.currentTime);
+
+    const fifth = context.createOscillator();
+    fifth.type = 'triangle';
+    fifth.frequency.setValueAtTime(123.47, context.currentTime);
+
+    root.connect(filter);
+    fifth.connect(filter);
+    filter.connect(musicGain);
+    musicGain.connect(context.destination);
+    root.start();
+    fifth.start();
+    musicStarted = true;
+  } catch {
+    // Background music is optional presentation; never block gameplay.
+  }
+}
+
+export function playSfx(key: SfxKey) {
+  const definition = services.assets?.audio?.[key];
+  if (!definition) return;
+  window.dispatchEvent(new CustomEvent('mota:sfx', { detail: { key, synth: definition.synth } }));
+
+  startBackgroundMusic();
+  const context = getAudioContext();
+  if (!context) return;
+
+  if (context.state === 'suspended') {
+    void context.resume().catch(() => undefined);
+  }
+
+  const volume = Math.max(0, Math.min(1, definition.volume * getAudioSettings().sfxVolume));
+  if (volume <= 0) return;
   try {
     if (definition.synth === 'hit') playHit(context, volume);
     if (definition.synth === 'reward') playReward(context, volume);
